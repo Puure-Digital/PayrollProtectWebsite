@@ -1705,7 +1705,7 @@
         </div>
 
         <p class="calc__source reveal d3">
-          Based on an average <strong>13% payroll discrepancy rate</strong> reported across the UK construction sector.
+          Based on an average <strong>4% payroll discrepancy rate</strong> reported across the UK construction sector.
           Source: <a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC Tax Gap Statistics</a> &amp; CIPP Annual Benchmarking Report.
           Figures are estimates only.
         </p>
@@ -2118,7 +2118,7 @@
     const inputLabel = document.getElementById('calc-input-label');
     if (!input || !monthly || !annual) return;
 
-    const RATE = 0.13;
+    const RATE = 0.04;
     let period = 'week';
 
     function multiplier() { return period === 'week' ? 52 : 12; }
