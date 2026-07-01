@@ -540,7 +540,7 @@
       font-family: var(--font-b); font-weight: 800;
       font-size: clamp(3rem, 5.5vw, 5rem);
       letter-spacing: 0.04em; line-height: 1;
-      color: oklch(1 0 0); margin-bottom: 1.25rem;
+      color: var(--lime); margin-bottom: 1.25rem;
     }
     .benefit__icon {
       width: 0.9em; height: 0.9em;
@@ -581,7 +581,7 @@
 
       /* symbol washes faint white → white, L-to-R stagger */
       .benefit__anchor {
-        color: oklch(1 0 0 / 0.35);
+        color: oklch(0.770 0.206 151 / 0.30);
         animation: benSymFill linear both;
         animation-timeline: --benefits-vt;
       }
@@ -591,11 +591,11 @@
       .benefit:nth-child(4) .benefit__anchor { animation-range: entry 41% entry 86%; }
 
       @keyframes benBarDraw { to { transform: scaleX(1); } }
-      @keyframes benSymFill { to { color: oklch(1 0 0); } }
+      @keyframes benSymFill { to { color: var(--lime); } }
 
       @media (prefers-reduced-motion: reduce) {
         .benefits__grid::before { transform: scaleX(1); animation: none; }
-        .benefit__anchor { color: oklch(1 0 0); animation: none; }
+        .benefit__anchor { color: var(--lime); animation: none; }
       }
     }
 
