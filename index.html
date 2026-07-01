@@ -508,9 +508,9 @@
     .benefits {
       padding-top: clamp(7rem, 14vw, 10.5rem);
       padding-bottom: clamp(5rem, 9vw, 7rem);
-      background: var(--lime);
+      background: var(--dark-bg);
     }
-    .benefits .section-tag { color: oklch(0.260 0.020 151); }
+    .benefits .section-tag { color: var(--lime); }
     .benefits__head {
       margin-bottom: clamp(2.5rem, 5vw, 4rem);
     }
@@ -518,24 +518,24 @@
       font-family: var(--font-d); font-weight: 700;
       font-size: clamp(2rem, 4vw, 3.25rem);
       line-height: 1.12; letter-spacing: 0.04em;
-      color: var(--ink); text-wrap: balance;
+      color: var(--dark-ink); text-wrap: balance;
     }
-    .benefits__h2 em { font-style: normal; }
+    .benefits__h2 em { font-style: normal; color: var(--lime); }
     .benefits__grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border-top: 3px solid oklch(0 0 0 / 0.18);
-      border-bottom: 1px solid oklch(0 0 0 / 0.12);
+      border-bottom: 1px solid var(--dark-border);
     }
     .benefit {
       padding: 3rem 2rem 3rem 2rem;
-      border-right: 1px solid oklch(0 0 0 / 0.12);
+      border-right: 1px solid var(--dark-border);
       transition: background 0.18s;
       position: relative;
     }
     .benefit:last-child { border-right: none; }
-    .benefit:hover { background: oklch(0 0 0 / 0.06); }
+    .benefit:hover { background: oklch(1 0 0 / 0.05); }
     .benefit__anchor {
       font-family: var(--font-b); font-weight: 800;
       font-size: clamp(3rem, 5.5vw, 5rem);
@@ -550,9 +550,9 @@
     .benefit__h3 {
       font-family: var(--font-b); font-weight: 700;
       font-size: 1.1rem; letter-spacing: -0.01em;
-      color: var(--ink); margin-bottom: 0.625rem;
+      color: var(--dark-ink); margin-bottom: 0.625rem;
     }
-    .benefit__p { font-size: 0.9rem; color: oklch(0.430 0.005 115); line-height: 1.65; }
+    .benefit__p { font-size: 0.9rem; color: oklch(0.630 0.008 115); line-height: 1.65; }
 
     /* ─── BENEFITS SCROLL-DRIVEN OVERDRIVE ──────────────── */
     @supports (animation-timeline: view()) {
@@ -571,7 +571,7 @@
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 3px;
-        background: oklch(0 0 0 / 0.18);
+        background: var(--lime);
         transform: scaleX(0);
         transform-origin: left;
         animation: benBarDraw linear both;
@@ -1154,7 +1154,7 @@
       .benefits__grid   { grid-template-columns: repeat(2, 1fr); }
       .benefit          { padding: 2.25rem 1.75rem; }
       .benefit:nth-child(2n) { border-right: none; }
-      .benefit:nth-child(n+3) { border-top: 1px solid oklch(0 0 0 / 0.12); }
+      .benefit:nth-child(n+3) { border-top: 1px solid var(--dark-border); }
       /* numbers exp-grid stays 2-col at 960px — plenty of room */
       .pilot__grid      { grid-template-columns: 1fr; }
     }
@@ -1174,7 +1174,7 @@
       /* Benefits: single column */
       .benefits__grid   { grid-template-columns: 1fr; }
       .benefits__grid .benefit { border-right: none; border-top: none; }
-      .benefits__grid .benefit + .benefit { border-top: 1px solid oklch(0 0 0 / 0.12); }
+      .benefits__grid .benefit + .benefit { border-top: 1px solid var(--dark-border); }
       /* Numbers: ctx strip → 1 col, exposure → 1 col */
       .numbers__ctx-grid { grid-template-columns: 1fr; }
       .numbers__ctx-cell { border-right: none; border-bottom: 1px solid var(--border); }
