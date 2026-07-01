@@ -671,11 +671,17 @@
       60%  { transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
     }
+    @keyframes numStampColor {
+      0%   { color: oklch(0.62 0.22 25); }
+      55%  { color: oklch(0.62 0.22 25); }
+      100% { color: var(--lime-dk); }
+    }
     .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig {
       transform: none; transition: none;
     }
     .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig.in {
-      animation: numStamp 0.6s var(--ease-expo) 0.18s both;
+      animation: numStamp 0.6s var(--ease-expo) 0.18s both,
+                 numStampColor 0.9s var(--ease-expo) 0.18s both;
     }
     .numbers__since {
       display: flex; align-items: baseline; gap: 0.5rem;
@@ -2000,6 +2006,35 @@
     requestAnimationFrame(tick);
   }
 
+  function animateTicker(el) {
+    if (prefersReducedMotion) return;
+    const original = el.textContent.trim();
+    const match = original.match(/^(\d+)\s+in\s+(\d+)$/);
+    if (!match) return;
+    const prefix = match[1] + ' in ';
+    const target = parseInt(match[2], 10);
+    const startVal = 52;
+    const duration = 1100;
+    const start = performance.now();
+    function easeOutExpo(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const progress = easeOutExpo(t);
+      const trending = startVal + (target - startVal) * progress;
+      let n;
+      if (t < 0.72) {
+        const jitter = Math.round((Math.random() - 0.3) * 12 * (1 - t));
+        n = Math.round(trending) + jitter;
+        n = Math.max(target + 1, n);
+      } else {
+        n = Math.round(trending);
+      }
+      el.textContent = prefix + n;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = original;
+    }
+    requestAnimationFrame(tick);
+  }
 
   const revealEls = document.querySelectorAll(
     '.reveal, .reveal-left, .reveal-right, .reveal-blur'
@@ -2024,7 +2059,11 @@
           const idx = ctxFigs.indexOf(fig);
           setTimeout(() => {
             fig.classList.add('in');
-            animateCounter(fig);
+            if (/\d+\s+in\s+\d+/.test(fig.textContent)) {
+              animateTicker(fig);
+            } else {
+              animateCounter(fig);
+            }
           }, idx * 100 + 200);
           ctxObserver.unobserve(fig);
         }
