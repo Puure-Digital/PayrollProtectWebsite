@@ -243,13 +243,6 @@
     }
     .btn-ghost:hover { color: var(--ink); }
 
-    /* Hero social proof */
-    .hero__proof {
-      margin-top: 1.125rem;
-      font-size: 0.82rem; font-weight: 500; color: var(--ink-dim);
-      line-height: 1.5; max-width: 52ch;
-    }
-
     /* Before/after panel */
     .hero__comparison {
       display: flex; flex-direction: column;
@@ -836,6 +829,41 @@
     .pilot__note {
       margin-top: 1rem; font-size: 0.825rem;
       color: var(--dark-dim);
+    }
+
+    /* ─── SECTOR BAND ────────────────────────────────────── */
+    .sector-band {
+      background: var(--dark-mid);
+      padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sector-band::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+    }
+    .sector-band::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--dark-border), transparent);
+    }
+    .sector-band__inner {
+      text-align: center;
+    }
+    .sector-band__sectors {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1rem, 2.2vw, 1.5rem);
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--dark-ink); text-wrap: balance; line-height: 1.3;
+    }
+    .sector-band__sep {
+      color: var(--lime); margin: 0 0.4em;
+    }
+    .sector-band__roles {
+      margin-top: 0.625rem;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--dark-muted); letter-spacing: 0.02em;
     }
 
     /* ─── CALCULATOR ─────────────────────────────────────── */
@@ -1531,7 +1559,6 @@
               </svg>
             </a>
           </div>
-          <p class="hero__proof">Designed for Commercial, Finance, and HR Teams in Homebuilders&nbsp;·&nbsp;Main Contractors&nbsp;·&nbsp;Civil Engineering</p>
         </div>
 
         <div class="hero__icon">
@@ -1562,6 +1589,18 @@
   </section>
 
   </div><!-- /stack-wrap 1a -->
+
+  <!-- SECTOR BAND -->
+  <div class="sector-band" role="note" aria-label="Industries served">
+    <div class="container">
+      <div class="sector-band__inner">
+        <p class="sector-band__sectors">
+          Homebuilders<span class="sector-band__sep" aria-hidden="true">·</span>Main Contractors<span class="sector-band__sep" aria-hidden="true">·</span>Civil Engineering
+        </p>
+        <p class="sector-band__roles">Commercial Directors &nbsp;·&nbsp; Finance Teams &nbsp;·&nbsp; HR &amp; Site Management</p>
+      </div>
+    </div>
+  </div>
 
   <!-- CALCULATOR -->
   <section class="calc" id="calculator" aria-labelledby="calc-h">
