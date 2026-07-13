@@ -41,13 +41,14 @@
       --surface-2:    oklch(0.918 0.007 110);
       --border:       oklch(0.880 0.006 110);
       --border-light: oklch(0.910 0.005 110);
-      --ink:          oklch(0.195 0.010 115);
-      --ink-dim:      oklch(0.260 0.008 115);
+      --ink:          oklch(0.240 0.010 220);
+      --ink-dim:      oklch(0.300 0.008 215);
       --muted:        oklch(0.440 0.012 110);
       --muted-2:      oklch(0.440 0.010 110);
       --lime:         oklch(0.770 0.206 151);
       --lime-dk:      oklch(0.660 0.210 151);
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
+      --lime-grad:    linear-gradient(90deg, oklch(0.720 0.210 143), oklch(0.860 0.215 132));
       --dark-bg:      oklch(0.130 0.008 115);
       --dark-mid:     oklch(0.185 0.010 115);
       --dark-border:  oklch(0.240 0.008 115);
@@ -150,12 +151,12 @@
     }
     .btn-cta {
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime-grad); color: oklch(0.18 0.015 145);
       padding: 0.6rem 1.375rem; border-radius: 6px;
-      transition: background 0.15s, transform 0.2s var(--ease-expo);
+      transition: filter 0.15s, transform 0.2s var(--ease-expo);
       white-space: nowrap;
     }
-    .btn-cta:hover { background: var(--lime-dk); transform: translateY(-1px); }
+    .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
     .btn-cta:active { transform: translateY(0); }
 
     /* ─── SECTION STACK ─────────────────────────────────── */
@@ -210,7 +211,7 @@
       color: var(--ink); text-wrap: pretty;
       margin-bottom: 1.5rem;
     }
-    .hero__h1 em { font-style: normal; color: var(--lime-dk); font-weight: 600; position: relative; display: inline-block; }
+    .hero__h1 em { font-style: normal; color: var(--lime-dk); font-weight: 600; position: relative; display: block; }
     .hero__sub {
       font-size: clamp(1rem, 1.4vw, 1.125rem);
       color: var(--muted); max-width: 54ch;
@@ -221,22 +222,86 @@
     }
     .btn-primary {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime-grad); color: oklch(0.18 0.015 145);
       padding: 0.9rem 2.125rem; border-radius: 7px;
       position: relative; overflow: hidden;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-primary:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 6px 22px var(--lime-glow);
     }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:active { transform: translateY(0); filter: brightness(0.88); }
     .btn-ghost {
       font-size: 0.9rem; font-weight: 500; color: var(--muted);
       display: inline-flex; align-items: center; gap: 0.375rem;
       transition: color 0.15s;
     }
     .btn-ghost:hover { color: var(--ink); }
+
+    /* Hero social proof + watch link */
+    .hero__proof {
+      margin-top: 1.125rem;
+      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      line-height: 1.5; max-width: 52ch;
+    }
+    .hero__watch {
+      margin-top: 0.875rem;
+      font-size: 0.82rem; color: var(--muted);
+      opacity: 0.55; cursor: default; user-select: none;
+      display: inline-flex; align-items: center; gap: 0.375rem;
+    }
+
+    /* Before/after panel */
+    .hero__comparison {
+      display: flex; flex-direction: column;
+      gap: 0.625rem; width: 100%;
+    }
+    .hc-panel {
+      border-radius: 10px; padding: 1.125rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .hc-before {
+      background: oklch(0.97 0.008 25);
+      border: 1px solid oklch(0.90 0.030 25);
+    }
+    .hc-after {
+      background: oklch(0.96 0.012 145);
+      border: 1px solid oklch(0.88 0.040 145);
+    }
+    .hc-label {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .hc-before .hc-label { color: oklch(0.55 0.140 25); }
+    .hc-after  .hc-label { color: oklch(0.45 0.160 151); }
+    .hc-list {
+      list-style: none; display: flex; flex-direction: column; gap: 0.45rem;
+    }
+    .hc-list li {
+      font-size: 0.82rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.55rem;
+      color: var(--ink);
+    }
+    .hc-icon {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.6rem; line-height: 1;
+    }
+    .hc-x { background: oklch(0.90 0.080 25); color: oklch(0.50 0.180 25); font-weight: 700; }
+    .hc-check { background: var(--lime-grad); color: oklch(0.18 0.015 145); font-weight: 700; }
+    .hc-savings {
+      margin-top: 0.375rem;
+      font-family: var(--font-d); font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 0.02em; color: oklch(0.45 0.160 151);
+    }
+    @media (max-width: 860px) {
+      .hero__comparison { flex-direction: row; }
+      .hc-panel { flex: 1; }
+    }
+    @media (max-width: 560px) {
+      .hero__comparison { flex-direction: column; }
+    }
 
     /* Hero icon */
     .hero__icon {
@@ -778,13 +843,13 @@
     .pilot__action { margin-top: clamp(2rem, 4vw, 3rem); }
     .btn-pilot {
       font-family: var(--font-b); font-size: 1.05rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime-grad); color: oklch(0.18 0.015 145);
       padding: 1rem 2.375rem; border-radius: 7px; display: inline-block;
       position: relative; overflow: hidden;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-pilot:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 8px 26px var(--lime-glow);
     }
     .btn-pilot:active { transform: translateY(0); }
@@ -899,12 +964,12 @@
     .calc__cta-wrap { display: flex; justify-content: center; }
     .btn-calc {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime-grad); color: oklch(0.18 0.015 145);
       padding: 0.9rem 2.125rem; border-radius: 7px;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-calc:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 6px 22px var(--lime-glow);
     }
     .btn-calc:active { transform: translateY(0); box-shadow: none; }
@@ -1087,16 +1152,6 @@
     .hl-1 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.22s both; }
     .hl-2 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.34s both; }
     .hero__h1 em   { animation: heroFadeUp 0.65s var(--ease-expo) 0.46s both; }
-    .hero__h1 em::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 100%; height: 2px;
-      background: var(--lime);
-      transform: scaleX(0);
-      transform-origin: left;
-      animation: heroUnderline 0.55s var(--ease-expo) 1.0s both;
-    }
     @keyframes heroUnderline { to { transform: scaleX(1); } }
     .hero__sub     { animation: heroFadeUp 0.60s var(--ease-expo) 0.62s both; }
     .hero__actions { animation: heroFadeUp 0.55s var(--ease-expo) 0.60s both; }
@@ -1443,6 +1498,7 @@
         <img src="assets/pp-logo-horizontal.png" alt="PayRoll Protect" height="56" style="display:block;height:56px;width:auto;">
       </a>
       <ul class="nav__links">
+        <li><a href="#calculator">Calculator</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
@@ -1456,6 +1512,7 @@
     </div>
     <div class="nav__mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
       <ul>
+        <li><a href="#calculator">Calculator</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
@@ -1479,15 +1536,15 @@
         <div class="hero__copy">
 
           <h1 class="hero__h1" id="hero-h1">
-            <span class="hl-1">You Pay For Workers.</span><br>
-            <span class="hl-2">We Verify They Were</span><br>
-            <em>Actually&nbsp;There</em>
+            <span class="hl-1">The All-In-One Payroll</span><br>
+            <span class="hl-2">Verification Platform</span><br>
+            <em>For HR &amp; Finance Teams,<br>In Construction</em>
           </h1>
           <p class="hero__sub">
-            A biometric terminal at your site gate logs every worker in and out. That record is checked against subcontractor invoices before payment is approved. If the hours don't match, you see it before the money leaves.
+            Payroll Protect offers 100% accuracy on verified site attendance, reducing unknowingly fraudulent subcontractor and agency invoices. Catch payroll discrepancies, reduce fraud, and verify every worker automatically.
           </p>
           <div class="hero__actions">
-            <a href="contact.html" class="btn-primary">Book a Call</a>
+            <a href="contact.html" class="btn-primary">Explore your site labour savings?</a>
             <a href="#how-it-works" class="btn-ghost">
               See how it works
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1495,14 +1552,97 @@
               </svg>
             </a>
           </div>
+          <p class="hero__proof">Designed for Commercial, Finance, and HR Teams in Homebuilders&nbsp;·&nbsp;Main Contractors&nbsp;·&nbsp;Civil Engineering</p>
+          <span class="hero__watch" aria-hidden="true">▶ Watch 90 Second Overview (coming soon)</span>
         </div>
 
         <div class="hero__icon" aria-hidden="true">
-          <img src="assets/pp-logo-hero.png" alt="" fetchpriority="high" decoding="async" width="480" height="480" style="width:100%;max-width:480px;height:auto;display:block;">
+          <div class="hero__comparison">
+            <div class="hc-panel hc-before">
+              <div class="hc-label">Before PayRoll Protect</div>
+              <ul class="hc-list">
+                <li><span class="hc-icon hc-x">✕</span> QR codes &amp; smartphones</li>
+                <li><span class="hc-icon hc-x">✕</span> Ghost clocking (1 worker, many names)</li>
+                <li><span class="hc-icon hc-x">✕</span> Unverified attendance records</li>
+                <li><span class="hc-icon hc-x">✕</span> Discrepancy alerts after payment</li>
+              </ul>
+            </div>
+            <div class="hc-panel hc-after">
+              <div class="hc-label">After PayRoll Protect</div>
+              <ul class="hc-list">
+                <li><span class="hc-icon hc-check">✓</span> Face verification at gate — no devices</li>
+                <li><span class="hc-icon hc-check">✓</span> Live attendance feed, verified in real time</li>
+                <li><span class="hc-icon hc-check">✓</span> Invoice matched against logged hours</li>
+                <li><span class="hc-icon hc-check">✓</span> Discrepancies caught before payment</li>
+              </ul>
+              <div class="hc-savings">£0 leakage &mdash; verified payroll</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  </div><!-- /stack-wrap 1a -->
+
+  <!-- CALCULATOR -->
+  <section class="calc" id="calculator" aria-labelledby="calc-h">
+    <div class="container">
+      <div class="calc__inner">
+        <h2 class="calc__h2 reveal" id="calc-h">
+          What Is Unverified Labour<br><em>Costing Your Operation?</em>
+        </h2>
+        <p class="calc__sub reveal d1">
+          Put in your weekly payroll spend. We apply the UK construction industry average to show what you're likely losing each year on unverified labour.
+        </p>
+
+        <div class="calc__input-wrap reveal d2" role="group" aria-labelledby="calc-input-label">
+          <span class="calc__currency" aria-hidden="true">£</span>
+          <label for="calc-payroll" id="calc-input-label" class="sr-only">Weekly payroll total in pounds</label>
+          <input
+            type="text"
+            id="calc-payroll"
+            class="calc__input"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="12"
+            placeholder="Enter here"
+            aria-describedby="calc-desc">
+          <button type="button" class="calc__period" id="calc-period" aria-label="Switch input period — currently per week">
+            per week
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" style="flex-shrink:0">
+              <path d="M3 1.5L1 3.5L3 5.5M7 4.5L9 6.5L7 8.5M1 3.5H9M1 6.5H9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <p id="calc-desc" class="sr-only">Enter your weekly payroll total to calculate estimated annual exposure</p>
+
+        <div class="calc__output reveal d2" aria-live="polite" aria-atomic="true">
+          <div class="calc__fig">
+            <p class="calc__fig-val" id="calc-monthly">—</p>
+            <p class="calc__fig-lbl">Est. monthly loss</p>
+          </div>
+          <div class="calc__fig calc__fig--annual">
+            <p class="calc__fig-val" id="calc-annual">—</p>
+            <p class="calc__fig-lbl">Est. annual loss</p>
+          </div>
+        </div>
+
+        <p class="calc__source reveal d3">
+          Based on an average <strong>4% payroll discrepancy rate</strong> reported across the UK construction sector.
+          Source: <a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC Tax Gap Statistics</a> &amp; CIPP Annual Benchmarking Report.
+          Figures are estimates only.
+        </p>
+
+        <div class="calc__cta-wrap reveal d3">
+          <a href="contact.html" class="btn-calc">See What This Means for Your Sites</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK GROUP 1b: problem -->
+  <div class="stack-wrap">
 
   <!-- PROBLEM -->
   <section class="problem" aria-labelledby="prob-h">
@@ -1564,7 +1704,7 @@
     </div>
   </section>
 
-  </div><!-- /stack-wrap 1 -->
+  </div><!-- /stack-wrap 1b -->
 
   <!-- HOW IT WORKS -->
   <section class="how" id="how-it-works" aria-labelledby="how-h">
@@ -1652,62 +1792,6 @@
           </div>
           <h3 class="benefit__h3">Complete Audit Trail</h3>
           <p class="benefit__p">Every check-in is timestamped, stored, and exportable. When a subcontractor disputes a rejected invoice, the evidence is already there.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CALCULATOR -->
-  <section class="calc" id="calculator" aria-labelledby="calc-h">
-    <div class="container">
-      <div class="calc__inner">
-        <h2 class="calc__h2 reveal" id="calc-h">
-          What Is Unverified Labour<br><em>Costing Your Operation?</em>
-        </h2>
-        <p class="calc__sub reveal d1">
-          Put in your weekly payroll spend. We apply the UK construction industry average to show what you're likely losing each year on unverified labour.
-        </p>
-
-        <div class="calc__input-wrap reveal d2" role="group" aria-labelledby="calc-input-label">
-          <span class="calc__currency" aria-hidden="true">£</span>
-          <label for="calc-payroll" id="calc-input-label" class="sr-only">Weekly payroll total in pounds</label>
-          <input
-            type="text"
-            id="calc-payroll"
-            class="calc__input"
-            inputmode="numeric"
-            autocomplete="off"
-            maxlength="12"
-            placeholder="Enter here"
-            aria-describedby="calc-desc">
-          <button type="button" class="calc__period" id="calc-period" aria-label="Switch input period — currently per week">
-            per week
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" style="flex-shrink:0">
-              <path d="M3 1.5L1 3.5L3 5.5M7 4.5L9 6.5L7 8.5M1 3.5H9M1 6.5H9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-        <p id="calc-desc" class="sr-only">Enter your weekly payroll total to calculate estimated annual exposure</p>
-
-        <div class="calc__output reveal d2" aria-live="polite" aria-atomic="true">
-          <div class="calc__fig">
-            <p class="calc__fig-val" id="calc-monthly">—</p>
-            <p class="calc__fig-lbl">Est. monthly loss</p>
-          </div>
-          <div class="calc__fig calc__fig--annual">
-            <p class="calc__fig-val" id="calc-annual">—</p>
-            <p class="calc__fig-lbl">Est. annual loss</p>
-          </div>
-        </div>
-
-        <p class="calc__source reveal d3">
-          Based on an average <strong>4% payroll discrepancy rate</strong> reported across the UK construction sector.
-          Source: <a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC Tax Gap Statistics</a> &amp; CIPP Annual Benchmarking Report.
-          Figures are estimates only.
-        </p>
-
-        <div class="calc__cta-wrap reveal d3">
-          <a href="contact.html" class="btn-calc">See What This Means for Your Sites</a>
         </div>
       </div>
     </div>
