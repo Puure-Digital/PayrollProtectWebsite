@@ -49,6 +49,7 @@
       --lime-dk:      oklch(0.660 0.210 151);
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
       --lime-grad:    linear-gradient(90deg, oklch(0.720 0.210 143), oklch(0.860 0.215 132));
+      --btn-ink:      oklch(0.18 0.015 145);
       --dark-bg:      oklch(0.130 0.008 115);
       --dark-mid:     oklch(0.185 0.010 115);
       --dark-border:  oklch(0.240 0.008 115);
@@ -151,7 +152,7 @@
     }
     .btn-cta {
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
-      background: var(--lime-grad); color: oklch(0.18 0.015 145);
+      background: var(--lime-grad); color: var(--btn-ink);
       padding: 0.6rem 1.375rem; border-radius: 6px;
       transition: filter 0.15s, transform 0.2s var(--ease-expo);
       white-space: nowrap;
@@ -205,9 +206,9 @@
     }
     .hero__h1 {
       font-family: var(--font-d); font-weight: 700;
-      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+      font-size: clamp(1.9rem, 4.8vw, 3.8rem);
       line-height: 1.12; letter-spacing: 0.04em;
-      text-transform: capitalize;
+      text-transform: capitalize; overflow-wrap: break-word;
       color: var(--ink); text-wrap: pretty;
       margin-bottom: 1.5rem;
     }
@@ -222,7 +223,7 @@
     }
     .btn-primary {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime-grad); color: oklch(0.18 0.015 145);
+      background: var(--lime-grad); color: var(--btn-ink);
       padding: 0.9rem 2.125rem; border-radius: 7px;
       position: relative; overflow: hidden;
       transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
@@ -242,12 +243,12 @@
     /* Hero social proof + watch link */
     .hero__proof {
       margin-top: 1.125rem;
-      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      font-size: 0.82rem; font-weight: 500; color: var(--ink-dim);
       line-height: 1.5; max-width: 52ch;
     }
     .hero__watch {
       margin-top: 0.875rem;
-      font-size: 0.82rem; color: var(--muted);
+      font-size: 0.82rem; color: var(--ink-dim);
       opacity: 0.55; cursor: default; user-select: none;
       display: inline-flex; align-items: center; gap: 0.375rem;
     }
@@ -289,7 +290,7 @@
       flex-shrink: 0; font-size: 0.6rem; line-height: 1;
     }
     .hc-x { background: oklch(0.90 0.080 25); color: oklch(0.50 0.180 25); font-weight: 700; }
-    .hc-check { background: var(--lime-grad); color: oklch(0.18 0.015 145); font-weight: 700; }
+    .hc-check { background: var(--lime-grad); color: var(--btn-ink); font-weight: 700; }
     .hc-savings {
       margin-top: 0.375rem;
       font-family: var(--font-d); font-size: 1.1rem; font-weight: 700;
@@ -309,18 +310,6 @@
       align-items: center;
       justify-content: center;
     }
-    .hero__icon img {
-      animation: heroFloat 5s ease-in-out infinite;
-      will-change: transform;
-    }
-    @keyframes heroFloat {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-22px); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero__icon img { animation: none; }
-    }
-
     /* ─── PROBLEM ────────────────────────────────────────── */
     .problem {
       padding-top: clamp(7rem, 14vw, 10.5rem);
@@ -516,14 +505,6 @@
 
     /* Section tag prefix: How It Works */
     .how .section-tag::before { content: '◈  '; }
-
-    /* Step index label */
-    .how__step-idx {
-      font-family: 'Courier New', monospace;
-      font-size: 0.6rem; letter-spacing: 0.14em;
-      color: var(--dark-muted); margin-bottom: 1.25rem;
-      text-transform: uppercase;
-    }
 
     /* Lime rail on step grid top */
     .how__steps { border-top-color: var(--lime); }
@@ -843,7 +824,7 @@
     .pilot__action { margin-top: clamp(2rem, 4vw, 3rem); }
     .btn-pilot {
       font-family: var(--font-b); font-size: 1.05rem; font-weight: 600;
-      background: var(--lime-grad); color: oklch(0.18 0.015 145);
+      background: var(--lime-grad); color: var(--btn-ink);
       padding: 1rem 2.375rem; border-radius: 7px; display: inline-block;
       position: relative; overflow: hidden;
       transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
@@ -964,7 +945,7 @@
     .calc__cta-wrap { display: flex; justify-content: center; }
     .btn-calc {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime-grad); color: oklch(0.18 0.015 145);
+      background: var(--lime-grad); color: var(--btn-ink);
       padding: 0.9rem 2.125rem; border-radius: 7px;
       transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
@@ -1461,8 +1442,8 @@
         <ellipse cx="90" cy="108" rx="54" ry="68"/>
       </clipPath>
       <linearGradient id="pp-scan-grad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#0FD76A" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#0FD76A" stop-opacity="0.18"/>
+        <stop offset="0%" stop-color="var(--lime)" stop-opacity="0"/>
+        <stop offset="100%" stop-color="var(--lime)" stop-opacity="0.18"/>
       </linearGradient>
     </defs>
     <!-- Face silhouette -->
@@ -1477,7 +1458,7 @@
       <g class="scanner__scan-group">
         <rect x="36" y="-136" width="108" height="136" fill="url(#pp-scan-grad)"/>
         <line x1="36" y1="0" x2="144" y2="0"
-          stroke="#0FD76A" stroke-width="1.5" stroke-linecap="round"/>
+          stroke="var(--lime)" stroke-width="1.5" stroke-linecap="round"/>
       </g>
     </g>
   </svg>
@@ -1570,12 +1551,12 @@
             <div class="hc-panel hc-after">
               <div class="hc-label">After PayRoll Protect</div>
               <ul class="hc-list">
-                <li><span class="hc-icon hc-check">✓</span> Face verification at gate — no devices</li>
+                <li><span class="hc-icon hc-check">✓</span> Face verification at gate, no devices</li>
                 <li><span class="hc-icon hc-check">✓</span> Live attendance feed, verified in real time</li>
                 <li><span class="hc-icon hc-check">✓</span> Invoice matched against logged hours</li>
                 <li><span class="hc-icon hc-check">✓</span> Discrepancies caught before payment</li>
               </ul>
-              <div class="hc-savings">£0 leakage &mdash; verified payroll</div>
+              <div class="hc-savings">£0 leakage. Verified payroll.</div>
             </div>
           </div>
         </div>
@@ -1677,8 +1658,8 @@
                   <ellipse cx="90" cy="108" rx="54" ry="68"/>
                 </clipPath>
                 <linearGradient id="prob-scan-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0FD76A" stop-opacity="0"/>
-                  <stop offset="100%" stop-color="#0FD76A" stop-opacity="0.22"/>
+                  <stop offset="0%" stop-color="var(--lime)" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="var(--lime)" stop-opacity="0.22"/>
                 </linearGradient>
               </defs>
               <ellipse class="prob-face" cx="90" cy="108" rx="54" ry="68"/>
@@ -1689,7 +1670,7 @@
               <g clip-path="url(#prob-face-clip)">
                 <g class="prob-scan-group">
                   <rect x="36" y="-136" width="108" height="136" fill="url(#prob-scan-grad)"/>
-                  <line x1="36" y1="0" x2="144" y2="0" stroke="#0FD76A" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="36" y1="0" x2="144" y2="0" stroke="var(--lime)" stroke-width="1.5" stroke-linecap="round"/>
                 </g>
               </g>
             </svg>
@@ -1717,22 +1698,19 @@
       </div>
       <div class="how__steps">
         <div class="how__step reveal">
-          <div class="how__step-idx" aria-hidden="true">STEP 01 / 03</div>
           <div class="how__num" aria-hidden="true">1</div>
           <h3 class="how__step-h3">Every Worker Is Identified At The Gate</h3>
           <p class="how__step-p">A fixed terminal at site entry scans each worker's face or fingerprint on arrival and departure. No cards, no PINs, no QR codes. Identity confirmed — not assumed.</p>
         </div>
         <div class="how__step reveal d1">
-          <div class="how__step-idx" aria-hidden="true">STEP 02 / 03</div>
           <div class="how__num" aria-hidden="true">2</div>
           <h3 class="how__step-h3">Hours Claimed Vs. Hours Logged</h3>
-          <p class="how__step-p">As invoices come in, every hour claimed is matched against verified attendance — worker by worker. The system knows exactly who was on site and for how long.</p>
+          <p class="how__step-p">As invoices come in, every hour claimed is matched against verified attendance, worker by worker. The system knows exactly who was on site and for how long.</p>
         </div>
         <div class="how__step reveal d2">
-          <div class="how__step-idx" aria-hidden="true">STEP 03 / 03</div>
           <div class="how__num" aria-hidden="true">3</div>
           <h3 class="how__step-h3">Discrepancies Caught Before Payment Clears</h3>
-          <p class="how__step-p">Mismatches surface before you approve a single payment. Your commercial team gets the discrepancy flagged with verified timestamps — not a hunch. Evidence, before any money moves.</p>
+          <p class="how__step-p">Mismatches surface before you approve a single payment. Your commercial team gets the discrepancy flagged with verified timestamps, not a hunch. Evidence, before any money moves.</p>
         </div>
       </div>
     </div>
@@ -1778,7 +1756,7 @@
             </svg>
           </div>
           <h3 class="benefit__h3">Identify Exceptions</h3>
-          <p class="benefit__p">When claimed and verified hours don't match, you're told before the approval window closes — not in the next audit, when it's too late to act.</p>
+          <p class="benefit__p">When claimed and verified hours don't match, you're told before the approval window closes, not weeks later in the next audit.</p>
         </div>
         <div class="benefit reveal-blur d3">
           <div class="benefit__anchor" aria-hidden="true">
@@ -1862,7 +1840,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Workers check in and out using a fixed tablet or mobile device at site entry. Biometric data — typically a facial scan or fingerprint — is matched against a registered profile in seconds. No paper registers, no swipe cards, no proxy sign-ins.</p>
+          <p>Workers check in and out using a fixed tablet or mobile device at site entry. Biometric data (typically a facial scan or fingerprint) is matched against a registered profile in seconds. No paper registers, no swipe cards, no proxy sign-ins.</p>
           <p>Devices are ruggedised for outdoor conditions and work offline, syncing when connectivity is restored.</p>
         </div>
       </details>
@@ -1873,13 +1851,13 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>No. PayRoll Protect sits alongside your existing systems as a verification layer. Attendance data is exportable and can be reconciled against your payroll or subcontractor invoices — it doesn't require you to replace anything.</p>
+          <p>No. PayRoll Protect sits alongside your existing systems as a verification layer. Attendance data is exportable and can be reconciled against your payroll or subcontractor invoices; it doesn't require you to replace anything.</p>
         </div>
       </details>
 
       <details class="faq__item reveal d3">
         <summary class="faq__summary">
-          How is biometric data stored — what about GDPR?
+          How is biometric data stored? What about GDPR?
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
@@ -1894,7 +1872,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Most sites are live within two weeks. Hardware ships pre-configured — your site manager follows a short setup guide, workers are enrolled on arrival, and the dashboard is accessible from day one.</p>
+          <p>Most sites are live within two weeks. Hardware ships pre-configured; your site manager follows a short setup guide, workers are enrolled on arrival, and the dashboard is accessible from day one.</p>
         </div>
       </details>
 
@@ -1904,7 +1882,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Compliance is enforced at the contract level. Most clients include biometric check-in as a site access requirement in their subcontractor agreements. Workers who don't check in aren't counted as present — which is exactly the point.</p>
+          <p>Compliance is enforced at the contract level. Most clients include biometric check-in as a site access requirement in their subcontractor agreements. Workers who don't check in aren't counted as present. That's the point.</p>
         </div>
       </details>
 
@@ -1914,7 +1892,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>No. Check-in happens at a fixed device at site entry — workers don't need to download anything or own a smartphone. There's nothing for workers to manage.</p>
+          <p>No. Check-in happens at a fixed device at site entry; workers don't need to download anything or own a smartphone. There's nothing for workers to manage.</p>
         </div>
       </details>
 
@@ -1933,7 +1911,7 @@
             <em>Scale Fast.</em>
           </h2>
           <p class="pilot__sub reveal d1">
-            Install on one site. In 90 days, you have real discrepancy data from your own operation — not a vendor's promise. That's what you take to the board.
+            Install on one site. In 90 days, you have real discrepancy data from your own operation, not a vendor's promise. That's what you take to the board.
           </p>
           <div class="pilot__action reveal d2">
             <a href="mailto:hello@payrollprotect.co.uk?subject=Book%20a%20Call" class="btn-pilot">Book a Call</a>
@@ -1957,7 +1935,7 @@
             </div>
             <div class="pilot__step reveal-right d2">
               <span class="pilot__sn" aria-hidden="true">03</span>
-              <p class="pilot__st"><strong>Your numbers. Your decision.</strong> Take verified savings data to the board. Not a vendor's case study — figures from your own operation.</p>
+              <p class="pilot__st"><strong>Your numbers. Your decision.</strong> Take verified savings data to the board. Not a vendor's case study: figures from your own operation.</p>
             </div>
           </div>
         </div>
