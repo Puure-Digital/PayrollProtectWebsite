@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="light">
+  <script>document.documentElement.classList.remove('no-js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Labour Cost Exposure Calculator — PayRoll Protect</title>
+  <meta name="description" content="Calculate what unverified labour is costing your construction site. Enter your payroll spend, see your annual exposure across three industry discrepancy scenarios.">
+  <link rel="icon" type="image/png" href="assets/favicon-light.png">
+  <link rel="apple-touch-icon" href="assets/favicon-light.png">
+  <link rel="icon" type="image/png" href="assets/favicon-dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap"></noscript>
+  <style>
+    /* ─── FONTS ─────────────────────────────────────────── */
+    @font-face {
+      font-family: 'Tungsten';
+      src: url('assets/Tungsten-Bold.otf') format('opentype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Tungsten';
+      src: url('assets/Tungsten-Semibold.otf') format('opentype');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Tungsten';
+      src: url('assets/Tungsten-Medium.otf') format('opentype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      color-scheme: light;
+      --bg:           oklch(0.965 0.004 110);
+      --surface:      oklch(0.942 0.005 110);
+      --surface-2:    oklch(0.918 0.007 110);
+      --border:       oklch(0.880 0.006 110);
+      --border-light: oklch(0.910 0.005 110);
+      --ink:          oklch(0.240 0.010 220);
+      --ink-dim:      oklch(0.300 0.008 215);
+      --muted:        oklch(0.440 0.012 110);
+      --lime:         oklch(0.770 0.206 151);
+      --lime-dk:      oklch(0.660 0.210 151);
+      --lime-glow:    oklch(0.770 0.206 151 / 0.22);
+      --lime-grad:    linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155));
+      --btn-ink:      oklch(0.18 0.015 145);
+      --dark-bg:      oklch(0.130 0.008 115);
+      --dark-mid:     oklch(0.185 0.010 115);
+      --dark-border:  oklch(0.240 0.008 115);
+      --dark-muted:   oklch(0.630 0.008 115);
+      --dark-dim:     oklch(0.680 0.006 115);
+      --dark-ink:     oklch(0.920 0.004 110);
+      --lime-text-dk: oklch(0.400 0.130 151);
+      --radius-btn:   7px;
+      --font-d:       'Tungsten', 'Agrandir Wide', 'Urbanist', system-ui, sans-serif;
+      --font-b:       'Urbanist', system-ui, sans-serif;
+      --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quint:   cubic-bezier(0.22, 1, 0.36, 1);
+      --pad-x:        clamp(1.25rem, 5vw, 3rem);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-b);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      font-optical-sizing: auto;
+    }
+    a  { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    :focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ─── PAGE TRANSITION ───────────────────────────────── */
+    #page-veil {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--dark-bg);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #page-veil.is-clear { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { #page-veil { display: none; } }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: var(--pad-x);
+    }
+
+    /* ─── SKIP LINK ─────────────────────────────────────── */
+    .skip-link {
+      position: absolute; top: -40px; left: 1rem; z-index: 9999;
+      background: var(--lime); color: var(--btn-ink);
+      padding: 0.5rem 1rem; border-radius: var(--radius-btn);
+      font-weight: 600; font-size: 0.875rem;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding-block: 0.75rem;
+      background: var(--dark-bg);
+      box-shadow: 0 1px 0 var(--dark-border);
+      transition: background 0.35s var(--ease-quint), box-shadow 0.35s var(--ease-quint);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-b); font-weight: 700; font-size: 1.1rem;
+      letter-spacing: -0.01em; color: var(--dark-ink);
+    }
+    .nav__links {
+      display: flex; align-items: center; gap: 2rem; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.875rem; font-weight: 500; color: var(--dark-muted);
+      transition: color 0.15s;
+    }
+    .nav__links a:hover { color: var(--dark-ink); }
+    .nav__hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      width: 28px; cursor: pointer; padding: 8px;
+      background: none; border: none;
+    }
+    .nav__hamburger span {
+      display: block; height: 2px; background: var(--dark-ink);
+      border-radius: 2px; transition: transform 0.25s var(--ease-expo), opacity 0.2s;
+    }
+    .nav__hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav__hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav__hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav__mobile {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--dark-bg); border-bottom: 1px solid var(--dark-border);
+      padding: 1rem var(--pad-x) 1.25rem;
+    }
+    .nav__mobile.open { display: block; }
+    .nav__mobile ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .nav__mobile a {
+      display: block; padding: 0.75rem 0;
+      font-size: 1rem; font-weight: 500; color: var(--dark-ink);
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .btn-cta {
+      font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.6rem 1.375rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.2s var(--ease-expo);
+      white-space: nowrap;
+    }
+    .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
+    .btn-cta:active { transform: translateY(0); }
+
+    /* ─── PAGE HERO ─────────────────────────────────────── */
+    .cp-hero {
+      background: var(--dark-bg);
+      padding-top: clamp(7rem, 12vw, 10rem);
+      padding-bottom: clamp(3.5rem, 6vw, 5rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .cp-hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(to right, var(--dark-border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--dark-border) 1px, transparent 1px);
+      background-size: 5.5rem 4.5rem;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%);
+      opacity: 0.55;
+    }
+    .cp-hero::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 100%,
+        oklch(0.770 0.206 151 / 0.14) 0%,
+        transparent 70%
+      );
+    }
+    .cp-hero > .container { position: relative; z-index: 1; }
+    .cp-hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.3rem 0.875rem; border-radius: 999px;
+      border: 1px solid oklch(0.770 0.206 151 / 0.35);
+      background: oklch(0.770 0.206 151 / 0.10);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--lime);
+      margin-bottom: 1.5rem;
+    }
+    .cp-hero__eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--lime); flex-shrink: 0;
+    }
+    .cp-hero__h1 {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 1.06; letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--dark-ink);
+      margin-bottom: 1.25rem;
+      text-wrap: balance;
+    }
+    .cp-hero__h1 em {
+      font-style: normal;
+      color: var(--lime);
+    }
+    .cp-hero__sub {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: var(--dark-dim);
+      line-height: 1.65;
+      max-width: 52ch;
+    }
+
+    /* ─── MAIN CALCULATOR SECTION ───────────────────────── */
+    .calc-page {
+      background: var(--bg);
+      padding-top: clamp(3.5rem, 7vw, 5.5rem);
+      padding-bottom: clamp(4rem, 8vw, 7rem);
+    }
+    .calc-page__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: start;
+    }
+
+    /* ── Inputs panel ── */
+    .calc-inputs {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(1.75rem, 3vw, 2.5rem);
+      position: sticky;
+      top: calc(3.5rem + 20px);
+    }
+    .calc-inputs__label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.625rem;
+      display: block;
+    }
+    .calc-inputs__section {
+      margin-bottom: 2rem;
+    }
+    .calc-inputs__section:last-child { margin-bottom: 0; }
+
+    .calc-payroll-wrap {
+      display: flex; align-items: stretch;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--bg);
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .calc-payroll-wrap:focus-within {
+      border-color: var(--lime);
+      box-shadow: 0 0 0 3px var(--lime-glow);
+    }
+    .calc-currency {
+      padding: 0 0.875rem;
+      font-family: var(--font-b); font-size: 1.25rem; font-weight: 600;
+      color: var(--ink-dim); background: var(--surface);
+      display: flex; align-items: center;
+      border-right: 1px solid var(--border);
+      user-select: none; flex-shrink: 0;
+    }
+    .calc-payroll-input {
+      flex: 1; min-width: 0;
+      font-family: var(--font-b); font-size: 1.25rem; font-weight: 600;
+      color: var(--ink); background: transparent;
+      border: none; padding: 0.8rem 0.875rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .calc-payroll-input:focus { outline: none; }
+    .calc-payroll-input::placeholder { font-size: 0.95rem; color: oklch(0.62 0.006 110); }
+    .calc-period-toggle {
+      display: flex; gap: 0.25rem;
+      margin-top: 0.75rem;
+    }
+    .calc-period-btn {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      font-family: var(--font-b); font-size: 0.8rem; font-weight: 600;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .calc-period-btn:hover { color: var(--ink); background: var(--surface-2); }
+    .calc-period-btn.active {
+      color: var(--lime-dk);
+      background: oklch(0.96 0.012 145);
+      border-color: oklch(0.88 0.040 145);
+    }
+
+    /* Worker count */
+    .calc-worker-wrap {
+      display: flex; align-items: stretch;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--bg);
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .calc-worker-wrap:focus-within {
+      border-color: var(--lime);
+      box-shadow: 0 0 0 3px var(--lime-glow);
+    }
+    .calc-worker-input {
+      flex: 1; min-width: 0;
+      font-family: var(--font-b); font-size: 1.1rem; font-weight: 600;
+      color: var(--ink); background: transparent;
+      border: none; padding: 0.75rem 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .calc-worker-input:focus { outline: none; }
+    .calc-worker-input::placeholder { font-size: 0.9rem; color: oklch(0.62 0.006 110); font-weight: 400; }
+    .calc-worker-suffix {
+      padding: 0 1rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; align-items: center;
+      white-space: nowrap;
+    }
+
+    /* Scenario buttons */
+    .calc-scenarios {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .calc-scenario-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.875rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .calc-scenario-btn:hover {
+      border-color: oklch(0.88 0.040 145);
+      background: oklch(0.97 0.004 145);
+    }
+    .calc-scenario-btn.active {
+      background: oklch(0.96 0.012 145);
+      border-color: oklch(0.75 0.100 151);
+      box-shadow: 0 0 0 1px oklch(0.75 0.100 151 / 0.3);
+    }
+    .calc-scenario-btn__label {
+      font-size: 0.875rem; font-weight: 600; color: var(--ink);
+      line-height: 1.2;
+    }
+    .calc-scenario-btn__desc {
+      font-size: 0.75rem; color: var(--muted);
+      margin-top: 0.125rem;
+    }
+    .calc-scenario-btn__rate {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: 1.5rem; letter-spacing: 0.02em; line-height: 1;
+      color: var(--muted);
+      flex-shrink: 0; margin-left: 1rem;
+    }
+    .calc-scenario-btn.active .calc-scenario-btn__rate { color: var(--lime-dk); }
+
+    /* ── Outputs panel ── */
+    .calc-outputs {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    /* Primary output */
+    .calc-out-primary {
+      background: var(--dark-bg);
+      border: 1px solid var(--dark-border);
+      border-radius: 14px;
+      padding: clamp(2rem, 3.5vw, 2.75rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .calc-out-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 50% 120%,
+        oklch(0.770 0.206 151 / 0.18) 0%,
+        transparent 70%
+      );
+    }
+    .calc-out-primary__eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--dark-muted);
+      margin-bottom: 0.625rem;
+    }
+    .calc-out-primary__val {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic;
+      font-size: clamp(4rem, 8vw, 6.5rem);
+      color: var(--lime);
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 0.375rem;
+      transition: color 0.25s;
+    }
+    .calc-out-primary__val.is-zero { color: var(--dark-muted); }
+    .calc-out-primary__lbl {
+      font-size: 0.8rem; font-weight: 500; color: var(--dark-dim);
+    }
+    .calc-out-primary__scenario-tag {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      margin-top: 1.25rem;
+      padding: 0.3rem 0.75rem; border-radius: 999px;
+      background: oklch(0.770 0.206 151 / 0.12);
+      border: 1px solid oklch(0.770 0.206 151 / 0.25);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--lime);
+    }
+
+    /* Secondary outputs row */
+    .calc-out-secondary {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    .calc-out-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+    .calc-out-card__val {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic;
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      color: var(--ink);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 0.375rem;
+      transition: color 0.25s;
+    }
+    .calc-out-card.is-zero .calc-out-card__val { color: var(--muted); }
+    .calc-out-card__lbl {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .calc-out-card--per-worker {
+      display: none;
+    }
+    .calc-out-card--per-worker.visible {
+      display: block;
+    }
+
+    /* Scenario comparison */
+    .calc-compare {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .calc-compare__head {
+      padding: 1rem 1.25rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .calc-compare__row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      padding: 0.875rem 1.25rem;
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.15s;
+    }
+    .calc-compare__row:last-child { border-bottom: none; }
+    .calc-compare__row.active-row {
+      background: oklch(0.96 0.012 145);
+    }
+    .calc-compare__name {
+      font-size: 0.875rem; font-weight: 600; color: var(--ink);
+    }
+    .calc-compare__rate-badge {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--muted);
+      background: var(--surface-2);
+      padding: 0.2rem 0.5rem; border-radius: 4px;
+    }
+    .calc-compare__row.active-row .calc-compare__rate-badge {
+      background: oklch(0.770 0.206 151 / 0.15);
+      color: var(--lime-dk);
+    }
+    .calc-compare__fig {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic;
+      font-size: 1.375rem; color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+      text-align: right; min-width: 6rem;
+    }
+    .calc-compare__row.active-row .calc-compare__fig { color: var(--lime-dk); }
+    .calc-compare__empty {
+      padding: 1.25rem;
+      font-size: 0.85rem; color: var(--muted); text-align: center;
+    }
+
+    /* Source note */
+    .calc-page__source {
+      margin-top: 1.75rem;
+      font-size: 0.75rem; color: var(--muted); line-height: 1.65;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .calc-page__source a { text-decoration: underline; text-underline-offset: 2px; color: inherit; }
+    .calc-page__source a:hover { color: var(--ink); }
+
+    .calc-page__cta {
+      margin-top: 1.5rem;
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      font-family: var(--font-b); font-size: 1rem; font-weight: 600;
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.9rem 2.125rem; border-radius: var(--radius-btn);
+      position: relative; overflow: hidden;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      display: inline-flex; align-items: center;
+    }
+    .btn-primary:hover {
+      filter: brightness(0.93); transform: translateY(-2px);
+      box-shadow: 0 6px 22px var(--lime-glow);
+    }
+    .btn-primary:active { transform: translateY(0); filter: brightness(0.88); }
+    .btn-ghost {
+      font-size: 0.9rem; font-weight: 500; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.5rem 0; min-height: 44px;
+      transition: color 0.15s;
+    }
+    .btn-ghost:hover { color: var(--ink); }
+
+    /* ─── STATS STRIP ───────────────────────────────────── */
+    .calc-stats {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-top: clamp(4rem, 8vw, 6rem);
+      padding-bottom: clamp(4rem, 8vw, 6rem);
+    }
+    .calc-stats__intro {
+      text-align: center;
+      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    }
+    .calc-stats__h2 {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+      letter-spacing: 0.03em; line-height: 1.1;
+      text-transform: uppercase; color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .calc-stats__sub {
+      font-size: 1rem; color: var(--muted); max-width: 48ch; margin-inline: auto;
+    }
+    .calc-stats__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .calc-stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      min-height: 210px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .calc-stat-card__kicker {
+      font-size: 0.8rem; color: var(--muted); font-weight: 400; line-height: 1.4;
+    }
+    .calc-stat-card__fig {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic;
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
+      letter-spacing: -0.02em; line-height: 1;
+      color: var(--lime-dk);
+      font-variant-numeric: tabular-nums;
+    }
+    .calc-stat-card__fig--red { color: oklch(0.62 0.22 25); }
+    .calc-stat-card__desc {
+      font-size: 0.875rem; color: var(--ink-dim); line-height: 1.45; font-weight: 400;
+    }
+
+    /* ─── METHODOLOGY ───────────────────────────────────── */
+    .calc-method {
+      background: var(--bg);
+      padding-top: clamp(4rem, 8vw, 6rem);
+      padding-bottom: clamp(4rem, 8vw, 6rem);
+    }
+    .calc-method__inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: clamp(3rem, 5vw, 6rem);
+      align-items: start;
+    }
+    .calc-method__heading {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(2.4rem, 5vw, 2.5rem);
+      letter-spacing: 0.03em; line-height: 1.1;
+      text-transform: uppercase; color: var(--ink);
+      position: sticky; top: 5rem;
+    }
+    .calc-method__heading em { font-style: normal; color: var(--lime-dk); }
+    .calc-method__items {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .calc-method__item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .calc-method__item:first-child { padding-top: 0; }
+    .calc-method__item:last-child { border-bottom: none; padding-bottom: 0; }
+    .calc-method__item-head {
+      display: flex; align-items: baseline; gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .calc-method__item-num {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: 1.1rem; color: var(--lime-dk);
+      letter-spacing: 0.04em; flex-shrink: 0;
+    }
+    .calc-method__item-title {
+      font-size: 0.975rem; font-weight: 600; color: var(--ink);
+    }
+    .calc-method__item-body {
+      font-size: 0.9rem; color: var(--ink-dim); line-height: 1.65;
+      padding-left: calc(1.1rem + 1rem);
+    }
+    .calc-method__sources {
+      margin-top: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .calc-method__sources-title {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .calc-method__sources ul {
+      list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .calc-method__sources li {
+      font-size: 0.8rem; color: var(--muted); line-height: 1.5;
+    }
+    .calc-method__sources a { text-decoration: underline; text-underline-offset: 2px; }
+    .calc-method__sources a:hover { color: var(--ink); }
+
+    /* ─── FAQ ───────────────────────────────────────────── */
+    .calc-faq {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding-top: clamp(4rem, 8vw, 6rem);
+      padding-bottom: clamp(4rem, 8vw, 6rem);
+    }
+    .calc-faq__inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: clamp(3rem, 5vw, 6rem);
+      align-items: start;
+    }
+    .calc-faq__h2 {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(2.4rem, 5vw, 2.5rem);
+      letter-spacing: 0.03em; line-height: 1.1;
+      text-transform: uppercase; color: var(--ink);
+      position: sticky; top: 5rem;
+    }
+    .calc-faq__list {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-item__btn {
+      width: 100%; text-align: left;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      padding: 1.25rem 0;
+      font-size: 0.975rem; font-weight: 600; color: var(--ink);
+      background: none; border: none; cursor: pointer;
+      transition: color 0.15s;
+    }
+    .faq-item__btn:hover { color: var(--lime-dk); }
+    .faq-item__icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.3s var(--ease-expo);
+    }
+    .faq-item__btn[aria-expanded="true"] .faq-item__icon {
+      background: oklch(0.96 0.012 145);
+      transform: rotate(45deg);
+    }
+    .faq-item__icon svg { display: block; }
+    .faq-item__body {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.32s var(--ease-expo);
+    }
+    .faq-item__body.open { grid-template-rows: 1fr; }
+    .faq-item__body-inner {
+      overflow: hidden;
+    }
+    .faq-item__body-inner p {
+      font-size: 0.9rem; color: var(--ink-dim); line-height: 1.7;
+      padding-bottom: 1.25rem;
+    }
+    .faq-item__body-inner p + p { margin-top: 0.75rem; }
+
+    /* ─── FINAL CTA ─────────────────────────────────────── */
+    .calc-final-cta {
+      background: var(--dark-bg);
+      border-top: 1px solid var(--dark-border);
+      padding-top: clamp(5rem, 10vw, 8rem);
+      padding-bottom: clamp(5rem, 10vw, 8rem);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .calc-final-cta::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%,
+        oklch(0.770 0.206 151 / 0.16) 0%,
+        transparent 70%
+      );
+    }
+    .calc-final-cta > .container { position: relative; z-index: 1; }
+    .calc-final-cta__h2 {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      letter-spacing: 0.03em; line-height: 1.08;
+      text-transform: uppercase; color: var(--dark-ink);
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    .calc-final-cta__h2 em { font-style: normal; color: var(--lime); }
+    .calc-final-cta__sub {
+      font-size: 1.05rem; color: var(--dark-dim);
+      max-width: 48ch; margin-inline: auto;
+      line-height: 1.65; margin-bottom: 2.5rem;
+    }
+    .calc-final-cta__actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-pilot {
+      font-family: var(--font-b); font-size: 1rem; font-weight: 600;
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.95rem 2.25rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      display: inline-flex; align-items: center;
+    }
+    .btn-pilot:hover {
+      filter: brightness(0.93); transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--lime-glow);
+    }
+    .btn-pilot:active { transform: translateY(0); }
+    .btn-ghost-dark {
+      font-size: 0.9rem; font-weight: 500; color: var(--dark-muted);
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.5rem 0; min-height: 44px;
+      transition: color 0.15s;
+    }
+    .btn-ghost-dark:hover { color: var(--dark-ink); }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      background: var(--dark-bg);
+      border-top: 1px solid var(--dark-border);
+      padding-block: 2.25rem;
+    }
+    .footer__inner {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer__nav {
+      display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap;
+    }
+    .footer__nav a {
+      font-size: 0.85rem; color: oklch(0.63 0.006 115);
+      transition: color 0.15s;
+    }
+    .footer__nav a:hover { color: oklch(0.80 0.006 115); }
+    .footer__copy { font-size: 0.8rem; color: oklch(0.58 0.005 115); }
+
+    /* ─── REVEAL ANIMATIONS ─────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 1; transform: none;
+    }
+    .no-js .reveal, .no-js .reveal-left { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0; transform: translateY(20px);
+        transition: opacity 0.6s var(--ease-expo), transform 0.6s var(--ease-expo);
+      }
+      .reveal.in { opacity: 1; transform: translateY(0); }
+      .d1 { transition-delay: 0.08s; }
+      .d2 { transition-delay: 0.16s; }
+      .d3 { transition-delay: 0.24s; }
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .calc-page__grid {
+        grid-template-columns: 1fr;
+      }
+      .calc-inputs {
+        position: static;
+      }
+      .calc-method__inner,
+      .calc-faq__inner {
+        grid-template-columns: 1fr;
+      }
+      .calc-method__heading,
+      .calc-faq__h2 {
+        position: static;
+      }
+      .calc-stats__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .calc-stats__grid {
+        grid-template-columns: 1fr;
+      }
+      .calc-out-secondary {
+        grid-template-columns: 1fr 1fr;
+      }
+      .calc-compare__row {
+        grid-template-columns: 1fr auto;
+      }
+      .calc-compare__rate-badge { display: none; }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .footer__inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .calc-out-secondary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Touch target sizing */
+    @media (max-width: 900px) {
+      .btn-primary { min-height: 44px; }
+      .btn-cta     { min-height: 44px; display: inline-flex; align-items: center; }
+      .btn-pilot   { min-height: 44px; }
+      .faq-item__btn { min-height: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .calc-out-primary__val { transition: none; }
+      .calc-out-card__val { transition: none; }
+      .faq-item__body { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="page-veil" aria-hidden="true"></div>
+
+<a href="#main-calc" class="skip-link">Skip to calculator</a>
+
+<!-- NAV -->
+<nav class="nav" id="site-nav" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="PayRoll Protect — Home">
+        <img src="assets/pp-logo-horizontal-dark.png" alt="PayRoll Protect" height="40" style="display:block;height:40px;width:auto;">
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#benefits">Benefits</a></li>
+        <li><a href="index.html#numbers">The Numbers</a></li>
+        <li><a href="index.html#calculator">Back to Site</a></li>
+      </ul>
+      <button class="nav__hamburger" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="contact.html" class="btn-cta">Book a Call</a>
+    </div>
+  </div>
+  <div class="nav__mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
+    <ul>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#benefits">Benefits</a></li>
+      <li><a href="index.html#numbers">The Numbers</a></li>
+      <li><a href="contact.html">Book a Call</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="cp-hero" aria-labelledby="cp-hero-h">
+  <div class="container">
+    <div class="cp-hero__eyebrow">
+      <span class="cp-hero__eyebrow-dot" aria-hidden="true"></span>
+      Labour Cost Exposure Tool
+    </div>
+    <h1 class="cp-hero__h1" id="cp-hero-h">
+      What Is Unverified Labour<br><em>Costing Your Sites?</em>
+    </h1>
+    <p class="cp-hero__sub">
+      Enter your total payroll spend. We apply three industry scenarios — conservative, average, and high-risk — and show you your annual exposure before a single invoice is queried.
+    </p>
+  </div>
+</section>
+
+<!-- MAIN CALCULATOR -->
+<main id="main-calc">
+<section class="calc-page" aria-label="Labour cost exposure calculator">
+  <div class="container">
+    <div class="calc-page__grid">
+
+      <!-- INPUTS -->
+      <div class="calc-inputs reveal" role="form" aria-label="Calculator inputs">
+
+        <!-- Payroll spend -->
+        <div class="calc-inputs__section">
+          <label class="calc-inputs__label" for="cp-payroll">Your payroll spend</label>
+          <div class="calc-payroll-wrap">
+            <span class="calc-currency" aria-hidden="true">£</span>
+            <input
+              type="text"
+              id="cp-payroll"
+              class="calc-payroll-input"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="12"
+              placeholder="e.g. 50,000"
+              aria-describedby="cp-payroll-desc">
+          </div>
+          <p id="cp-payroll-desc" class="sr-only">Enter your weekly or monthly payroll total in pounds</p>
+          <div class="calc-period-toggle" role="group" aria-label="Select payroll period">
+            <button type="button" class="calc-period-btn active" id="btn-week" aria-pressed="true">Per week</button>
+            <button type="button" class="calc-period-btn" id="btn-month" aria-pressed="false">Per month</button>
+          </div>
+        </div>
+
+        <!-- Worker count -->
+        <div class="calc-inputs__section">
+          <label class="calc-inputs__label" for="cp-workers">Number of workers <span style="color:var(--muted);font-weight:400;letter-spacing:0">(optional)</span></label>
+          <div class="calc-worker-wrap">
+            <input
+              type="text"
+              id="cp-workers"
+              class="calc-worker-input"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="6"
+              placeholder="e.g. 120">
+            <span class="calc-worker-suffix" aria-hidden="true">workers on site</span>
+          </div>
+        </div>
+
+        <!-- Scenario -->
+        <div class="calc-inputs__section">
+          <span class="calc-inputs__label" id="scenario-label">Discrepancy scenario</span>
+          <div class="calc-scenarios" role="radiogroup" aria-labelledby="scenario-label">
+            <button type="button" class="calc-scenario-btn" id="sc-conservative" role="radio" aria-checked="false" data-rate="0.03">
+              <div>
+                <p class="calc-scenario-btn__label">Conservative</p>
+                <p class="calc-scenario-btn__desc">Lower-risk sites, strong supervision</p>
+              </div>
+              <span class="calc-scenario-btn__rate" aria-hidden="true">3%</span>
+            </button>
+            <button type="button" class="calc-scenario-btn active" id="sc-average" role="radio" aria-checked="true" data-rate="0.04">
+              <div>
+                <p class="calc-scenario-btn__label">Industry Average</p>
+                <p class="calc-scenario-btn__desc">UK construction sector benchmark</p>
+              </div>
+              <span class="calc-scenario-btn__rate" aria-hidden="true">4%</span>
+            </button>
+            <button type="button" class="calc-scenario-btn" id="sc-highrisk" role="radio" aria-checked="false" data-rate="0.075">
+              <div>
+                <p class="calc-scenario-btn__label">High Risk</p>
+                <p class="calc-scenario-btn__desc">Multi-agency, high-turnover sites</p>
+              </div>
+              <span class="calc-scenario-btn__rate" aria-hidden="true">7.5%</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- OUTPUTS -->
+      <div class="calc-outputs">
+
+        <!-- Primary: Annual loss -->
+        <div class="calc-out-primary reveal d1" aria-live="polite" aria-atomic="true">
+          <p class="calc-out-primary__eyebrow">Estimated annual labour exposure</p>
+          <p class="calc-out-primary__val is-zero" id="cp-annual">—</p>
+          <p class="calc-out-primary__lbl">lost per year on unverified attendance</p>
+          <div class="calc-out-primary__scenario-tag" id="cp-scenario-tag" aria-hidden="true">
+            Industry Average · 4%
+          </div>
+        </div>
+
+        <!-- Secondary: Monthly / 5yr / per-worker -->
+        <div class="calc-out-secondary" aria-live="polite" aria-atomic="true">
+          <div class="calc-out-card">
+            <p class="calc-out-card__val" id="cp-monthly">—</p>
+            <p class="calc-out-card__lbl">Per month</p>
+          </div>
+          <div class="calc-out-card">
+            <p class="calc-out-card__val" id="cp-5yr">—</p>
+            <p class="calc-out-card__lbl">5-year cumulative</p>
+          </div>
+          <div class="calc-out-card calc-out-card--per-worker" id="cp-worker-card">
+            <p class="calc-out-card__val" id="cp-per-worker">—</p>
+            <p class="calc-out-card__lbl">Per worker / yr</p>
+          </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="calc-compare reveal d2" aria-label="Scenario comparison">
+          <p class="calc-compare__head">Annual exposure across all scenarios</p>
+          <div id="cp-compare-empty" class="calc-compare__empty">
+            Enter a payroll figure above to compare scenarios.
+          </div>
+          <div id="cp-compare-rows" aria-hidden="true">
+            <div class="calc-compare__row" id="cpr-conservative">
+              <span class="calc-compare__name">Conservative</span>
+              <span class="calc-compare__rate-badge">3%</span>
+              <span class="calc-compare__fig" id="cpr-conservative-fig">—</span>
+            </div>
+            <div class="calc-compare__row active-row" id="cpr-average">
+              <span class="calc-compare__name">Industry Average</span>
+              <span class="calc-compare__rate-badge">4%</span>
+              <span class="calc-compare__fig" id="cpr-average-fig">—</span>
+            </div>
+            <div class="calc-compare__row" id="cpr-highrisk">
+              <span class="calc-compare__name">High Risk</span>
+              <span class="calc-compare__rate-badge">7.5%</span>
+              <span class="calc-compare__fig" id="cpr-highrisk-fig">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Source + CTA -->
+        <div class="calc-page__source reveal d3">
+          Based on the UK construction sector average payroll discrepancy rate reported by HMRC Tax Gap Statistics and the CIPP Annual Benchmarking Report. High-risk scenario reflects sites with multi-agency subcontractor chains. Figures are estimates only — actual exposure depends on site-specific conditions.
+          <br><br>
+          Sources: <a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC Tax Gap Statistics</a> · CIPP Annual Benchmarking Report 2023.
+        </div>
+
+        <div class="calc-page__cta reveal d3">
+          <a href="contact.html" class="btn-primary">See What This Means for Your Sites</a>
+          <a href="index.html#how-it-works" class="btn-ghost">
+            How PayRoll Protect works
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="calc-stats" aria-labelledby="calc-stats-h">
+  <div class="container">
+    <div class="calc-stats__intro">
+      <h2 class="calc-stats__h2 reveal" id="calc-stats-h">The Numbers Behind The Estimate</h2>
+      <p class="calc-stats__sub reveal d1">These aren't projections. They're industry benchmarks drawn from HMRC data and construction sector reporting.</p>
+    </div>
+    <div class="calc-stats__grid">
+      <div class="calc-stat-card reveal">
+        <p class="calc-stat-card__kicker">Ghost clocking &amp; time fraud</p>
+        <div>
+          <p class="calc-stat-card__fig">£4,200</p>
+          <p class="calc-stat-card__desc">lost per worker, per year at 7.5% discrepancy</p>
+        </div>
+      </div>
+      <div class="calc-stat-card reveal d1">
+        <p class="calc-stat-card__kicker">Unconfirmed site attendance</p>
+        <div>
+          <p class="calc-stat-card__fig">1 in 13</p>
+          <p class="calc-stat-card__desc">workers never physically confirmed on site</p>
+        </div>
+      </div>
+      <div class="calc-stat-card reveal d2">
+        <p class="calc-stat-card__kicker">Invoice overpayment recovery</p>
+        <div>
+          <p class="calc-stat-card__fig calc-stat-card__fig--red">£0</p>
+          <p class="calc-stat-card__desc">recovered once invoices are approved and paid</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="calc-method" aria-labelledby="method-h">
+  <div class="container">
+    <div class="calc-method__inner">
+      <h2 class="calc-method__heading reveal" id="method-h">
+        How The <em>Estimate</em> Works
+      </h2>
+      <div>
+        <div class="calc-method__items">
+          <div class="calc-method__item reveal">
+            <div class="calc-method__item-head">
+              <span class="calc-method__item-num">01</span>
+              <span class="calc-method__item-title">You enter your total payroll spend</span>
+            </div>
+            <p class="calc-method__item-body">Weekly or monthly — your choice. This is the gross payroll you're processing across subcontractors and agency workers on site. Not headcount, not day rates: total spend.</p>
+          </div>
+          <div class="calc-method__item reveal d1">
+            <div class="calc-method__item-head">
+              <span class="calc-method__item-num">02</span>
+              <span class="calc-method__item-title">We apply a discrepancy rate to your spend</span>
+            </div>
+            <p class="calc-method__item-body">A discrepancy is the gap between what's claimed on a timesheet and what was actually worked. The UK construction average sits at around 4%, sourced from HMRC Tax Gap Statistics and CIPP benchmarking data. High-risk sites — those running multiple agencies, high turnover, or paper-based registers — typically land at 7–8%.</p>
+          </div>
+          <div class="calc-method__item reveal d2">
+            <div class="calc-method__item-head">
+              <span class="calc-method__item-num">03</span>
+              <span class="calc-method__item-title">The output is your exposure, not confirmed fraud</span>
+            </div>
+            <p class="calc-method__item-body">This figure is what you're statistically likely to be overpaying based on sector-wide data. Some of it is deliberate fraud. Some is administrative error. Some is supervisors signing off what they didn't verify. The cause matters less than the outcome: once those invoices are paid, that money doesn't come back.</p>
+          </div>
+          <div class="calc-method__item reveal d3">
+            <div class="calc-method__item-head">
+              <span class="calc-method__item-num">04</span>
+              <span class="calc-method__item-title">PayRoll Protect eliminates the discrepancy at source</span>
+            </div>
+            <p class="calc-method__item-body">Rather than auditing after the fact, PPP verifies attendance in real time — biometric, timestamped, site-gated. Discrepancies surface before payment approval, not after legal action starts. The goal isn't to recover money already lost. It's to stop it leaving in the first place.</p>
+          </div>
+        </div>
+        <div class="calc-method__sources reveal">
+          <p class="calc-method__sources-title">Sources</p>
+          <ul>
+            <li><a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC — Measuring Tax Gaps 2023 to 2024 edition</a></li>
+            <li>CIPP Annual Benchmarking Report 2023 — Construction sector payroll compliance</li>
+            <li>UK Construction Industry Training Board (CITB) — Workforce and labour mobility data</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="calc-faq" aria-labelledby="faq-h">
+  <div class="container">
+    <div class="calc-faq__inner">
+      <h2 class="calc-faq__h2 reveal" id="faq-h">Common Questions</h2>
+      <div class="calc-faq__list">
+
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-1">
+            Is this figure accurate for my site?
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="faq-item__body" id="faq-1" role="region">
+            <div class="faq-item__body-inner">
+              <p>It's a sector-level estimate, not a site-specific audit. The 4% industry average is derived from HMRC Tax Gap Statistics and CIPP benchmarking data — it reflects the mean across the UK construction sector, which skews toward larger multi-subcontractor operations.</p>
+              <p>Your actual exposure will depend on how many agencies you use, the sophistication of your current sign-off process, and how long discrepancies have gone unchecked. The calculator gives you a starting point — a real PayRoll Protect assessment gives you the actual figure.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-2">
+            What counts as a payroll discrepancy?
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="faq-item__body" id="faq-2" role="region">
+            <div class="faq-item__body-inner">
+              <p>Any gap between what a subcontractor or agency claims on a timesheet and what can be independently verified on site. This includes ghost clocking (workers claiming hours they weren't present for), early departures billed as full days, duplicate billing across agencies, and inflated headcounts on gang-rate submissions.</p>
+              <p>Administrative errors — supervisors signing off sheets without checking — account for a significant portion. Intent is irrelevant to the financial outcome: the invoice still clears at the wrong figure.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-3">
+            Can't we just audit timesheets after the fact?
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="faq-item__body" id="faq-3" role="region">
+            <div class="faq-item__body-inner">
+              <p>Post-payment audits surface discrepancies after the money has left. Recovery requires disputes, legal action, or writing the amount off. The construction industry standard is to write it off — the cost and friction of recovery typically exceeds the recovered sum, especially when spread across multiple subcontractors.</p>
+              <p>PayRoll Protect operates at the point of claim, not after payment. Discrepancies are flagged before any payment decision is made, with biometric-backed timestamps rather than someone's signature.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-4">
+            How quickly can PayRoll Protect be deployed on site?
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="faq-item__body" id="faq-4" role="region">
+            <div class="faq-item__body-inner">
+              <p>Most sites are operational within a single day. The pilot programme is designed around a 90-day onboarding window: install on one site, generate verified attendance data from your own operation, and use that evidence internally before rolling out across the portfolio.</p>
+              <p>You don't need to overhaul existing payroll systems. PPP sits alongside your current process and flags discrepancies before the approval step — no rework, no disruption to what already runs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-5">
+            Which scenario should I use?
+            <span class="faq-item__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+          <div class="faq-item__body" id="faq-5" role="region">
+            <div class="faq-item__body-inner">
+              <p>Use <strong>Conservative (3%)</strong> if your sites have strong supervisory oversight, few agencies, and existing digital sign-off tools. Use <strong>Industry Average (4%)</strong> as the baseline — it reflects what HMRC data indicates across the sector. Use <strong>High Risk (7.5%)</strong> if you're running multi-agency subcontractor chains, paper registers, or high-turnover workforces with limited verification.</p>
+              <p>If you're unsure, start with the industry average. It's the number that tends to hold up in practice, and it's the figure most commercial directors find credible when presenting to boards.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="calc-final-cta" aria-labelledby="cta-h">
+  <div class="container">
+    <h2 class="calc-final-cta__h2 reveal" id="cta-h">
+      Stop Estimating.<br><em>Start Verifying.</em>
+    </h2>
+    <p class="calc-final-cta__sub reveal d1">
+      Get a site-specific assessment from a PayRoll Protect specialist. No generic pitch — an actual figure for your operation, based on your payroll, your agencies, your risk profile.
+    </p>
+    <div class="calc-final-cta__actions reveal d2">
+      <a href="contact.html" class="btn-pilot">Book a Free Assessment</a>
+      <a href="index.html" class="btn-ghost-dark">
+        Back to PayRoll Protect
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div aria-label="PayRoll Protect">
+        <img src="assets/pp-logo-horizontal-dark.png" alt="PayRoll Protect" height="64" loading="lazy" decoding="async" style="display:block;height:64px;width:auto;">
+      </div>
+      <ul class="footer__nav">
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#benefits">Benefits</a></li>
+        <li><a href="index.html#numbers">The Numbers</a></li>
+        <li><a href="contact.html">Book a Call</a></li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 PayRoll Protect. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── NAV ─────────────────────────────────────────────────
+  const nav = document.getElementById('site-nav');
+  const toggle = document.getElementById('nav-toggle');
+  const mobileNav = document.getElementById('nav-mobile');
+
+  toggle.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+      mobileNav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation');
+      toggle.focus();
+    }
+  });
+
+  // ── REVEAL ANIMATIONS ───────────────────────────────────
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  })();
+
+  // ── CALCULATOR ──────────────────────────────────────────
+  (function() {
+    const payrollInput  = document.getElementById('cp-payroll');
+    const workerInput   = document.getElementById('cp-workers');
+    const btnWeek       = document.getElementById('btn-week');
+    const btnMonth      = document.getElementById('btn-month');
+    const scBtns        = document.querySelectorAll('.calc-scenario-btn');
+
+    const outAnnual     = document.getElementById('cp-annual');
+    const outMonthly    = document.getElementById('cp-monthly');
+    const out5yr        = document.getElementById('cp-5yr');
+    const outPerWorker  = document.getElementById('cp-per-worker');
+    const workerCard    = document.getElementById('cp-worker-card');
+    const scenarioTag   = document.getElementById('cp-scenario-tag');
+
+    const cprConsFig    = document.getElementById('cpr-conservative-fig');
+    const cprAvgFig     = document.getElementById('cpr-average-fig');
+    const cprHrFig      = document.getElementById('cpr-highrisk-fig');
+    const cprConsRow    = document.getElementById('cpr-conservative');
+    const cprAvgRow     = document.getElementById('cpr-average');
+    const cprHrRow      = document.getElementById('cpr-highrisk');
+    const compareEmpty  = document.getElementById('cp-compare-empty');
+    const compareRows   = document.getElementById('cp-compare-rows');
+
+    let period = 'week';
+    let rate   = 0.04;
+    let activeScenario = 'average';
+
+    const SCENARIOS = {
+      conservative: { rate: 0.03, label: 'Conservative · 3%' },
+      average:      { rate: 0.04, label: 'Industry Average · 4%' },
+      highrisk:     { rate: 0.075, label: 'High Risk · 7.5%' },
+    };
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function multiplier() { return period === 'week' ? 52 : 12; }
+
+    function fmt(n) {
+      if (n === 0) return '—';
+      if (n >= 1000000) return '£' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
+      if (n >= 10000)   return '£' + Math.round(n / 1000) + 'k';
+      return '£' + Math.round(n).toLocaleString('en-GB');
+    }
+
+    const rafRefs = {};
+    const prevVals = {};
+
+    function animateEl(id, to) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (reducedMotion || to === 0) {
+        el.textContent = to === 0 ? '—' : fmt(to);
+        prevVals[id] = to;
+        return;
+      }
+      const from = prevVals[id] || 0;
+      prevVals[id] = to;
+      cancelAnimationFrame(rafRefs[id]);
+      const t0 = performance.now();
+      function tick(now) {
+        const p = Math.min((now - t0) / 320, 1);
+        const e = 1 - Math.pow(1 - p, 4);
+        el.textContent = fmt(Math.round(from + (to - from) * e));
+        if (p < 1) rafRefs[id] = requestAnimationFrame(tick);
+        else el.textContent = fmt(to);
+      }
+      rafRefs[id] = requestAnimationFrame(tick);
+    }
+
+    function getPayroll() {
+      return Math.min(parseInt((payrollInput.value || '').replace(/[^0-9]/g, ''), 10) || 0, 99999999);
+    }
+
+    function getWorkers() {
+      return Math.min(parseInt((workerInput.value || '').replace(/[^0-9]/g, ''), 10) || 0, 99999);
+    }
+
+    function update() {
+      const raw     = getPayroll();
+      const workers = getWorkers();
+      const annualSpend = raw * multiplier();
+      const annualLoss  = annualSpend * rate;
+      const monthlyLoss = annualLoss / 12;
+      const fiveYrLoss  = annualLoss * 5;
+
+      const hasValue = raw > 0;
+
+      // Primary output
+      if (outAnnual) {
+        outAnnual.textContent = hasValue ? '—' : '—';
+        animateEl('cp-annual', hasValue ? annualLoss : 0);
+        outAnnual.classList.toggle('is-zero', !hasValue);
+      }
+
+      animateEl('cp-monthly',  hasValue ? monthlyLoss : 0);
+      animateEl('cp-5yr',      hasValue ? fiveYrLoss  : 0);
+
+      // Per-worker card
+      if (workerCard && outPerWorker) {
+        const showWorker = workers > 0 && hasValue;
+        workerCard.classList.toggle('visible', showWorker);
+        if (showWorker) {
+          animateEl('cp-per-worker', annualLoss / workers);
+        }
+      }
+
+      // Scenario tag
+      if (scenarioTag) {
+        scenarioTag.textContent = SCENARIOS[activeScenario].label;
+      }
+
+      // Comparison table
+      if (hasValue) {
+        compareEmpty.style.display = 'none';
+        compareRows.removeAttribute('aria-hidden');
+        const cons = annualSpend * SCENARIOS.conservative.rate;
+        const avg  = annualSpend * SCENARIOS.average.rate;
+        const hr   = annualSpend * SCENARIOS.highrisk.rate;
+        cprConsFig.textContent = fmt(cons);
+        cprAvgFig.textContent  = fmt(avg);
+        cprHrFig.textContent   = fmt(hr);
+      } else {
+        compareEmpty.style.display = '';
+        compareRows.setAttribute('aria-hidden', 'true');
+        cprConsFig.textContent = '—';
+        cprAvgFig.textContent  = '—';
+        cprHrFig.textContent   = '—';
+      }
+    }
+
+    // Period toggle
+    function setPeriod(p) {
+      period = p;
+      btnWeek.classList.toggle('active',  p === 'week');
+      btnMonth.classList.toggle('active', p === 'month');
+      btnWeek.setAttribute('aria-pressed',  String(p === 'week'));
+      btnMonth.setAttribute('aria-pressed', String(p === 'month'));
+      update();
+    }
+    btnWeek.addEventListener('click',  () => setPeriod('week'));
+    btnMonth.addEventListener('click', () => setPeriod('month'));
+
+    // Scenario toggle
+    function setScenario(id) {
+      activeScenario = id;
+      rate = SCENARIOS[id].rate;
+      scBtns.forEach(btn => {
+        const isActive = btn.id === 'sc-' + id;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-checked', String(isActive));
+      });
+      // Update comparison row highlights
+      cprConsRow.classList.toggle('active-row', id === 'conservative');
+      cprAvgRow.classList.toggle('active-row',  id === 'average');
+      cprHrRow.classList.toggle('active-row',   id === 'highrisk');
+      update();
+    }
+    document.getElementById('sc-conservative').addEventListener('click', () => setScenario('conservative'));
+    document.getElementById('sc-average').addEventListener('click',      () => setScenario('average'));
+    document.getElementById('sc-highrisk').addEventListener('click',     () => setScenario('highrisk'));
+
+    // Payroll input
+    payrollInput.addEventListener('input', () => {
+      const raw = payrollInput.value.replace(/[^0-9]/g, '');
+      if (raw) {
+        const n = parseInt(raw, 10);
+        const oldLen = payrollInput.value.length;
+        const pos = payrollInput.selectionStart;
+        payrollInput.value = n.toLocaleString('en-GB');
+        try {
+          const d = payrollInput.value.length - oldLen;
+          const p = Math.min(Math.max(pos + d, 0), payrollInput.value.length);
+          payrollInput.setSelectionRange(p, p);
+        } catch(e) {}
+      } else {
+        payrollInput.value = '';
+      }
+      update();
+    });
+
+    workerInput.addEventListener('input', () => {
+      workerInput.value = workerInput.value.replace(/[^0-9]/g, '');
+      update();
+    });
+
+    update();
+  })();
+
+  // ── FAQ ACCORDION ───────────────────────────────────────
+  document.querySelectorAll('.faq-item__btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const bodyId   = btn.getAttribute('aria-controls');
+      const body     = document.getElementById(bodyId);
+      btn.setAttribute('aria-expanded', String(!expanded));
+      if (body) body.classList.toggle('open', !expanded);
+    });
+  });
+
+  console.log('%c PayRoll Protect ', 'background:#0FD76A;color:#0a1a0f;font-weight:700;font-size:14px;padding:2px 6px;border-radius:3px;');
+
+  // ── PAGE TRANSITIONS ────────────────────────────────────
+  (function(){
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ veil.classList.add('is-clear'); }); });
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0 || a.target === '_blank') return;
+      try { if (new URL(a.href).origin !== location.origin) return; } catch(err) { return; }
+      e.preventDefault();
+      var dest = a.href;
+      veil.classList.remove('is-clear');
+      veil.addEventListener('transitionend', function(){ location.href = dest; }, { once: true });
+    });
+  })();
+</script>
+
+</body>
+</html>

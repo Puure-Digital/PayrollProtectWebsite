@@ -41,19 +41,33 @@
       --surface-2:    oklch(0.918 0.007 110);
       --border:       oklch(0.880 0.006 110);
       --border-light: oklch(0.910 0.005 110);
-      --ink:          oklch(0.195 0.010 115);
-      --ink-dim:      oklch(0.260 0.008 115);
+      --ink:          oklch(0.240 0.010 220);
+      --ink-dim:      oklch(0.300 0.008 215);
       --muted:        oklch(0.440 0.012 110);
       --muted-2:      oklch(0.440 0.010 110);
       --lime:         oklch(0.770 0.206 151);
       --lime-dk:      oklch(0.660 0.210 151);
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
+      --lime-grad:    linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155));
+      --btn-ink:      oklch(0.18 0.015 145);
       --dark-bg:      oklch(0.130 0.008 115);
       --dark-mid:     oklch(0.185 0.010 115);
       --dark-border:  oklch(0.240 0.008 115);
       --dark-muted:   oklch(0.630 0.008 115);
       --dark-dim:     oklch(0.680 0.006 115);
       --dark-ink:     oklch(0.920 0.004 110);
+      --lime-text-dk: oklch(0.400 0.130 151);
+      --radius-btn:   7px;
+      /* Comparison widget semantic palette */
+      --cw-bad-bg:     oklch(0.97 0.008 25);
+      --cw-bad-border: oklch(0.90 0.030 25);
+      --cw-bad-label:  oklch(0.55 0.140 25);
+      --cw-bad-icon-bg: oklch(0.90 0.080 25);
+      --cw-bad-icon-fg: oklch(0.50 0.180 25);
+      --cw-good-bg:     oklch(0.96 0.012 145);
+      --cw-good-border: oklch(0.88 0.040 145);
+      --cw-good-label:  oklch(0.45 0.160 151);
+      --cw-good-rule:   oklch(0.82 0.060 145);
       --font-d:       'Tungsten', 'Agrandir Wide', 'Urbanist', system-ui, sans-serif;
       --font-b:       'Urbanist', system-ui, sans-serif;
       --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
@@ -84,6 +98,17 @@
       outline-offset: 3px;
       border-radius: 2px;
     }
+
+    /* ─── PAGE TRANSITION ───────────────────────────────── */
+    #page-veil {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--dark-bg);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #page-veil.is-clear { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { #page-veil { display: none; } }
 
     .sr-only {
       position: absolute; width: 1px; height: 1px;
@@ -150,12 +175,12 @@
     }
     .btn-cta {
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
-      padding: 0.6rem 1.375rem; border-radius: 6px;
-      transition: background 0.15s, transform 0.2s var(--ease-expo);
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.6rem 1.375rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.2s var(--ease-expo);
       white-space: nowrap;
     }
-    .btn-cta:hover { background: var(--lime-dk); transform: translateY(-1px); }
+    .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
     .btn-cta:active { transform: translateY(0); }
 
     /* ─── SECTION STACK ─────────────────────────────────── */
@@ -171,14 +196,96 @@
     .calc    { background: var(--bg); }
 
 
+    /* ─── HERO ANIMATIONS ───────────────────────────────────── */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .h-fade { animation: heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+    .h-d1 { animation-delay: 0.08s; }
+    .h-d2 { animation-delay: 0.18s; }
+    .h-d3 { animation-delay: 0.28s; }
+    .h-d4 { animation-delay: 0.38s; }
+    .h-d5 { animation-delay: 0.48s; }
+    @media (prefers-reduced-motion: reduce) {
+      .h-fade { animation: none; }
+    }
+
     /* ─── HERO ───────────────────────────────────────────── */
     .hero {
       display: flex; align-items: center;
-      padding-top: clamp(5rem, 10vw, 7rem);
-      padding-bottom: clamp(3rem, 6vw, 5rem);
+      padding-top: clamp(6rem, 11vw, 8.5rem);
+      padding-bottom: clamp(4rem, 7vw, 6rem);
       overflow: hidden;
       background: var(--bg);
       position: relative;
+    }
+    /* Grid background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(to right, var(--border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+      background-size: 5.5rem 4.5rem;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 72%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 72%, transparent 100%);
+      opacity: 0.45;
+    }
+    /* Green gradient rise from bottom — restrained wash */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: linear-gradient(to top,
+        oklch(0.770 0.206 151 / 0.26) 0%,
+        oklch(0.770 0.206 151 / 0.07) 22%,
+        transparent 36%
+      );
+    }
+
+    /* Badge */
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.875rem; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: oklch(1 0 0 / 0.6);
+      backdrop-filter: blur(8px);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--ink-dim);
+      margin-bottom: 1.25rem;
+    }
+    .hero__badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--lime); flex-shrink: 0;
+      box-shadow: 0 0 0 3px var(--lime-glow);
+    }
+
+    /* Stats strip */
+    .hero__stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; margin-top: 1.25rem;
+      border: 1px solid var(--cw-good-border);
+      border-radius: 10px; overflow: hidden;
+      background: var(--cw-good-bg);
+    }
+    .hero__stat {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 0.875rem 0.5rem;
+      position: relative;
+    }
+    .hero__stat + .hero__stat::before {
+      content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+      width: 1px; background: var(--cw-good-border);
+    }
+    .hero__stat-val {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      letter-spacing: 0.03em; color: var(--cw-good-label);
+      line-height: 1;
+    }
+    .hero__stat-lbl {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); margin-top: 0.25rem;
     }
     .hero > .container { width: 100%; position: relative; z-index: 1; }
     #hero-canvas {
@@ -188,74 +295,209 @@
     }
     .hero__grid {
       display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: clamp(2.5rem, 5vw, 5rem);
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(3rem, 5.5vw, 5.5rem);
       align-items: center;
-    }
-    .hero__kicker {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.775rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: oklch(0.400 0.130 151);
-      margin-bottom: 1.5rem;
-    }
-    .hero__kicker-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--lime); flex-shrink: 0;
     }
     .hero__h1 {
       font-family: var(--font-d); font-weight: 700;
-      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+      font-size: clamp(2.6rem, 5.8vw, 4.8rem);
       line-height: 1.12; letter-spacing: 0.04em;
-      text-transform: capitalize;
+      text-transform: capitalize; overflow-wrap: break-word;
       color: var(--ink); text-wrap: pretty;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.875rem;
     }
-    .hero__h1 em { font-style: normal; color: var(--lime-dk); font-weight: 600; position: relative; display: inline-block; }
+    .hero__h1 em { font-style: normal; color: var(--lime-dk); font-weight: 600; position: relative; display: block; font-size: clamp(1.1rem, 2.15vw, 2rem); }
     .hero__sub {
       font-size: clamp(1rem, 1.4vw, 1.125rem);
       color: var(--muted); max-width: 54ch;
-      line-height: 1.65; margin-bottom: 2.5rem;
+      line-height: 1.65; margin-bottom: 2.875rem;
     }
     .hero__actions {
       display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
     }
     .btn-primary {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
-      padding: 0.9rem 2.125rem; border-radius: 7px;
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.9rem 2.125rem; border-radius: var(--radius-btn);
       position: relative; overflow: hidden;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-primary:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 6px 22px var(--lime-glow);
     }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:active { transform: translateY(0); filter: brightness(0.88); }
     .btn-ghost {
       font-size: 0.9rem; font-weight: 500; color: var(--muted);
       display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.5rem 0; min-height: 44px;
       transition: color 0.15s;
     }
     .btn-ghost:hover { color: var(--ink); }
 
-    /* Hero icon */
-    .hero__icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Before/after panel */
+    .hero__comparison {
+      display: flex; flex-direction: column;
+      gap: 1.25rem; width: 100%;
     }
-    .hero__icon img {
-      animation: heroFloat 5s ease-in-out infinite;
-      will-change: transform;
+    .hc-panel {
+      border-radius: 14px; padding: 1.375rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 16px oklch(0 0 0 / 0.06);
+      transition: box-shadow 0.2s;
     }
-    @keyframes heroFloat {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-22px); }
+    .hc-panel:hover {
+      box-shadow: 0 6px 28px oklch(0 0 0 / 0.10);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .hero__icon img { animation: none; }
+    .hc-before {
+      background: oklch(0.97 0.008 25 / 0.85);
+      border: 1px solid var(--cw-bad-border);
+    }
+    .hc-after {
+      background: oklch(0.96 0.012 145 / 0.85);
+      border: 1px solid var(--cw-good-border);
+    }
+    .hc-label {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .hc-before .hc-label { color: var(--cw-bad-label); }
+    .hc-after  .hc-label { color: var(--cw-good-label); }
+    .hc-list {
+      list-style: none; display: flex; flex-direction: column; gap: 0.625rem;
+    }
+    .hc-list li {
+      font-size: 0.84rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.6rem;
+      color: var(--ink);
+    }
+    .hc-icon {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.6rem; line-height: 1;
+    }
+    .hc-x { background: var(--cw-bad-icon-bg); color: var(--cw-bad-icon-fg); font-weight: 700; }
+    .hc-check { background: var(--lime); color: var(--btn-ink); font-weight: 700; }
+    .hc-savings {
+      margin-top: 1rem;
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--cw-good-rule);
+      font-family: var(--font-d); font-size: 1.35rem; font-weight: 700;
+      letter-spacing: 0.025em; color: var(--cw-good-label);
+    }
+    @media (max-width: 860px) {
+      .hero__comparison { flex-direction: row; }
+      .hc-panel { flex: 1; }
+    }
+    @media (max-width: 560px) {
+      .hero__comparison { flex-direction: column; }
     }
 
+    /* Hero icon column */
+    .hero__icon {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      position: relative;
+    }
+    .hero__logo-bg {
+      position: absolute;
+      top: -160px;
+      right: -70px;
+      width: 220px;
+      height: auto;
+      opacity: 1;
+      transform: rotate(15deg);
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+    }
+
+    /* ─── HERO TRANSFORM PANEL ───────────────────────────── */
+    .hc-transform {
+      position: relative; overflow: hidden;
+      border-radius: 12px; padding: 1.75rem 1.875rem;
+      border: 1px solid var(--cw-bad-border);
+      background: var(--cw-bad-bg);
+      transition: background 0.55s var(--ease-expo), border-color 0.55s var(--ease-expo);
+      width: 100%; z-index: 1;
+    }
+    .hc-transform.is-after {
+      background: var(--cw-good-bg);
+      border-color: var(--cw-good-border);
+    }
+
+    /* Scan line */
+    .hct-scan {
+      position: absolute; left: 0; right: 0; top: 0;
+      height: 2px; pointer-events: none; z-index: 3; opacity: 0;
+      background: var(--lime);
+      box-shadow: 0 0 8px var(--lime-glow), 0 0 2px var(--lime);
+    }
+    .hct-scan::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 56px;
+      background: linear-gradient(to bottom, oklch(0.770 0.206 151 / 0.09), transparent);
+    }
+    .hc-transform.is-scanning .hct-scan {
+      opacity: 1;
+      animation: hctSweep 1.6s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    }
+    @keyframes hctSweep { from { top: 0; } to { top: 100%; } }
+
+    /* Header label */
+    .hct-header { position: relative; height: 1em; margin-bottom: 1rem; }
+    .hct-state-label {
+      position: absolute; inset: 0;
+      font-family: var(--font-d); font-weight: 700;
+      font-size: 0.7rem; letter-spacing: 0.06em;
+      transition: opacity 0.3s var(--ease-expo), transform 0.3s var(--ease-expo);
+    }
+    .hct-state-before { color: var(--cw-bad-label);  opacity: 1; transform: translateY(0); }
+    .hct-state-after  { color: var(--cw-good-label); opacity: 0; transform: translateY(5px); }
+    .hc-transform.is-after .hct-state-before { opacity: 0; transform: translateY(-5px); }
+    .hc-transform.is-after .hct-state-after  { opacity: 1; transform: translateY(0); }
+
+    /* Rows */
+    .hct-rows { list-style: none; display: flex; flex-direction: column; gap: 0.875rem; }
+    .hct-row  { display: flex; align-items: center; gap: 0.6rem; }
+
+    /* Icon pair */
+    .hct-icon-wrap { position: relative; width: 18px; height: 18px; flex-shrink: 0; }
+    .hct-x, .hct-check {
+      position: absolute; inset: 0;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; font-weight: 700; line-height: 1;
+      transition: opacity 0.22s var(--ease-expo), transform 0.22s var(--ease-expo);
+    }
+    .hct-x     { background: var(--cw-bad-icon-bg);  color: var(--cw-bad-icon-fg); opacity: 1; transform: scale(1); }
+    .hct-check { background: var(--lime); color: var(--btn-ink);                   opacity: 0; transform: scale(0.5); }
+    .hct-row.is-after .hct-x     { opacity: 0; transform: scale(0.5); }
+    .hct-row.is-after .hct-check { opacity: 1; transform: scale(1); }
+
+    /* Text pair — grid stacking so height is natural */
+    .hct-text-wrap {
+      display: grid; grid-template-areas: 't'; flex: 1;
+      font-size: 0.9rem; font-weight: 500; color: var(--ink);
+      line-height: 1.4; overflow: hidden;
+    }
+    .hct-before-txt, .hct-after-txt {
+      grid-area: t;
+      transition: opacity 0.22s var(--ease-expo), transform 0.22s var(--ease-expo);
+    }
+    .hct-before-txt { opacity: 1; transform: translateX(0); }
+    .hct-after-txt  { opacity: 0; transform: translateX(10px); }
+    .hct-row.is-after .hct-before-txt { opacity: 0; transform: translateX(-10px); }
+    .hct-row.is-after .hct-after-txt  { opacity: 1; transform: translateX(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hct-scan { display: none; }
+      .hct-state-label, .hct-x, .hct-check, .hct-before-txt, .hct-after-txt { transition: none; }
+    }
     /* ─── PROBLEM ────────────────────────────────────────── */
     .problem {
       padding-top: clamp(7rem, 14vw, 10.5rem);
@@ -452,14 +694,6 @@
     /* Section tag prefix: How It Works */
     .how .section-tag::before { content: '◈  '; }
 
-    /* Step index label */
-    .how__step-idx {
-      font-family: 'Courier New', monospace;
-      font-size: 0.6rem; letter-spacing: 0.14em;
-      color: var(--dark-muted); margin-bottom: 1.25rem;
-      text-transform: uppercase;
-    }
-
     /* Lime rail on step grid top */
     .how__steps { border-top-color: var(--lime); }
 
@@ -599,127 +833,85 @@
       }
     }
 
-    /* ─── NUMBERS (TWO-ZONE REBUILD) ────────────────────── */
+    /* ─── NUMBERS ────────────────────────────────────────── */
     .numbers {
       padding-top: clamp(6rem, 12vw, 9rem);
+      padding-bottom: clamp(6rem, 12vw, 9rem);
       background: var(--bg);
       border-top: 1px solid var(--border);
     }
-    .numbers__head { padding-bottom: clamp(3rem, 5vw, 4rem); }
-    .numbers__h2 {
-      font-family: var(--font-d); font-weight: 700;
-      font-size: clamp(2rem, 4vw, 3.25rem);
-      line-height: 1.12; letter-spacing: 0.04em;
-      color: var(--ink); text-wrap: balance;
-      margin-top: 0.75rem;
-    }
 
-    /* ── Zone 1: context strip ── */
-    .numbers__context {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    .numbers__ctx-grid {
+    /* Stat cards grid */
+    .num2__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      position: relative;
+      gap: 1rem;
+      margin-bottom: 0;
     }
-    .numbers__ctx-grid::before {
-      content: '';
-      position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-      background: var(--lime);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 0.9s var(--ease-expo);
+    .num2__card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      height: 240px;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-    .numbers__ctx-grid.bar-drawn::before { transform: scaleX(1); }
-    .numbers__ctx-cell {
-      padding: clamp(2.25rem, 4vw, 3rem) clamp(1.25rem, 2.5vw, 2rem);
-      border-right: 1px solid var(--border);
+    .num2__kicker {
+      font-size: 0.8rem; color: var(--muted); font-weight: 400; line-height: 1.4;
     }
-    .numbers__ctx-cell:last-child { border-right: none; }
-    .numbers__ctx-fig {
+    .num2__fig {
       font-family: 'Barlow Condensed', var(--font-d);
       font-weight: 700; font-style: italic;
-      font-size: clamp(3.5rem, 6.5vw, 6rem);
+      font-size: clamp(3rem, 6vw, 5.5rem);
       letter-spacing: -0.02em; line-height: 1;
-      color: var(--lime-dk); margin-bottom: 0.875rem;
+      color: var(--lime-dk); margin-bottom: 0.5rem;
       font-variant-numeric: tabular-nums;
-      opacity: 0; transform: translateY(20px);
+      opacity: 0; transform: translateY(18px);
       transition: opacity 0.65s var(--ease-expo), transform 0.65s var(--ease-expo);
     }
-    .numbers__ctx-cell:nth-child(2) .numbers__ctx-fig { transition-delay: 0.09s; }
-    .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig { transition-delay: 0.18s; }
-    .numbers__ctx-fig.in { opacity: 1; transform: translateY(0); }
-    .numbers__ctx-lbl {
-      font-size: 0.875rem; font-weight: 600;
-      color: var(--ink); line-height: 1.4; margin-bottom: 0.25rem;
-      opacity: 0; transform: translateY(6px);
-      transition: opacity 0.4s var(--ease-expo) 0.22s, transform 0.4s var(--ease-expo) 0.22s;
-    }
-    .numbers__ctx-sub {
-      font-size: 0.75rem; color: var(--muted); line-height: 1.4;
-      opacity: 0; transform: translateY(5px);
-      transition: opacity 0.4s var(--ease-expo) 0.32s, transform 0.4s var(--ease-expo) 0.32s;
-    }
-    .numbers__ctx-fig.in ~ .numbers__ctx-lbl { opacity: 1; transform: translateY(0); }
-    .numbers__ctx-fig.in ~ .numbers__ctx-sub { opacity: 1; transform: translateY(0); }
-
-
-    /* "£0" — stamp entrance, override translateY slide */
+    .num2__fig.in { opacity: 1; transform: translateY(0); }
+    .num2__card:nth-child(2) .num2__fig { transition-delay: 0.09s; }
+    .num2__card:nth-child(3) .num2__fig { transition-delay: 0.18s; }
+    .num2__fig--red { color: oklch(0.62 0.22 25); }
     @keyframes numStamp {
       0%   { opacity: 0; transform: scale(1.45); }
       60%  { transform: scale(0.95); }
       100% { opacity: 1; transform: scale(1); }
     }
-    .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig {
-      transform: none; transition: none;
-      color: oklch(0.62 0.22 25);
-    }
-    .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig.in {
+    .num2__fig--red.in {
       animation: numStamp 0.6s var(--ease-expo) 0.18s both;
     }
-    .numbers__since {
-      display: flex; align-items: baseline; gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem; padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-      opacity: 0; transform: translateY(6px);
-      transition: opacity 0.55s var(--ease-expo) 0.3s,
-                  transform 0.55s var(--ease-expo) 0.3s;
-    }
-    .numbers__since.live { opacity: 1; transform: translateY(0); }
-    .numbers__since-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--lime); flex-shrink: 0; align-self: center;
-    }
-    .numbers__since.live .numbers__since-dot {
-      animation: leakPulse 1.6s ease-in-out infinite;
-    }
-    .numbers__since-val {
-      font-family: 'Barlow Condensed', var(--font-d);
-      font-weight: 700; font-style: italic;
-      font-size: 1.375rem; line-height: 1;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.01em; color: var(--lime-dk);
-      white-space: nowrap;
-    }
-    .numbers__since-lbl {
-      color: var(--muted); font-size: 0.75rem; font-weight: 400;
+    .num2__desc {
+      font-size: 0.9rem; color: var(--ink-dim); line-height: 1.45; font-weight: 400;
     }
 
-    @keyframes leakPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.25; transform: scale(0.6); }
+    /* CTA block */
+    .num2__cta {
+      text-align: center;
+      padding: clamp(2.5rem, 5vw, 4rem) 0 0;
+      display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+    }
+    .num2__h2 {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      letter-spacing: 0.04em; line-height: 1.1;
+      color: var(--ink); text-wrap: balance;
+      max-width: 22ch; margin: 0 auto 0 0;
+      margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+    }
+    .num2__sub {
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      color: var(--muted); line-height: 1.65;
+      max-width: 54ch; margin: 0 auto;
+    }
+    .num2__btn { margin-top: 0.5rem; }
+    .num2__note {
+      font-size: 0.75rem; color: var(--muted);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .numbers__since-dot { animation: none; }
-      .numbers__ctx-grid::before { transform: scaleX(1); transition: none; }
-      .numbers__ctx-fig   { opacity: 1; transform: none; transition: none; }
-      .numbers__ctx-lbl,
-      .numbers__ctx-sub   { opacity: 1; transform: none; transition: none; }
-      .numbers__ctx-cell:nth-child(3) .numbers__ctx-fig.in { animation: none; opacity: 1; }
-      .numbers__since     { opacity: 1; transform: none; transition: none; }
+      .num2__fig { opacity: 1; transform: none; transition: none; }
+      .num2__fig--red.in { animation: none; opacity: 1; }
     }
 
     /* ─── PILOT CTA ──────────────────────────────────────── */
@@ -778,19 +970,69 @@
     .pilot__action { margin-top: clamp(2rem, 4vw, 3rem); }
     .btn-pilot {
       font-family: var(--font-b); font-size: 1.05rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime-grad); color: var(--btn-ink);
       padding: 1rem 2.375rem; border-radius: 7px; display: inline-block;
       position: relative; overflow: hidden;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-pilot:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 8px 26px var(--lime-glow);
     }
     .btn-pilot:active { transform: translateY(0); }
     .pilot__note {
       margin-top: 1rem; font-size: 0.825rem;
       color: var(--dark-dim);
+    }
+
+    /* ─── SECTOR BAND ────────────────────────────────────── */
+    .sector-band {
+      background: var(--dark-mid);
+      padding: clamp(0.75rem, 1.5vw, 1.1rem) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sector-band::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      z-index: 1;
+    }
+    .sector-band::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--dark-border), transparent);
+      z-index: 1;
+    }
+    .sector-band__track {
+      display: flex;
+      flex-wrap: nowrap;
+      width: max-content;
+      animation: sector-marquee 70s linear infinite;
+      will-change: transform;
+    }
+    .sector-band__set {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+    .sector-band__item {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1rem, 2.2vw, 1.5rem);
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--dark-ink); line-height: 1;
+    }
+    .sector-band__sep {
+      color: var(--lime); margin: 0 1em;
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1rem, 2.2vw, 1.5rem);
+    }
+    @keyframes sector-marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sector-band__track { animation: none; }
     }
 
     /* ─── CALCULATOR ─────────────────────────────────────── */
@@ -899,12 +1141,12 @@
     .calc__cta-wrap { display: flex; justify-content: center; }
     .btn-calc {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
-      padding: 0.9rem 2.125rem; border-radius: 7px;
-      transition: background 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.9rem 2.125rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
     }
     .btn-calc:hover {
-      background: var(--lime-dk); transform: translateY(-2px);
+      filter: brightness(0.93); transform: translateY(-2px);
       box-shadow: 0 6px 22px var(--lime-glow);
     }
     .btn-calc:active { transform: translateY(0); box-shadow: none; }
@@ -1055,10 +1297,10 @@
 
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal-left, .reveal-right, .reveal-blur,
-      .numbers__ctx-fig, .numbers__exp-fig {
+      .num2__fig, .numbers__exp-fig {
         opacity: 1; transform: none; filter: none; transition: none;
       }
-      .hero__kicker, .hero__h1, .hl-1, .hl-2, .hero__sub, .hero__actions,
+      .hero__h1, .hl-1, .hl-2, .hero__sub, .hero__actions,
       .hero__icon, .nav { animation: none !important; opacity: 1 !important; transform: none !important; }
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1083,20 +1325,9 @@
       from { opacity: 0; transform: scale(0.86); }
       to   { opacity: 1; transform: scale(1); }
     }
-    .hero__kicker  { animation: heroFadeUp 0.55s var(--ease-expo) 0.15s both; }
     .hl-1 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.22s both; }
     .hl-2 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.34s both; }
     .hero__h1 em   { animation: heroFadeUp 0.65s var(--ease-expo) 0.46s both; }
-    .hero__h1 em::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 100%; height: 2px;
-      background: var(--lime);
-      transform: scaleX(0);
-      transform-origin: left;
-      animation: heroUnderline 0.55s var(--ease-expo) 1.0s both;
-    }
     @keyframes heroUnderline { to { transform: scaleX(1); } }
     .hero__sub     { animation: heroFadeUp 0.60s var(--ease-expo) 0.62s both; }
     .hero__actions { animation: heroFadeUp 0.55s var(--ease-expo) 0.60s both; }
@@ -1183,16 +1414,15 @@
       .nav__links       { display: none; }
       .nav__hamburger   { display: flex; }
       .pilot__steps     { display: none; }
-      /* Hero icon is decorative on mobile — clean 1-col layout without it */
-      .hero__icon       { display: none; }
+      .hero__icon       { display: flex; }
+      .hero__logo-bg    { display: none; }
       /* Benefits: single column */
       .benefits__grid   { grid-template-columns: 1fr; }
       .benefits__grid .benefit { border-right: none; border-top: none; }
       .benefits__grid .benefit + .benefit { border-top: 1px solid var(--dark-border); }
-      /* Numbers: ctx strip → 1 col, exposure → 1 col */
-      .numbers__ctx-grid { grid-template-columns: 1fr; }
-      .numbers__ctx-cell { border-right: none; border-bottom: 1px solid var(--border); }
-      .numbers__ctx-cell:last-child { border-bottom: none; }
+      /* Numbers: 1 col on mobile */
+      .num2__grid { grid-template-columns: 1fr; }
+      .num2__card { height: auto; min-height: 180px; }
       /* Touch targets: 44px minimum */
       .btn-primary      { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
       .btn-cta          { min-height: 44px; display: inline-flex; align-items: center; }
@@ -1216,7 +1446,7 @@
 
     /* ─── NO-JS FALLBACK ─────────────────────────────────── */
     html.no-js .reveal, html.no-js .reveal-left, html.no-js .reveal-right, html.no-js .reveal-blur,
-    html.no-js .numbers__ctx-fig, html.no-js .numbers__ctx-lbl, html.no-js .numbers__ctx-sub {
+    html.no-js .num2__fig, html.no-js .num2__desc, html.no-js .num2__kicker {
       opacity: 1 !important; transform: none !important; filter: none !important;
     }
 
@@ -1398,6 +1628,8 @@
 </head>
 <body>
 
+<div id="page-veil" aria-hidden="true"></div>
+
 <!-- Face scanner preloader -->
 <div id="pp-scanner" role="status" aria-label="Verifying identity">
   <svg class="scanner__svg" viewBox="0 0 180 220" width="180" height="220" aria-hidden="true">
@@ -1406,8 +1638,8 @@
         <ellipse cx="90" cy="108" rx="54" ry="68"/>
       </clipPath>
       <linearGradient id="pp-scan-grad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#0FD76A" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#0FD76A" stop-opacity="0.18"/>
+        <stop offset="0%" stop-color="var(--lime)" stop-opacity="0"/>
+        <stop offset="100%" stop-color="var(--lime)" stop-opacity="0.18"/>
       </linearGradient>
     </defs>
     <!-- Face silhouette -->
@@ -1422,7 +1654,7 @@
       <g class="scanner__scan-group">
         <rect x="36" y="-136" width="108" height="136" fill="url(#pp-scan-grad)"/>
         <line x1="36" y1="0" x2="144" y2="0"
-          stroke="#0FD76A" stroke-width="1.5" stroke-linecap="round"/>
+          stroke="var(--lime)" stroke-width="1.5" stroke-linecap="round"/>
       </g>
     </g>
   </svg>
@@ -1443,6 +1675,7 @@
         <img src="assets/pp-logo-horizontal.png" alt="PayRoll Protect" height="56" style="display:block;height:56px;width:auto;">
       </a>
       <ul class="nav__links">
+        <li><a href="calculator.html">Calculator</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
@@ -1456,6 +1689,7 @@
     </div>
     <div class="nav__mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
       <ul>
+        <li><a href="calculator.html">Calculator</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
@@ -1478,16 +1712,21 @@
       <div class="hero__grid">
         <div class="hero__copy">
 
-          <h1 class="hero__h1" id="hero-h1">
-            <span class="hl-1">You Pay For Workers.</span><br>
-            <span class="hl-2">We Verify They Were</span><br>
-            <em>Actually&nbsp;There</em>
+          <div class="hero__badge h-fade h-d1" aria-hidden="true">
+            <span class="hero__badge-dot"></span>
+            Trusted in UK Construction
+          </div>
+
+          <h1 class="hero__h1 h-fade h-d2" id="hero-h1">
+            <span class="hl-1">The All-In-One Payroll</span><br>
+            <span class="hl-2">Verification Platform</span><br>
+            <em>For HR &amp; Finance Teams, In Construction</em>
           </h1>
-          <p class="hero__sub">
-            A biometric terminal at your site gate logs every worker in and out. That record is checked against subcontractor invoices before payment is approved. If the hours don't match, you see it before the money leaves.
+          <p class="hero__sub h-fade h-d3">
+            Payroll Protect offers 100% accuracy on verified site attendance, reducing unknowingly fraudulent subcontractor and agency invoices. Catch payroll discrepancies, reduce fraud, and verify every worker automatically.
           </p>
-          <div class="hero__actions">
-            <a href="contact.html" class="btn-primary">Book a Call</a>
+          <div class="hero__actions h-fade h-d4">
+            <a href="contact.html" class="btn-primary">Explore your site labour savings?</a>
             <a href="#how-it-works" class="btn-ghost">
               See how it works
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1497,165 +1736,145 @@
           </div>
         </div>
 
-        <div class="hero__icon" aria-hidden="true">
-          <img src="assets/pp-logo-hero.png" alt="" fetchpriority="high" decoding="async" width="480" height="480" style="width:100%;max-width:480px;height:auto;display:block;">
+        <div class="hero__icon h-fade h-d5">
+
+          <img class="hero__logo-bg" src="assets/pp-logo-hero.png" alt="" aria-hidden="true" draggable="false">
+
+          <div class="hc-transform" id="hc-transform" role="region" aria-label="Before and after PayRoll Protect">
+            <div class="hct-scan" aria-hidden="true"></div>
+
+            <div class="hct-header" aria-hidden="true">
+              <span class="hct-state-label hct-state-before">Before PayRoll Protect</span>
+              <span class="hct-state-label hct-state-after">After PayRoll Protect</span>
+            </div>
+
+            <ul class="hct-rows">
+              <li class="hct-row">
+                <div class="hct-icon-wrap" aria-hidden="true">
+                  <span class="hct-x">✕</span>
+                  <span class="hct-check">✓</span>
+                </div>
+                <div class="hct-text-wrap">
+                  <span class="hct-before-txt" aria-hidden="true">QR codes &amp; smartphones</span>
+                  <span class="hct-after-txt">Face verification at gate, no devices</span>
+                </div>
+              </li>
+              <li class="hct-row">
+                <div class="hct-icon-wrap" aria-hidden="true">
+                  <span class="hct-x">✕</span>
+                  <span class="hct-check">✓</span>
+                </div>
+                <div class="hct-text-wrap">
+                  <span class="hct-before-txt" aria-hidden="true">Ghost clocking (1 worker, many names)</span>
+                  <span class="hct-after-txt">Live attendance feed, verified in real time</span>
+                </div>
+              </li>
+              <li class="hct-row">
+                <div class="hct-icon-wrap" aria-hidden="true">
+                  <span class="hct-x">✕</span>
+                  <span class="hct-check">✓</span>
+                </div>
+                <div class="hct-text-wrap">
+                  <span class="hct-before-txt" aria-hidden="true">Unverified attendance records</span>
+                  <span class="hct-after-txt">Invoice matched against logged hours</span>
+                </div>
+              </li>
+              <li class="hct-row">
+                <div class="hct-icon-wrap" aria-hidden="true">
+                  <span class="hct-x">✕</span>
+                  <span class="hct-check">✓</span>
+                </div>
+                <div class="hct-text-wrap">
+                  <span class="hct-before-txt" aria-hidden="true">Discrepancy alerts after payment</span>
+                  <span class="hct-after-txt">Discrepancies caught before payment</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hero__stats" role="list" aria-label="Key metrics">
+            <div class="hero__stat" role="listitem">
+              <span class="hero__stat-val">100%</span>
+              <span class="hero__stat-lbl">Verified</span>
+            </div>
+            <div class="hero__stat" role="listitem">
+              <span class="hero__stat-val">£0</span>
+              <span class="hero__stat-lbl">Leakage</span>
+            </div>
+            <div class="hero__stat" role="listitem">
+              <span class="hero__stat-val">Live</span>
+              <span class="hero__stat-lbl">Attendance</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROBLEM -->
-  <section class="problem" aria-labelledby="prob-h">
-    <div class="container">
-      <div class="problem__inner">
+  </div><!-- /stack-wrap 1a -->
 
-        <div class="problem__content">
-          <h2 class="problem__h2 reveal" id="prob-h">
-            Labour Is Claimed.<br><em>Not Verified.</em>
-          </h2>
-          <div class="problem__list">
-            <div class="problem__item reveal-left d1">
-              <p class="problem__lead">You're invoiced based on what subbies claim, not what you can verify.</p>
-              <p class="problem__body">Paper registers and supervisor sign-off are gameable. You're approving payments based on what someone wrote down — not who actually walked through the gate.</p>
-            </div>
-            <div class="problem__item reveal-left d2">
-              <p class="problem__lead">Payments clear before anyone checks whether the hours are real.</p>
-              <p class="problem__body">By the time a discrepancy surfaces, the invoice is paid. Recovery means disputes, legal action, or writing it off. Most construction businesses write it off.</p>
-            </div>
-            <div class="problem__item reveal-left d3">
-              <p class="problem__lead">Margin leaks quietly, at scale.</p>
-              <p class="problem__body">At 7.5% across a 100-worker site, that's £420,000 a year. Paid out. Not coming back.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="problem__visual reveal">
-          <div class="problem__scanner-frame">
-            <svg class="problem__scanner" viewBox="0 0 180 220" aria-hidden="true">
-              <defs>
-                <clipPath id="prob-face-clip">
-                  <ellipse cx="90" cy="108" rx="54" ry="68"/>
-                </clipPath>
-                <linearGradient id="prob-scan-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0FD76A" stop-opacity="0"/>
-                  <stop offset="100%" stop-color="#0FD76A" stop-opacity="0.22"/>
-                </linearGradient>
-              </defs>
-              <ellipse class="prob-face" cx="90" cy="108" rx="54" ry="68"/>
-              <path class="prob-bracket" d="M 36,66 L 36,40 L 62,40"/>
-              <path class="prob-bracket" d="M 118,40 L 144,40 L 144,66"/>
-              <path class="prob-bracket" d="M 36,150 L 36,176 L 62,176"/>
-              <path class="prob-bracket" d="M 118,176 L 144,176 L 144,150"/>
-              <g clip-path="url(#prob-face-clip)">
-                <g class="prob-scan-group">
-                  <rect x="36" y="-136" width="108" height="136" fill="url(#prob-scan-grad)"/>
-                  <line x1="36" y1="0" x2="144" y2="0" stroke="#0FD76A" stroke-width="1.5" stroke-linecap="round"/>
-                </g>
-              </g>
-            </svg>
-            <div class="scanner__labels">
-              <p class="scanner__label prob-lbl-scan">Scanning</p>
-              <p class="scanner__label prob-lbl-verified">Verified ✓</p>
-            </div>
-          </div>
-        </div>
-
+  <!-- SECTOR BAND -->
+  <div class="sector-band" role="note" aria-label="Industries served">
+    <div class="sector-band__track" aria-hidden="true">
+      <div class="sector-band__set">
+        <span class="sector-band__item">Homebuilders</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Main Contractors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Civil Engineering</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Commercial Directors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Finance Teams</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">HR &amp; Site Management</span>
+        <span class="sector-band__sep">·</span>
+      </div>
+      <div class="sector-band__set">
+        <span class="sector-band__item">Homebuilders</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Main Contractors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Civil Engineering</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Commercial Directors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Finance Teams</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">HR &amp; Site Management</span>
+        <span class="sector-band__sep">·</span>
+      </div>
+      <div class="sector-band__set">
+        <span class="sector-band__item">Homebuilders</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Main Contractors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Civil Engineering</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Commercial Directors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Finance Teams</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">HR &amp; Site Management</span>
+        <span class="sector-band__sep">·</span>
+      </div>
+      <div class="sector-band__set">
+        <span class="sector-band__item">Homebuilders</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Main Contractors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Civil Engineering</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Commercial Directors</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">Finance Teams</span>
+        <span class="sector-band__sep">·</span>
+        <span class="sector-band__item">HR &amp; Site Management</span>
+        <span class="sector-band__sep">·</span>
       </div>
     </div>
-  </section>
-
-  </div><!-- /stack-wrap 1 -->
-
-  <!-- HOW IT WORKS -->
-  <section class="how" id="how-it-works" aria-labelledby="how-h">
-    <div class="container">
-      <div class="how__head">
-        <div class="section-tag reveal">How It Works</div>
-        <h2 class="how__h2 reveal" id="how-h">
-          From Gate To Invoice,<br><em>Nothing Gets Through Unchecked.</em>
-        </h2>
-      </div>
-      <div class="how__steps">
-        <div class="how__step reveal">
-          <div class="how__step-idx" aria-hidden="true">STEP 01 / 03</div>
-          <div class="how__num" aria-hidden="true">1</div>
-          <h3 class="how__step-h3">Every Worker Is Identified At The Gate</h3>
-          <p class="how__step-p">A fixed terminal at site entry scans each worker's face or fingerprint on arrival and departure. No cards, no PINs, no QR codes. Identity confirmed — not assumed.</p>
-        </div>
-        <div class="how__step reveal d1">
-          <div class="how__step-idx" aria-hidden="true">STEP 02 / 03</div>
-          <div class="how__num" aria-hidden="true">2</div>
-          <h3 class="how__step-h3">Hours Claimed Vs. Hours Logged</h3>
-          <p class="how__step-p">As invoices come in, every hour claimed is matched against verified attendance — worker by worker. The system knows exactly who was on site and for how long.</p>
-        </div>
-        <div class="how__step reveal d2">
-          <div class="how__step-idx" aria-hidden="true">STEP 03 / 03</div>
-          <div class="how__num" aria-hidden="true">3</div>
-          <h3 class="how__step-h3">Discrepancies Caught Before Payment Clears</h3>
-          <p class="how__step-p">Mismatches surface before you approve a single payment. Your commercial team gets the discrepancy flagged with verified timestamps — not a hunch. Evidence, before any money moves.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BENEFITS -->
-  <section class="benefits" id="benefits" aria-labelledby="ben-h">
-    <div class="container">
-      <div class="benefits__head">
-        <h2 class="benefits__h2 reveal" id="ben-h"><em>Commercial Control</em> At Every Stage.</h2>
-      </div>
-      <div class="benefits__grid">
-        <div class="benefit reveal-blur">
-          <div class="benefit__anchor" aria-hidden="true">
-            <!-- Shield with check: protect/secure financial margin -->
-            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L4 5.5V11c0 4.8 3.4 9.1 8 10.5C16.6 20.1 20 15.8 20 11V5.5L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3 class="benefit__h3">Protect Margin</h3>
-          <p class="benefit__p">Every subcontractor invoice is matched against verified attendance before it's approved. You pay for confirmed hours — not claimed ones.</p>
-        </div>
-        <div class="benefit reveal-blur d1">
-          <div class="benefit__anchor" aria-hidden="true">
-            <!-- Person with verified check: biometric identity -->
-            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
-              <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M4 21v-1a6 6 0 0 1 6-6h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M16 13l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3 class="benefit__h3">Verify Attendance</h3>
-          <p class="benefit__p">Face or fingerprint. Every worker, every shift. A record that can't be backdated, swapped, or signed off by a colleague who wasn't there.</p>
-        </div>
-        <div class="benefit reveal-blur d2">
-          <div class="benefit__anchor" aria-hidden="true">
-            <!-- Alert triangle: surface discrepancies -->
-            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
-              <path d="M10.3 3.6L2.2 18A2 2 0 0 0 4 21h16a2 2 0 0 0 1.8-3L13.7 3.6a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <h3 class="benefit__h3">Identify Exceptions</h3>
-          <p class="benefit__p">When claimed and verified hours don't match, you're told before the approval window closes — not in the next audit, when it's too late to act.</p>
-        </div>
-        <div class="benefit reveal-blur d3">
-          <div class="benefit__anchor" aria-hidden="true">
-            <!-- Clipboard with log lines: timestamped audit record -->
-            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
-              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
-              <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="benefit__h3">Complete Audit Trail</h3>
-          <p class="benefit__p">Every check-in is timestamped, stored, and exportable. When a subcontractor disputes a rejected invoice, the evidence is already there.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <!-- CALCULATOR -->
   <section class="calc" id="calculator" aria-labelledby="calc-h">
@@ -1713,53 +1932,202 @@
     </div>
   </section>
 
+  <!-- STACK GROUP 1b: problem -->
+  <div class="stack-wrap">
+
+  <!-- PROBLEM -->
+  <section class="problem" aria-labelledby="prob-h">
+    <div class="container">
+      <div class="problem__inner">
+
+        <div class="problem__content">
+          <h2 class="problem__h2 reveal" id="prob-h">
+            Labour Is Claimed.<br><em>Not Verified.</em>
+          </h2>
+          <div class="problem__list">
+            <div class="problem__item reveal-left d1">
+              <p class="problem__lead">You're Invoiced Based On What Subbies Claim, Not What You Can Verify.</p>
+              <p class="problem__body">Paper registers and supervisor sign-off are gameable. You're approving payments based on what someone wrote down — not who actually walked through the gate.</p>
+            </div>
+            <div class="problem__item reveal-left d2">
+              <p class="problem__lead">Payments Clear Before Anyone Checks Whether The Hours Are Real.</p>
+              <p class="problem__body">By the time a discrepancy surfaces, the invoice is paid. Recovery means disputes, legal action, or writing it off. Most construction businesses write it off.</p>
+            </div>
+            <div class="problem__item reveal-left d3">
+              <p class="problem__lead">Margin Leaks Quietly, At Scale.</p>
+              <p class="problem__body">At 7.5% across a 100-worker site, that's £420,000 a year. Paid out. Not coming back.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="problem__visual reveal">
+          <div class="problem__scanner-frame">
+            <svg class="problem__scanner" viewBox="0 0 180 220" aria-hidden="true">
+              <defs>
+                <clipPath id="prob-face-clip">
+                  <ellipse cx="90" cy="108" rx="54" ry="68"/>
+                </clipPath>
+                <linearGradient id="prob-scan-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--lime)" stop-opacity="0"/>
+                  <stop offset="100%" stop-color="var(--lime)" stop-opacity="0.22"/>
+                </linearGradient>
+              </defs>
+              <ellipse class="prob-face" cx="90" cy="108" rx="54" ry="68"/>
+              <path class="prob-bracket" d="M 36,66 L 36,40 L 62,40"/>
+              <path class="prob-bracket" d="M 118,40 L 144,40 L 144,66"/>
+              <path class="prob-bracket" d="M 36,150 L 36,176 L 62,176"/>
+              <path class="prob-bracket" d="M 118,176 L 144,176 L 144,150"/>
+              <g clip-path="url(#prob-face-clip)">
+                <g class="prob-scan-group">
+                  <rect x="36" y="-136" width="108" height="136" fill="url(#prob-scan-grad)"/>
+                  <line x1="36" y1="0" x2="144" y2="0" stroke="var(--lime)" stroke-width="1.5" stroke-linecap="round"/>
+                </g>
+              </g>
+            </svg>
+            <div class="scanner__labels">
+              <p class="scanner__label prob-lbl-scan">Scanning</p>
+              <p class="scanner__label prob-lbl-verified">Verified ✓</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /stack-wrap 1b -->
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how-it-works" aria-labelledby="how-h">
+    <div class="container">
+      <div class="how__head">
+        <div class="section-tag reveal">How It Works</div>
+        <h2 class="how__h2 reveal" id="how-h">
+          From Gate To Invoice,<br><em>Nothing Gets Through Unchecked.</em>
+        </h2>
+      </div>
+      <div class="how__steps">
+        <div class="how__step reveal">
+          <div class="how__num" aria-hidden="true">1</div>
+          <h3 class="how__step-h3">Every Worker Is Identified At The Gate</h3>
+          <p class="how__step-p">A fixed terminal at site entry scans each worker's face or fingerprint on arrival and departure. No cards, no PINs, no QR codes. Identity confirmed — not assumed.</p>
+        </div>
+        <div class="how__step reveal d1">
+          <div class="how__num" aria-hidden="true">2</div>
+          <h3 class="how__step-h3">Hours Claimed Vs. Hours Logged</h3>
+          <p class="how__step-p">As invoices come in, every hour claimed is matched against verified attendance, worker by worker. The system knows exactly who was on site and for how long.</p>
+        </div>
+        <div class="how__step reveal d2">
+          <div class="how__num" aria-hidden="true">3</div>
+          <h3 class="how__step-h3">Discrepancies Caught Before Payment Clears</h3>
+          <p class="how__step-p">Mismatches surface before you approve a single payment. Your commercial team gets the discrepancy flagged with verified timestamps, not a hunch. Evidence, before any money moves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits" id="benefits" aria-labelledby="ben-h">
+    <div class="container">
+      <div class="benefits__head">
+        <h2 class="benefits__h2 reveal" id="ben-h"><em>Commercial Control</em> At Every Stage.</h2>
+      </div>
+      <div class="benefits__grid">
+        <div class="benefit reveal-blur">
+          <div class="benefit__anchor" aria-hidden="true">
+            <!-- Shield with check: protect/secure financial margin -->
+            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L4 5.5V11c0 4.8 3.4 9.1 8 10.5C16.6 20.1 20 15.8 20 11V5.5L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="benefit__h3">Protect Margin</h3>
+          <p class="benefit__p">Every subcontractor invoice is matched against verified attendance before it's approved. You pay for confirmed hours — not claimed ones.</p>
+        </div>
+        <div class="benefit reveal-blur d1">
+          <div class="benefit__anchor" aria-hidden="true">
+            <!-- Person with verified check: biometric identity -->
+            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
+              <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M4 21v-1a6 6 0 0 1 6-6h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M16 13l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="benefit__h3">Verify Attendance</h3>
+          <p class="benefit__p">Face or fingerprint. Every worker, every shift. A record that can't be backdated, swapped, or signed off by a colleague who wasn't there.</p>
+        </div>
+        <div class="benefit reveal-blur d2">
+          <div class="benefit__anchor" aria-hidden="true">
+            <!-- Alert triangle: surface discrepancies -->
+            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
+              <path d="M10.3 3.6L2.2 18A2 2 0 0 0 4 21h16a2 2 0 0 0 1.8-3L13.7 3.6a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3 class="benefit__h3">Identify Exceptions</h3>
+          <p class="benefit__p">When claimed and verified hours don't match, you're told before the approval window closes, not weeks later in the next audit.</p>
+        </div>
+        <div class="benefit reveal-blur d3">
+          <div class="benefit__anchor" aria-hidden="true">
+            <!-- Clipboard with log lines: timestamped audit record -->
+            <svg class="benefit__icon" viewBox="0 0 24 24" fill="none">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="benefit__h3">Complete Audit Trail</h3>
+          <p class="benefit__p">Every check-in is timestamped, stored, and exportable. When a subcontractor disputes a rejected invoice, the evidence is already there.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- STACK GROUP 2: numbers → pilot -->
   <div class="stack-wrap">
 
   <!-- NUMBERS -->
   <section class="numbers" id="numbers" aria-labelledby="num-h">
-
-    <!-- Head -->
     <div class="container">
-      <div class="numbers__head">
-        <div class="section-tag reveal">The Numbers</div>
-        <h2 class="numbers__h2 reveal" id="num-h">What Leaks On An Unverified Site.</h2>
-      </div>
-    </div>
 
-    <!-- Zone 1: context strip -->
-    <div class="numbers__context">
-      <div class="container">
-        <div class="numbers__ctx-grid">
-          <div class="numbers__ctx-cell">
-            <div class="numbers__ctx-fig">£4,200</div>
-            <div class="numbers__ctx-lbl">Unverified per worker, per year</div>
-            <div class="numbers__ctx-sub">At 7.5% discrepancy rate</div>
+      <!-- Heading -->
+      <h2 class="num2__h2 reveal" id="num-h">What Leaks On An Unverified Site.</h2>
+
+      <!-- Stat cards -->
+      <div class="num2__grid">
+        <div class="num2__card">
+          <p class="num2__kicker">Ghost clocking &amp; time fraud</p>
+          <div>
+            <div class="num2__fig numbers__ctx-fig">£4,200</div>
+            <p class="num2__desc">lost per worker, per year at 7.5% discrepancy</p>
           </div>
-          <div class="numbers__ctx-cell">
-            <div class="numbers__ctx-fig">1 in 13</div>
-            <div class="numbers__ctx-lbl">Workers never confirmed on site</div>
-            <div class="numbers__ctx-sub">Across unverified developments</div>
+        </div>
+        <div class="num2__card">
+          <p class="num2__kicker">Unconfirmed site attendance</p>
+          <div>
+            <div class="num2__fig numbers__ctx-fig">1 in 13</div>
+            <p class="num2__desc">workers never physically confirmed on site</p>
           </div>
-          <div class="numbers__ctx-cell">
-            <div class="numbers__ctx-fig">£0</div>
-            <div class="numbers__ctx-lbl">Recovered after invoice approval</div>
-            <div class="numbers__ctx-sub">Once paid, it's gone.</div>
+        </div>
+        <div class="num2__card">
+          <p class="num2__kicker">Invoice overpayment</p>
+          <div>
+            <div class="num2__fig numbers__ctx-fig num2__fig--red">£0</div>
+            <p class="num2__desc">recovered once invoices are approved and paid</p>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Bridge: consequence callout -->
-    <div class="numbers__bridge">
-      <div class="container">
-        <div class="numbers__bridge-inner reveal">
-          <span class="numbers__bridge-dot" aria-hidden="true"></span>
-          <p class="numbers__bridge-text">A 100-worker site at <strong>7.5%</strong> discrepancy: <strong>£420,000</strong> a year, approved and gone. Once those invoices are paid, that money doesn't come back.</p>
-        </div>
+      <!-- Sub + CTA -->
+      <div class="num2__cta">
+        <p class="num2__sub reveal">A 100-worker site at <strong>7.5%</strong> discrepancy: <strong>£420,000</strong> a year, approved and gone. Once those invoices are paid, that money doesn't come back.</p>
+        <a class="btn-primary num2__btn reveal" href="#calculator">Explore your site savings</a>
+        <p class="num2__note reveal">Free estimate. No commitment.</p>
       </div>
-    </div>
 
+    </div>
   </section>
 
   </div><!-- /stack-wrap 2 -->
@@ -1778,7 +2146,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Workers check in and out using a fixed tablet or mobile device at site entry. Biometric data — typically a facial scan or fingerprint — is matched against a registered profile in seconds. No paper registers, no swipe cards, no proxy sign-ins.</p>
+          <p>Workers check in and out using a fixed tablet or mobile device at site entry. Biometric data (typically a facial scan or fingerprint) is matched against a registered profile in seconds. No paper registers, no swipe cards, no proxy sign-ins.</p>
           <p>Devices are ruggedised for outdoor conditions and work offline, syncing when connectivity is restored.</p>
         </div>
       </details>
@@ -1789,13 +2157,13 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>No. PayRoll Protect sits alongside your existing systems as a verification layer. Attendance data is exportable and can be reconciled against your payroll or subcontractor invoices — it doesn't require you to replace anything.</p>
+          <p>No. PayRoll Protect sits alongside your existing systems as a verification layer. Attendance data is exportable and can be reconciled against your payroll or subcontractor invoices; it doesn't require you to replace anything.</p>
         </div>
       </details>
 
       <details class="faq__item reveal d3">
         <summary class="faq__summary">
-          How is biometric data stored — what about GDPR?
+          How is biometric data stored? What about GDPR?
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
@@ -1810,7 +2178,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Most sites are live within two weeks. Hardware ships pre-configured — your site manager follows a short setup guide, workers are enrolled on arrival, and the dashboard is accessible from day one.</p>
+          <p>Most sites are live within two weeks. Hardware ships pre-configured; your site manager follows a short setup guide, workers are enrolled on arrival, and the dashboard is accessible from day one.</p>
         </div>
       </details>
 
@@ -1820,7 +2188,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>Compliance is enforced at the contract level. Most clients include biometric check-in as a site access requirement in their subcontractor agreements. Workers who don't check in aren't counted as present — which is exactly the point.</p>
+          <p>Compliance is enforced at the contract level. Most clients include biometric check-in as a site access requirement in their subcontractor agreements. Workers who don't check in aren't counted as present. That's the point.</p>
         </div>
       </details>
 
@@ -1830,7 +2198,7 @@
           <span class="faq__icon" aria-hidden="true"></span>
         </summary>
         <div class="faq__body">
-          <p>No. Check-in happens at a fixed device at site entry — workers don't need to download anything or own a smartphone. There's nothing for workers to manage.</p>
+          <p>No. Check-in happens at a fixed device at site entry; workers don't need to download anything or own a smartphone. There's nothing for workers to manage.</p>
         </div>
       </details>
 
@@ -1849,7 +2217,7 @@
             <em>Scale Fast.</em>
           </h2>
           <p class="pilot__sub reveal d1">
-            Install on one site. In 90 days, you have real discrepancy data from your own operation — not a vendor's promise. That's what you take to the board.
+            Install on one site. In 90 days, you have real discrepancy data from your own operation, not a vendor's promise. That's what you take to the board.
           </p>
           <div class="pilot__action reveal d2">
             <a href="mailto:hello@payrollprotect.co.uk?subject=Book%20a%20Call" class="btn-pilot">Book a Call</a>
@@ -1873,7 +2241,7 @@
             </div>
             <div class="pilot__step reveal-right d2">
               <span class="pilot__sn" aria-hidden="true">03</span>
-              <p class="pilot__st"><strong>Your numbers. Your decision.</strong> Take verified savings data to the board. Not a vendor's case study — figures from your own operation.</p>
+              <p class="pilot__st"><strong>Your numbers. Your decision.</strong> Take verified savings data to the board. Not a vendor's case study: figures from your own operation.</p>
             </div>
           </div>
         </div>
@@ -2197,104 +2565,93 @@
     update();
   })();
 
-  // ─── HERO SHADER ────────────────────────────────────────────
-  (function heroShader() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas) return;
-    const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
-    if (!gl) return;
 
-    const VS = `#version 300 es
-    in vec2 a;
-    void main(){gl_Position=vec4(a,0,1);}`;
+  // ─── HERO TRANSFORM ANIMATION ────────────────────────────
+  (function () {
+    const panel = document.getElementById('hc-transform');
+    if (!panel) return;
 
-    const FS = `#version 300 es
-    precision mediump float;
-    uniform vec2 uR; uniform float uT; uniform vec2 uM;
-    out vec4 fragColor;
-    float h(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-    float n(vec2 p){
-      vec2 i=floor(p),f=fract(p);
-      f=f*f*(3.-2.*f);
-      return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);
+    const rows = Array.from(panel.querySelectorAll('.hct-row'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      panel.classList.add('is-after');
+      rows.forEach(r => r.classList.add('is-after'));
+      return;
     }
-    float fbm(vec2 p){return .5*n(p)+.25*n(p*2.)+.125*n(p*4.);}
-    void main(){
-      vec2 uv=gl_FragCoord.xy/uR; uv.y=1.-uv.y;
-      vec2 q=vec2(fbm(uv*2.8+uT*.06),fbm(uv*2.8+vec2(1.7,9.2)+uT*.04));
-      float f=fbm(uv*2.2+q);
-      vec3 lime=vec3(.176,.863,.392);
-      float glow=smoothstep(.60,.0,length(uv-uM));
-      float a=glow*.14*(f*.5+.5)+f*.022*smoothstep(.48,.80,f);
-      fragColor=vec4(lime,a);
-    }`;
 
-    function mkShader(type, src) {
-      const s = gl.createShader(type);
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      return s;
+    const SCAN_DUR   = 1600; // ms — sweep duration
+    const HOLD_AFTER = 2600; // ms — hold "after" state
+    const HOLD_BEFORE = 1000; // ms — hold "before" before next scan
+    const CYCLE = SCAN_DUR + HOLD_AFTER + HOLD_BEFORE;
+
+    let timers = [];
+
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+    function reset() {
+      panel.classList.remove('is-scanning', 'is-after');
+      rows.forEach(r => r.classList.remove('is-after'));
     }
-    const prog = gl.createProgram();
-    gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VS));
-    gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FS));
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-    gl.useProgram(prog);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-    const aLoc = gl.getAttribLocation(prog, 'a');
-    gl.enableVertexAttribArray(aLoc);
-    gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+    function runCycle() {
+      clearTimers();
 
-    const uR = gl.getUniformLocation(prog, 'uR');
-    const uT = gl.getUniformLocation(prog, 'uT');
-    const uM = gl.getUniformLocation(prog, 'uM');
+      // 1. Start scan line sweep
+      panel.classList.add('is-scanning');
 
-    let W = 0, H = 0, mx = 0.5, my = 0.5, raf = 0, vis = true;
+      // 2. Flip each row as scan line passes it
+      rows.forEach((row, i) => {
+        const delay = (SCAN_DUR / rows.length) * (i + 0.55);
+        timers.push(setTimeout(() => row.classList.add('is-after'), delay));
+      });
 
-    function resize() {
-      W = canvas.clientWidth; H = canvas.clientHeight;
-      canvas.width = W; canvas.height = H;
-      gl.viewport(0, 0, W, H);
+      // 3. Scan done → flip header + card bg
+      timers.push(setTimeout(() => {
+        panel.classList.remove('is-scanning');
+        panel.classList.add('is-after');
+      }, SCAN_DUR + 40));
+
+      // 4. Reset to "before"
+      timers.push(setTimeout(reset, SCAN_DUR + HOLD_AFTER));
+
+      // 5. Next cycle
+      timers.push(setTimeout(runCycle, CYCLE));
     }
-    window.addEventListener('resize', resize, { passive: true });
-    resize();
 
-    const hero = canvas.parentElement;
-    document.addEventListener('mousemove', e => {
-      const r = hero.getBoundingClientRect();
-      mx = (e.clientX - r.left) / r.width;
-      my = (e.clientY - r.top) / r.height;
-    }, { passive: true });
+    // Only animate when visible
+    const io = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        timers.push(setTimeout(runCycle, 900));
+      } else {
+        clearTimers(); reset();
+      }
+    }, { threshold: 0.4 });
 
-    new IntersectionObserver(([e]) => {
-      vis = e.isIntersecting;
-      if (vis && raf === 0) loop();
-    }).observe(hero);
-
-    const t0 = performance.now();
-    function loop() {
-      if (!vis) { raf = 0; return; }
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.uniform2f(uR, W, H);
-      gl.uniform1f(uT, (performance.now() - t0) * 0.001);
-      gl.uniform2f(uM, mx, my);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      raf = requestAnimationFrame(loop);
-    }
-    loop();
+    io.observe(panel);
   })();
 
   // Console easter egg
   console.log('%c PayRoll Protect ', 'background:#0FD76A;color:#0a1a0f;font-weight:700;font-size:14px;padding:2px 6px;border-radius:3px;');
   console.log('%cLabour is claimed. Not verified.\n\nBuilt for commercial directors who found out the hard way.\nhello@payrollprotect.co.uk', 'color:#555;font-size:11px;line-height:1.6;');
+
+  // ── PAGE TRANSITIONS ────────────────────────────────────
+  (function(){
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ veil.classList.add('is-clear'); }); });
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0 || a.target === '_blank') return;
+      try { if (new URL(a.href).origin !== location.origin) return; } catch(err) { return; }
+      e.preventDefault();
+      var dest = a.href;
+      veil.classList.remove('is-clear');
+      veil.addEventListener('transitionend', function(){ location.href = dest; }, { once: true });
+    });
+  })();
 </script>
 
 </body>

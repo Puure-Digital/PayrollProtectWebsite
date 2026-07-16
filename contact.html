@@ -75,6 +75,17 @@
     a  { color: inherit; text-decoration: none; }
     img, svg { display: block; }
     button { cursor: pointer; border: none; background: none; font: inherit; }
+    /* ─── PAGE TRANSITION ───────────────────────────────── */
+    #page-veil {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--dark-bg);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #page-veil.is-clear { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { #page-veil { display: none; } }
+
     :focus-visible {
       outline: 2px solid var(--lime);
       outline-offset: 3px;
@@ -483,6 +494,8 @@
 </head>
 <body>
 
+<div id="page-veil" aria-hidden="true"></div>
+
 <!-- Skip link -->
 <a href="#main" style="position:absolute;left:-9999px;top:0;z-index:999;padding:0.5rem 1rem;background:var(--lime);color:var(--ink);font-weight:600;border-radius:0 0 6px 0">Skip to content</a>
 
@@ -817,6 +830,24 @@
       }, 900);
     });
   }
+
+  // ── PAGE TRANSITIONS ────────────────────────────────────
+  (function(){
+    var veil = document.getElementById('page-veil');
+    if (!veil) return;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ veil.classList.add('is-clear'); }); });
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0 || a.target === '_blank') return;
+      try { if (new URL(a.href).origin !== location.origin) return; } catch(err) { return; }
+      e.preventDefault();
+      var dest = a.href;
+      veil.classList.remove('is-clear');
+      veil.addEventListener('transitionend', function(){ location.href = dest; }, { once: true });
+    });
+  })();
 </script>
 </body>
 </html>
