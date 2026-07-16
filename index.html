@@ -422,12 +422,14 @@
       border-radius: 12px; padding: 1.75rem 1.875rem;
       border: 1px solid var(--cw-bad-border);
       background: var(--cw-bad-bg);
-      transition: background 0.55s var(--ease-expo), border-color 0.55s var(--ease-expo);
+      box-shadow: none;
+      transition: background 0.55s var(--ease-expo), border-color 0.55s var(--ease-expo), box-shadow 0.55s var(--ease-expo);
       width: 100%; z-index: 1;
     }
     .hc-transform.is-after {
-      background: var(--cw-good-bg);
-      border-color: var(--cw-good-border);
+      background: oklch(0.945 0.022 148);
+      border-color: oklch(0.720 0.175 151);
+      box-shadow: 0 0 0 1px oklch(0.720 0.175 151 / 0.5), 0 8px 36px oklch(0.770 0.206 151 / 0.22);
     }
 
     /* Scan line */
@@ -444,7 +446,7 @@
     }
     .hc-transform.is-scanning .hct-scan {
       opacity: 1;
-      animation: hctSweep 1.6s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+      animation: hctSweep 2.4s cubic-bezier(0.42, 0, 0.58, 1) forwards;
     }
     @keyframes hctSweep { from { top: 0; } to { top: 100%; } }
 
@@ -472,12 +474,12 @@
       width: 18px; height: 18px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 0.6rem; font-weight: 700; line-height: 1;
-      transition: opacity 0.22s var(--ease-expo), transform 0.22s var(--ease-expo);
+      transition: opacity 0.22s var(--ease-expo), transform 0.22s var(--ease-expo), box-shadow 0.4s var(--ease-expo);
     }
-    .hct-x     { background: var(--cw-bad-icon-bg);  color: var(--cw-bad-icon-fg); opacity: 1; transform: scale(1); }
-    .hct-check { background: var(--lime); color: var(--btn-ink);                   opacity: 0; transform: scale(0.5); }
+    .hct-x     { background: var(--cw-bad-icon-bg);  color: var(--cw-bad-icon-fg); opacity: 1; transform: scale(1); box-shadow: none; }
+    .hct-check { background: var(--lime); color: var(--btn-ink);                   opacity: 0; transform: scale(0.5); box-shadow: none; }
     .hct-row.is-after .hct-x     { opacity: 0; transform: scale(0.5); }
-    .hct-row.is-after .hct-check { opacity: 1; transform: scale(1); }
+    .hct-row.is-after .hct-check { opacity: 1; transform: scale(1); box-shadow: 0 0 10px oklch(0.770 0.206 151 / 0.55); }
 
     /* Text pair — grid stacking so height is natural */
     .hct-text-wrap {
@@ -2580,9 +2582,9 @@
       return;
     }
 
-    const SCAN_DUR   = 1600; // ms — sweep duration
-    const HOLD_AFTER = 2600; // ms — hold "after" state
-    const HOLD_BEFORE = 1000; // ms — hold "before" before next scan
+    const SCAN_DUR   = 2400; // ms — sweep duration
+    const HOLD_AFTER = 3800; // ms — hold "after" state
+    const HOLD_BEFORE = 1400; // ms — hold "before" before next scan
     const CYCLE = SCAN_DUR + HOLD_AFTER + HOLD_BEFORE;
 
     let timers = [];
