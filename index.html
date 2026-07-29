@@ -3441,6 +3441,10 @@
     .how__step.in .how__num { animation: numPop 0.4s var(--ease-expo) 0.18s both; }
 
     /* ─── RESPONSIVE ─────────────────────────────────────── */
+    .hero__mobile-br { display: none; }
+    @media (max-width: 600px) {
+      .hero__mobile-br { display: inline; }
+    }
     @media (max-width: 960px) {
       .hero__grid       { grid-template-columns: 1fr; }
       .hero__sub        { margin-bottom: 1.75rem; }
@@ -3897,7 +3901,7 @@
 
           <h1 class="hero__h1 h-fade h-d2" id="hero-h1">
             <span class="hl-1">The <span class="hl-1b">All-In-One</span></span><br>
-            <span class="hl-2">Payroll Verification Platform</span><br>
+            <span class="hl-2">Payroll Verification<br class="hero__mobile-br"> Platform</span><br>
             <em>For HR &amp; Finance Teams, In Construction</em>
           </h1>
           <p class="hero__sub h-fade h-d3">
