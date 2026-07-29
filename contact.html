@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Book a Call — PayRoll Protect</title>
   <meta name="description" content="Book a 30-minute discovery call with PayRoll Protect. See the platform live on a real construction site and get a number against your operation. No commitment required.">
@@ -16,46 +16,52 @@
   <style>
     /* ─── FONTS ─────────────────────────────────────────── */
     @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Bold.otf') format('opentype');
-      font-weight: 700; font-style: normal; font-display: swap;
+      font-family: 'Sk-Modernist';
+      src: url('assets/Sk-Modernist-Regular.otf') format('opentype');
+      font-weight: 100 900; font-style: normal; font-display: swap;
     }
-    @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Semibold.otf') format('opentype');
-      font-weight: 600; font-style: normal; font-display: swap;
-    }
-    @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Medium.otf') format('opentype');
-      font-weight: 500; font-style: normal; font-display: swap;
-    }
+
 
     /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
-      color-scheme: light;
-      --bg:           oklch(0.965 0.004 110);
-      --surface:      oklch(0.942 0.005 110);
-      --surface-2:    oklch(0.918 0.007 110);
-      --border:       oklch(0.880 0.006 110);
-      --border-light: oklch(0.910 0.005 110);
-      --ink:          oklch(0.195 0.010 115);
-      --ink-dim:      oklch(0.260 0.008 115);
-      --muted:        oklch(0.440 0.012 110);
-      --lime:         oklch(0.770 0.206 151);
-      --lime-dk:      oklch(0.660 0.210 151);
+      color-scheme: dark;
+      --bg:           oklch(0.130 0.008 115);
+      --surface:      oklch(0.185 0.010 115);
+      --surface-2:    oklch(0.205 0.009 115);
+      --border:       oklch(0.240 0.008 115);
+      --border-light: oklch(0.265 0.007 115);
+      --ink:          oklch(0.920 0.004 110);
+      --ink-dim:      oklch(0.740 0.005 110);
+      --muted:        oklch(0.560 0.008 115);
+      --lime-50:      oklch(0.980 0.030 151);
+      --lime-100:     oklch(0.960 0.055 151);
+      --lime-200:     oklch(0.920 0.090 151);
+      --lime-300:     oklch(0.870 0.140 151);
+      --lime-400:     oklch(0.830 0.180 151);
+      --lime-500:     oklch(0.770 0.206 151);
+      --lime-600:     oklch(0.680 0.210 151);
+      --lime-700:     oklch(0.580 0.200 151);
+      --lime-800:     oklch(0.460 0.175 151);
+      --lime-900:     oklch(0.340 0.140 151);
+      --lime-950:     oklch(0.200 0.090 151);
+      --lime:         var(--lime-500);
+      --lime-dk:      var(--lime-600);
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
       --dark-bg:      oklch(0.130 0.008 115);
       --dark-border:  oklch(0.240 0.008 115);
       --dark-muted:   oklch(0.540 0.008 115);
       --dark-ink:     oklch(0.920 0.004 110);
       --error:        oklch(0.55 0.18 25);
-      --error-bg:     oklch(0.96 0.02 25);
-      --font-d:       'Tungsten', 'Agrandir Wide', 'Urbanist', system-ui, sans-serif;
+      --error-bg:     oklch(0.18 0.04 25);
+      --btn-ink:      oklch(0.18 0.015 145);
+      --font-d:       'Urbanist', system-ui, sans-serif;
       --font-b:       'Urbanist', system-ui, sans-serif;
       --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
       --ease-quint:   cubic-bezier(0.22, 1, 0.36, 1);
       --pad-x:        clamp(1.25rem, 5vw, 3rem);
+      --dark-mid:     oklch(0.185 0.010 115);
+      --lime-text-dk: oklch(0.400 0.130 151);
+      --lime-grad:    linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155));
     }
 
     /* ─── RESET ──────────────────────────────────────────── */
@@ -136,11 +142,31 @@
     .nav__hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
     .nav__hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .nav__mobile {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      background: var(--bg); border-bottom: 1px solid var(--border);
+      display: block; position: absolute; top: 100%; left: 0; right: 0;
+      background: oklch(0.130 0.008 115 / 0.97);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border-bottom: 1px solid var(--border);
       padding: 1rem var(--pad-x) 1.25rem;
+      opacity: 0; transform: translateY(-10px);
+      pointer-events: none; visibility: hidden;
+      transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), visibility 0s 0.28s;
     }
-    .nav__mobile.open { display: block; }
+    .nav__mobile.open {
+      opacity: 1; transform: translateY(0);
+      pointer-events: auto; visibility: visible;
+      transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), visibility 0s 0s;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav__mobile { transition: none; }
+    }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 9999;
+      padding: 0.5rem 1rem; background: var(--lime); color: var(--btn-ink);
+      font-weight: 600; border-radius: 0 0 6px 0;
+    }
+    .skip-link:focus { left: 0; }
     .nav__mobile ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
     .nav__mobile a {
       display: block; padding: 0.75rem 0;
@@ -150,18 +176,18 @@
     }
     .btn-cta {
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
-      padding: 0.6rem 1.375rem; border-radius: 6px;
-      transition: background 0.15s, transform 0.2s var(--ease-expo);
+      background: var(--lime-grad); color: var(--btn-ink);
+      padding: 0.6rem 1.375rem; border-radius: 7px;
+      transition: filter 0.15s, transform 0.2s var(--ease-expo);
       white-space: nowrap;
     }
-    .btn-cta:hover { background: var(--lime-dk); transform: translateY(-1px); }
+    .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
     .btn-cta:active { transform: translateY(0); }
 
     /* ─── CONTACT LAYOUT ─────────────────────────────────── */
     .contact {
       padding-top: clamp(12rem, 17vw, 14rem);
-      padding-bottom: clamp(5rem, 10vw, 8rem);
+      padding-bottom: clamp(7rem, 12vw, 10rem);
       background: var(--bg);
     }
     .contact__grid {
@@ -179,7 +205,7 @@
     .contact__eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-size: 0.775rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: oklch(0.400 0.130 151);
+      text-transform: uppercase; color: var(--lime);
       margin-bottom: 1.5rem;
     }
     .contact__eyebrow-dot {
@@ -187,13 +213,19 @@
       background: var(--lime); flex-shrink: 0;
     }
     .contact__h1 {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(2.2rem, 4vw, 3.5rem);
-      line-height: 1.12; letter-spacing: 0.04em;
+      line-height: 1.12; letter-spacing: -0.03em;
       color: var(--ink); text-wrap: balance;
       margin-bottom: 1.25rem;
     }
-    .contact__h1 em { font-style: normal; color: var(--lime-dk); }
+    .contact__h1 em {
+      font-style: normal; font-weight: 550;
+      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .contact__sub {
       font-size: 1rem; color: var(--muted);
       line-height: 1.65; max-width: 46ch;
@@ -249,7 +281,6 @@
     }
     .form-card__sub {
       font-size: 0.875rem; color: var(--muted);
-      text-transform: capitalize;
     }
 
     /* Form rows */
@@ -279,8 +310,8 @@
       transition: border-color 0.15s, box-shadow 0.15s;
       -webkit-appearance: none;
     }
-    .form-field input::placeholder { color: oklch(0.62 0.006 110); }
-    .form-field input:hover { border-color: oklch(0.820 0.008 110); }
+    .form-field input::placeholder { color: oklch(0.460 0.008 115); }
+    .form-field input:hover { border-color: oklch(0.360 0.008 115); }
     .form-field input:focus {
       outline: none;
       border-color: var(--lime);
@@ -301,7 +332,7 @@
     .form-submit-row { margin-top: 1.5rem; }
     .btn-submit {
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime); color: var(--ink);
+      background: var(--lime); color: var(--btn-ink);
       padding: 0.95rem 2.25rem;
       border-radius: 7px; border: none;
       width: 100%;
@@ -438,8 +469,8 @@
       content: '';
       position: absolute;
       width: 18px; height: 18px;
-      border: 2px solid oklch(0.195 0.010 115 / 0.25);
-      border-top-color: var(--ink);
+      border: 2px solid oklch(0.18 0.015 145 / 0.25);
+      border-top-color: var(--btn-ink);
       border-radius: 50%;
       top: 50%; left: 50%;
       margin: -9px 0 0 -9px;
@@ -484,12 +515,6 @@
       .btn-submit[data-loading] { color: inherit; }
     }
 
-    /* ─── TUNGSTEN UPPERCASE HEADINGS ───────────────────── */
-    .contact__h1 {
-      text-transform: uppercase;
-      letter-spacing: 0.01em;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -497,14 +522,14 @@
 <div id="page-veil" aria-hidden="true"></div>
 
 <!-- Skip link -->
-<a href="#main" style="position:absolute;left:-9999px;top:0;z-index:999;padding:0.5rem 1rem;background:var(--lime);color:var(--ink);font-weight:600;border-radius:0 0 6px 0">Skip to content</a>
+<a href="#main" class="skip-link">Skip to content</a>
 
 <!-- NAV -->
 <nav class="nav" id="site-nav" aria-label="Main navigation">
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo" aria-label="PayRoll Protect — home">
-        <img src="assets/pp-logo-horizontal.png" alt="PayRoll Protect" height="56" style="display:block;height:56px;width:auto;">
+        <img src="assets/pp-logo-horizontal-dark.png" alt="PayRoll Protect" height="56" style="display:block;height:56px;width:auto;">
       </a>
       <ul class="nav__links">
         <li><a href="index.html#how-it-works">How It Works</a></li>
@@ -518,7 +543,7 @@
         <a href="contact.html" class="btn-cta" aria-current="page">Book a Call</a>
       </div>
     </div>
-    <div class="nav__mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
+    <div class="nav__mobile" id="nav-mobile" aria-label="Mobile navigation">
       <ul>
         <li><a href="index.html#how-it-works">How It Works</a></li>
         <li><a href="index.html#benefits">Benefits</a></li>

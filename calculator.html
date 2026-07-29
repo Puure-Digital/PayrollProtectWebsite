@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="dark">
   <script>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Labour Cost Exposure Calculator — PayRoll Protect</title>
@@ -17,34 +17,36 @@
   <style>
     /* ─── FONTS ─────────────────────────────────────────── */
     @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Bold.otf') format('opentype');
-      font-weight: 700; font-style: normal; font-display: swap;
+      font-family: 'Sk-Modernist';
+      src: url('assets/Sk-Modernist-Regular.otf') format('opentype');
+      font-weight: 100 900; font-style: normal; font-display: swap;
     }
-    @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Semibold.otf') format('opentype');
-      font-weight: 600; font-style: normal; font-display: swap;
-    }
-    @font-face {
-      font-family: 'Tungsten';
-      src: url('assets/Tungsten-Medium.otf') format('opentype');
-      font-weight: 500; font-style: normal; font-display: swap;
-    }
+
 
     /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
-      color-scheme: light;
-      --bg:           oklch(0.965 0.004 110);
-      --surface:      oklch(0.942 0.005 110);
-      --surface-2:    oklch(0.918 0.007 110);
-      --border:       oklch(0.880 0.006 110);
-      --border-light: oklch(0.910 0.005 110);
-      --ink:          oklch(0.240 0.010 220);
-      --ink-dim:      oklch(0.300 0.008 215);
-      --muted:        oklch(0.440 0.012 110);
-      --lime:         oklch(0.770 0.206 151);
-      --lime-dk:      oklch(0.660 0.210 151);
+      color-scheme: dark;
+      --bg:           oklch(0.130 0.008 115);
+      --surface:      oklch(0.185 0.010 115);
+      --surface-2:    oklch(0.205 0.009 115);
+      --border:       oklch(0.240 0.008 115);
+      --border-light: oklch(0.265 0.007 115);
+      --ink:          oklch(0.920 0.004 110);
+      --ink-dim:      oklch(0.740 0.005 110);
+      --muted:        oklch(0.560 0.008 115);
+      --lime-50:      oklch(0.980 0.030 151);
+      --lime-100:     oklch(0.960 0.055 151);
+      --lime-200:     oklch(0.920 0.090 151);
+      --lime-300:     oklch(0.870 0.140 151);
+      --lime-400:     oklch(0.830 0.180 151);
+      --lime-500:     oklch(0.770 0.206 151);
+      --lime-600:     oklch(0.680 0.210 151);
+      --lime-700:     oklch(0.580 0.200 151);
+      --lime-800:     oklch(0.460 0.175 151);
+      --lime-900:     oklch(0.340 0.140 151);
+      --lime-950:     oklch(0.200 0.090 151);
+      --lime:         var(--lime-500);
+      --lime-dk:      var(--lime-600);
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
       --lime-grad:    linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155));
       --btn-ink:      oklch(0.18 0.015 145);
@@ -56,7 +58,7 @@
       --dark-ink:     oklch(0.920 0.004 110);
       --lime-text-dk: oklch(0.400 0.130 151);
       --radius-btn:   7px;
-      --font-d:       'Tungsten', 'Agrandir Wide', 'Urbanist', system-ui, sans-serif;
+      --font-d:       'Urbanist', system-ui, sans-serif;
       --font-b:       'Urbanist', system-ui, sans-serif;
       --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
       --ease-quint:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -156,14 +158,28 @@
     .nav__hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
     .nav__hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .nav__mobile {
-      display: none; position: absolute; top: 100%; left: 0; right: 0;
-      background: var(--dark-bg); border-bottom: 1px solid var(--dark-border);
+      display: block; position: absolute; top: 100%; left: 0; right: 0;
+      background: oklch(0.130 0.008 115 / 0.97);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border-bottom: 1px solid var(--dark-border);
       padding: 1rem var(--pad-x) 1.25rem;
+      opacity: 0; transform: translateY(-10px);
+      pointer-events: none; visibility: hidden;
+      transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), visibility 0s 0.28s;
     }
-    .nav__mobile.open { display: block; }
+    .nav__mobile.open {
+      opacity: 1; transform: translateY(0);
+      pointer-events: auto; visibility: visible;
+      transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), visibility 0s 0s;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav__mobile { transition: none; }
+    }
     .nav__mobile ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
     .nav__mobile a {
-      display: block; padding: 0.75rem 0;
+      display: flex; align-items: center;
+      min-height: 44px; padding: 0.75rem 0;
       font-size: 1rem; font-weight: 500; color: var(--dark-ink);
       border-bottom: 1px solid var(--dark-border);
     }
@@ -219,8 +235,8 @@
       background: var(--lime); flex-shrink: 0;
     }
     .cp-hero__h1 {
-      font-family: var(--font-d); font-weight: 700;
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-family: var(--font-d); font-weight: 200;
+      font-size: clamp(2rem, 4vw, 3.75rem);
       line-height: 1.06; letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--dark-ink);
@@ -228,8 +244,11 @@
       text-wrap: balance;
     }
     .cp-hero__h1 em {
-      font-style: normal;
-      color: var(--lime);
+      font-style: normal; font-weight: 550;
+      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .cp-hero__sub {
       font-size: clamp(1rem, 1.5vw, 1.15rem);
@@ -299,7 +318,7 @@
       font-variant-numeric: tabular-nums;
     }
     .calc-payroll-input:focus { outline: none; }
-    .calc-payroll-input::placeholder { font-size: 0.95rem; color: oklch(0.62 0.006 110); }
+    .calc-payroll-input::placeholder { font-size: 0.95rem; color: oklch(0.460 0.008 115); }
     .calc-period-toggle {
       display: flex; gap: 0.25rem;
       margin-top: 0.75rem;
@@ -318,8 +337,8 @@
     .calc-period-btn:hover { color: var(--ink); background: var(--surface-2); }
     .calc-period-btn.active {
       color: var(--lime-dk);
-      background: oklch(0.96 0.012 145);
-      border-color: oklch(0.88 0.040 145);
+      background: oklch(0.220 0.018 145);
+      border-color: oklch(0.420 0.080 151);
     }
 
     /* Worker count */
@@ -343,7 +362,7 @@
       font-variant-numeric: tabular-nums;
     }
     .calc-worker-input:focus { outline: none; }
-    .calc-worker-input::placeholder { font-size: 0.9rem; color: oklch(0.62 0.006 110); font-weight: 400; }
+    .calc-worker-input::placeholder { font-size: 0.9rem; color: oklch(0.460 0.008 115); font-weight: 400; }
     .calc-worker-suffix {
       padding: 0 1rem;
       font-size: 0.8rem; font-weight: 500; color: var(--muted);
@@ -367,11 +386,11 @@
       transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
     .calc-scenario-btn:hover {
-      border-color: oklch(0.88 0.040 145);
-      background: oklch(0.97 0.004 145);
+      border-color: oklch(0.420 0.080 151);
+      background: oklch(0.195 0.012 145);
     }
     .calc-scenario-btn.active {
-      background: oklch(0.96 0.012 145);
+      background: oklch(0.220 0.018 145);
       border-color: oklch(0.75 0.100 151);
       box-shadow: 0 0 0 1px oklch(0.75 0.100 151 / 0.3);
     }
@@ -384,7 +403,7 @@
       margin-top: 0.125rem;
     }
     .calc-scenario-btn__rate {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 700; text-transform: capitalize;
       font-size: 1.5rem; letter-spacing: 0.02em; line-height: 1;
       color: var(--muted);
       flex-shrink: 0; margin-left: 1rem;
@@ -420,7 +439,7 @@
       margin-bottom: 0.625rem;
     }
     .calc-out-primary__val {
-      font-family: 'Barlow Condensed', var(--font-d);
+      font-family: var(--font-d);
       font-weight: 700; font-style: italic;
       font-size: clamp(4rem, 8vw, 6.5rem);
       color: var(--lime);
@@ -457,7 +476,7 @@
       text-align: center;
     }
     .calc-out-card__val {
-      font-family: 'Barlow Condensed', var(--font-d);
+      font-family: var(--font-d);
       font-weight: 700; font-style: italic;
       font-size: clamp(1.6rem, 3vw, 2.25rem);
       color: var(--ink);
@@ -502,7 +521,7 @@
     }
     .calc-compare__row:last-child { border-bottom: none; }
     .calc-compare__row.active-row {
-      background: oklch(0.96 0.012 145);
+      background: oklch(0.220 0.018 145);
     }
     .calc-compare__name {
       font-size: 0.875rem; font-weight: 600; color: var(--ink);
@@ -518,7 +537,7 @@
       color: var(--lime-dk);
     }
     .calc-compare__fig {
-      font-family: 'Barlow Condensed', var(--font-d);
+      font-family: var(--font-d);
       font-weight: 700; font-style: italic;
       font-size: 1.375rem; color: var(--ink-dim);
       font-variant-numeric: tabular-nums;
@@ -570,18 +589,18 @@
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding-top: clamp(4rem, 8vw, 6rem);
-      padding-bottom: clamp(4rem, 8vw, 6rem);
+      padding-top: clamp(6rem, 10vw, 8rem);
+      padding-bottom: clamp(6rem, 10vw, 8rem);
     }
     .calc-stats__intro {
       text-align: center;
       margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
     }
     .calc-stats__h2 {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(1.8rem, 3.5vw, 2.75rem);
       letter-spacing: 0.03em; line-height: 1.1;
-      text-transform: uppercase; color: var(--ink);
+      color: var(--ink);
       margin-bottom: 0.75rem;
     }
     .calc-stats__sub {
@@ -604,14 +623,15 @@
       font-size: 0.8rem; color: var(--muted); font-weight: 400; line-height: 1.4;
     }
     .calc-stat-card__fig {
-      font-family: 'Barlow Condensed', var(--font-d);
-      font-weight: 700; font-style: italic;
+      font-family: var(--font-d);
+      font-weight: 200; font-style: normal;
       font-size: clamp(2.75rem, 5vw, 4.5rem);
       letter-spacing: -0.02em; line-height: 1;
-      color: var(--lime-dk);
+      color: var(--lime);
       font-variant-numeric: tabular-nums;
     }
     .calc-stat-card__fig--red { color: oklch(0.62 0.22 25); }
+    .calc-fig-sym { font-size: 0.55em; vertical-align: 0.15em; }
     .calc-stat-card__desc {
       font-size: 0.875rem; color: var(--ink-dim); line-height: 1.45; font-weight: 400;
     }
@@ -619,8 +639,8 @@
     /* ─── METHODOLOGY ───────────────────────────────────── */
     .calc-method {
       background: var(--bg);
-      padding-top: clamp(4rem, 8vw, 6rem);
-      padding-bottom: clamp(4rem, 8vw, 6rem);
+      padding-top: clamp(6rem, 10vw, 8rem);
+      padding-bottom: clamp(6rem, 10vw, 8rem);
     }
     .calc-method__inner {
       display: grid;
@@ -629,13 +649,19 @@
       align-items: start;
     }
     .calc-method__heading {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(2.4rem, 5vw, 2.5rem);
       letter-spacing: 0.03em; line-height: 1.1;
-      text-transform: uppercase; color: var(--ink);
+      color: var(--ink);
       position: sticky; top: 5rem;
     }
-    .calc-method__heading em { font-style: normal; color: var(--lime-dk); }
+    .calc-method__heading em {
+      font-style: normal; font-weight: 550;
+      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .calc-method__items {
       display: flex; flex-direction: column; gap: 0;
     }
@@ -650,7 +676,7 @@
       margin-bottom: 0.5rem;
     }
     .calc-method__item-num {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 700; text-transform: capitalize;
       font-size: 1.1rem; color: var(--lime-dk);
       letter-spacing: 0.04em; flex-shrink: 0;
     }
@@ -686,8 +712,8 @@
     .calc-faq {
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding-top: clamp(4rem, 8vw, 6rem);
-      padding-bottom: clamp(4rem, 8vw, 6rem);
+      padding-top: clamp(6rem, 10vw, 8rem);
+      padding-bottom: clamp(6rem, 10vw, 8rem);
     }
     .calc-faq__inner {
       display: grid;
@@ -696,10 +722,10 @@
       align-items: start;
     }
     .calc-faq__h2 {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(2.4rem, 5vw, 2.5rem);
       letter-spacing: 0.03em; line-height: 1.1;
-      text-transform: uppercase; color: var(--ink);
+      color: var(--ink);
       position: sticky; top: 5rem;
     }
     .calc-faq__list {
@@ -727,7 +753,7 @@
       transition: background 0.2s, transform 0.3s var(--ease-expo);
     }
     .faq-item__btn[aria-expanded="true"] .faq-item__icon {
-      background: oklch(0.96 0.012 145);
+      background: oklch(0.220 0.018 145);
       transform: rotate(45deg);
     }
     .faq-item__icon svg { display: block; }
@@ -749,8 +775,8 @@
     .calc-final-cta {
       background: var(--dark-bg);
       border-top: 1px solid var(--dark-border);
-      padding-top: clamp(5rem, 10vw, 8rem);
-      padding-bottom: clamp(5rem, 10vw, 8rem);
+      padding-top: clamp(7rem, 12vw, 10rem);
+      padding-bottom: clamp(7rem, 12vw, 10rem);
       position: relative;
       overflow: hidden;
       text-align: center;
@@ -765,14 +791,20 @@
     }
     .calc-final-cta > .container { position: relative; z-index: 1; }
     .calc-final-cta__h2 {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 200;
       font-size: clamp(2.2rem, 5vw, 4.5rem);
       letter-spacing: 0.03em; line-height: 1.08;
       text-transform: uppercase; color: var(--dark-ink);
       margin-bottom: 1rem;
       text-wrap: balance;
     }
-    .calc-final-cta__h2 em { font-style: normal; color: var(--lime); }
+    .calc-final-cta__h2 em {
+      font-style: normal; font-weight: 550;
+      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .calc-final-cta__sub {
       font-size: 1.05rem; color: var(--dark-dim);
       max-width: 48ch; margin-inline: auto;
@@ -895,6 +927,25 @@
       .calc-out-card__val { transition: none; }
       .faq-item__body { transition: none; }
     }
+
+    /* ─── URBANIST HEADINGS ─────────────────────────────── */
+    .cp-hero__h1,
+    .calc-stats__h2,
+    .calc-method__heading,
+    .calc-faq__h2,
+    .calc-final-cta__h2 {
+      letter-spacing: -0.025em;
+      text-transform: capitalize;
+    }
+    .cp-hero__h1 { font-weight: 200; letter-spacing: -0.03em; }
+    .calc-stats__h2,
+    .calc-method__heading,
+    .calc-faq__h2 {
+      font-weight: 200;
+      font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+      line-height: 1.1;
+    }
+    .calc-final-cta__h2 { font-weight: 200; }
   </style>
 </head>
 <body>
@@ -1112,7 +1163,7 @@
       <div class="calc-stat-card reveal">
         <p class="calc-stat-card__kicker">Ghost clocking &amp; time fraud</p>
         <div>
-          <p class="calc-stat-card__fig">£4,200</p>
+          <p class="calc-stat-card__fig"><span class="calc-fig-sym">£</span>4,200</p>
           <p class="calc-stat-card__desc">lost per worker, per year at 7.5% discrepancy</p>
         </div>
       </div>
@@ -1126,7 +1177,7 @@
       <div class="calc-stat-card reveal d2">
         <p class="calc-stat-card__kicker">Invoice overpayment recovery</p>
         <div>
-          <p class="calc-stat-card__fig calc-stat-card__fig--red">£0</p>
+          <p class="calc-stat-card__fig calc-stat-card__fig--red"><span class="calc-fig-sym">£</span>0</p>
           <p class="calc-stat-card__desc">recovered once invoices are approved and paid</p>
         </div>
       </div>
