@@ -1441,6 +1441,184 @@
     .ctap__card-title, .hub__card-title, .problem__lead,
     .bigpic__lbl { font-weight: 400; }
 
+    /* ─── WHAT IS PAYROLL PROTECT ────────────── */
+    .what {
+      padding-block: clamp(5.5rem, 11vw, 9rem);
+      background: var(--dark-bg);
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .what__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2.5rem, 5vw, 4rem);
+      text-align: center;
+    }
+    .what__claim {
+      font-family: var(--font-d);
+      font-size: clamp(1.625rem, 3.6vw, 2.75rem);
+      font-weight: 200;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      max-width: 34ch;
+      text-wrap: balance;
+      color: var(--dark-ink);
+    }
+    .what__claim em {
+      font-style: normal;
+      color: var(--lime);
+      font-weight: 400;
+    }
+    .what__body {
+      font-size: clamp(0.9375rem, 1.25vw, 1.0625rem);
+      color: var(--dark-muted);
+      line-height: 1.7;
+      max-width: 58ch;
+    }
+    .what__body strong { color: var(--dark-ink); font-weight: 600; }
+    .what__chain {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 900px;
+    }
+    .what__node {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s var(--ease-expo), transform 0.55s var(--ease-expo);
+    }
+    .what__chain.is-in > .what__node:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+    .what__chain.is-in > .what__node:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.22s; }
+    .what__chain.is-in > .what__node:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.44s; }
+    .what__chain.is-in > .what__node:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.66s; }
+    .what__node-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--dark-mid);
+      border: 1px solid var(--dark-border);
+      color: var(--dark-muted);
+    }
+    .what__node--verified .what__node-icon {
+      background: oklch(0.185 0.018 145 / 0.65);
+      border-color: oklch(0.770 0.206 151 / 0.50);
+      color: var(--lime);
+      box-shadow: 0 0 22px oklch(0.770 0.206 151 / 0.22);
+    }
+    .what__node-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--dark-ink);
+      white-space: nowrap;
+    }
+    .what__node-sub {
+      font-size: 0.7rem;
+      color: var(--dark-muted);
+      line-height: 1.4;
+      max-width: 11ch;
+    }
+    .what__node--verified .what__node-label { color: var(--lime); }
+    .what__connector {
+      flex: 1;
+      position: relative;
+      height: 2px;
+      margin-top: 29px;
+      overflow: hidden;
+    }
+    .what__connector::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--dark-border);
+    }
+    .what__conn-fill {
+      position: absolute;
+      top: 0; left: 0; height: 100%;
+      width: 0;
+      background: var(--lime);
+      transition: width 0.5s var(--ease-expo);
+      z-index: 1;
+    }
+    .what__chain.is-in > .what__connector:nth-child(2) .what__conn-fill {
+      width: 100%; transition-delay: 0.12s;
+    }
+    .what__chain.is-in > .what__connector:nth-child(4) .what__conn-fill {
+      width: 100%; transition-delay: 0.34s;
+    }
+    .what__chain.is-in > .what__connector:nth-child(6) .what__conn-fill {
+      width: 100%; transition-delay: 0.56s;
+    }
+    .what__conn-dot {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 10px var(--lime), 0 0 4px var(--lime);
+      z-index: 2;
+      opacity: 0;
+      left: -8px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .what__chain.is-in > .what__connector:nth-child(2) .what__conn-dot {
+        animation: whatDotFlow 1.6s var(--ease-quint) 0.18s infinite;
+      }
+      .what__chain.is-in > .what__connector:nth-child(4) .what__conn-dot {
+        animation: whatDotFlow 1.6s var(--ease-quint) 0.70s infinite;
+      }
+      .what__chain.is-in > .what__connector:nth-child(6) .what__conn-dot {
+        animation: whatDotFlow 1.6s var(--ease-quint) 1.22s infinite;
+      }
+    }
+    @keyframes whatDotFlow {
+      0%   { left: -8px; opacity: 0; }
+      8%   { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { left: calc(100% + 8px); opacity: 0; }
+    }
+    .what__sting {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--dark-muted);
+      letter-spacing: 0.01em;
+    }
+    @media (min-width: 681px) { .what__sting br { display: none; } }
+    @media (max-width: 680px) {
+      .what__chain {
+        flex-direction: column;
+        align-items: center;
+      }
+      .what__connector {
+        width: 2px;
+        height: 2rem;
+        flex: none;
+        margin-top: 0;
+        overflow: hidden;
+      }
+      .what__conn-fill {
+        width: 100%;
+        height: 0;
+        transition: height 0.5s var(--ease-expo);
+      }
+      .what__chain.is-in > .what__connector:nth-child(2) .what__conn-fill {
+        height: 100%; transition-delay: 0.12s;
+      }
+      .what__chain.is-in > .what__connector:nth-child(4) .what__conn-fill {
+        height: 100%; transition-delay: 0.34s;
+      }
+      .what__chain.is-in > .what__connector:nth-child(6) .what__conn-fill {
+        height: 100%; transition-delay: 0.56s;
+      }
+      .what__conn-dot { display: none; }
+      .what__node-label { white-space: normal; }
+    }
+
     /* ─── BIGGER PICTURE ────────────────────────────────── */
     .bigpic {
       background: var(--dark-bg);
@@ -3680,7 +3858,8 @@
 
     /* ─── NO-JS FALLBACK ─────────────────────────────────── */
     html.no-js .reveal, html.no-js .reveal-left, html.no-js .reveal-right, html.no-js .reveal-blur,
-    html.no-js .num2__fig, html.no-js .num2__desc, html.no-js .num2__kicker {
+    html.no-js .num2__fig, html.no-js .num2__desc, html.no-js .num2__kicker,
+    html.no-js .what__node {
       opacity: 1 !important; transform: none !important; filter: none !important;
     }
 
@@ -4091,6 +4270,86 @@
   </section>
 
   </div><!-- /stack-wrap 1a -->
+
+<section class="what" aria-labelledby="what-h">
+  <div class="container">
+    <div class="what__inner">
+
+      <p class="what__claim reveal" id="what-h">
+        PayRoll Protect Is The Verification Layer Between <em>Who Was On Site</em> And <em>What Gets Paid.</em>
+      </p>
+
+      <div class="what__chain">
+
+        <div class="what__node">
+          <div class="what__node-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="9" cy="6" r="3"/>
+              <path d="M3 20c0-3.3 2.7-6 6-6"/>
+              <path d="M16 9l2 2 3.5-3.5"/>
+            </svg>
+          </div>
+          <span class="what__node-label">Gate Check-In</span>
+          <span class="what__node-sub">Verified on entry</span>
+        </div>
+
+        <div class="what__connector" aria-hidden="true">
+          <span class="what__conn-fill"></span>
+          <span class="what__conn-dot"></span>
+        </div>
+
+        <div class="what__node">
+          <div class="what__node-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="3" width="12" height="18" rx="2"/>
+              <path d="M9 8h6M9 12h4M9 16h5"/>
+            </svg>
+          </div>
+          <span class="what__node-label">Attendance Logged</span>
+          <span class="what__node-sub">Live record created</span>
+        </div>
+
+        <div class="what__connector" aria-hidden="true">
+          <span class="what__conn-fill"></span>
+          <span class="what__conn-dot"></span>
+        </div>
+
+        <div class="what__node">
+          <div class="what__node-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 2v6h6M9 13h6M9 17h4"/>
+            </svg>
+          </div>
+          <span class="what__node-label">Invoice Arrives</span>
+          <span class="what__node-sub">Invoice submitted</span>
+        </div>
+
+        <div class="what__connector" aria-hidden="true">
+          <span class="what__conn-fill"></span>
+          <span class="what__conn-dot"></span>
+        </div>
+
+        <div class="what__node what__node--verified">
+          <div class="what__node-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2L4 6v6c0 5.1 3.5 9.7 8 11 4.5-1.3 8-5.9 8-11V6l-8-4z"/>
+              <path d="M9 12l2.5 2.5L16 9.5"/>
+            </svg>
+          </div>
+          <span class="what__node-label">Verified &amp; Approved</span>
+          <span class="what__node-sub">Matched before<br>payment</span>
+        </div>
+
+      </div>
+
+      <p class="what__sting reveal d2">No verified attendance.<br>No approved payment.</p>
+
+    </div>
+  </div>
+</section>
+
+
 
 
 <!-- BIGGER PICTURE -->
@@ -6395,6 +6654,18 @@
       resizeRaf = requestAnimationFrame(function () { setActive(current); });
     });
   })();
+  // ── WHAT CHAIN PIPELINE IO ────────────────────────────
+  (function() {
+    var chain = document.querySelector('.what__chain');
+    if (!chain) return;
+    var io = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) return;
+      chain.classList.add('is-in');
+      io.disconnect();
+    }, { threshold: 0.35 });
+    io.observe(chain);
+  })();
+
 </script>
 
 </body>
