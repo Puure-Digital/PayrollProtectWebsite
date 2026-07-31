@@ -5,15 +5,15 @@
   <meta name="color-scheme" content="dark">
   <script>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Labour Cost Exposure Calculator — PayRoll Protect</title>
-  <meta name="description" content="Calculate what unverified labour is costing your construction site. Enter your payroll spend, see your annual exposure across three industry discrepancy scenarios.">
+  <title>Payroll Exposure Audit — PayRoll Protect</title>
+  <meta name="description" content="Quantify your unverified labour risk in 60 seconds. Get a sector-benchmarked payroll exposure estimate and tailored report.">
   <link rel="icon" type="image/png" href="assets/favicon-light-sm.png">
   <link rel="apple-touch-icon" href="assets/favicon-light-sm.png">
   <link rel="icon" type="image/png" href="assets/favicon-dark-sm.png" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap"></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap"></noscript>
   <style>
     /* ─── FONTS ─────────────────────────────────────────── */
     @font-face {
@@ -21,19 +21,9 @@
       src: url('assets/Sk-Modernist-Regular.otf') format('opentype');
       font-weight: 100 900; font-style: normal; font-display: swap;
     }
-
-
     /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
       color-scheme: dark;
-      --bg:           oklch(0.130 0.008 115);
-      --surface:      oklch(0.185 0.010 115);
-      --surface-2:    oklch(0.205 0.009 115);
-      --border:       oklch(0.240 0.008 115);
-      --border-light: oklch(0.265 0.007 115);
-      --ink:          oklch(0.920 0.004 110);
-      --ink-dim:      oklch(0.740 0.005 110);
-      --muted:        oklch(0.560 0.008 115);
       --lime-50:      oklch(0.980 0.030 151);
       --lime-100:     oklch(0.960 0.055 151);
       --lime-200:     oklch(0.920 0.090 151);
@@ -50,74 +40,86 @@
       --lime-glow:    oklch(0.770 0.206 151 / 0.22);
       --lime-grad:    linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155));
       --btn-ink:      oklch(0.18 0.015 145);
-      --dark-bg:      oklch(0.130 0.008 115);
-      --dark-mid:     oklch(0.185 0.010 115);
-      --dark-border:  oklch(0.240 0.008 115);
+      --dark-bg:      oklch(0.170 0.008 115);
+      --dark-mid:     oklch(0.225 0.010 115);
+      --dark-border:  oklch(0.280 0.008 115);
       --dark-muted:   oklch(0.630 0.008 115);
       --dark-dim:     oklch(0.680 0.006 115);
       --dark-ink:     oklch(0.920 0.004 110);
-      --lime-text-dk: oklch(0.400 0.130 151);
+      --dark-deep:    oklch(0.203 0.008 115);
       --radius-btn:   7px;
       --font-d:       'Urbanist', system-ui, sans-serif;
       --font-b:       'Urbanist', system-ui, sans-serif;
       --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
       --ease-quint:   cubic-bezier(0.22, 1, 0.36, 1);
       --pad-x:        clamp(1.25rem, 5vw, 3rem);
+      --gap-section:  clamp(5rem, 10vw, 8rem);
+
+      /* Audit theme — aliases to canonical tokens */
+      --a-bg:           var(--dark-bg);
+      --a-surface:      var(--dark-mid);
+      --a-ink:          var(--dark-ink);
+      --a-ink-dim:      var(--dark-dim);
+      --a-ink-muted:    var(--dark-muted);
+      --a-border:       var(--dark-border);
+      --a-accent:       var(--lime);
+      --a-accent-faint: oklch(0.770 0.206 151 / 0.10);
+      --a-accent-border: oklch(0.770 0.206 151 / 0.35);
+      --a-lime-grad:    var(--lime-grad);
+      --a-lime-glow:    var(--lime-glow);
+      --a-btn-ink:      var(--btn-ink);
+      --a-error:        oklch(0.61 0.22 27);
+      --a-error-bg:     oklch(0.61 0.22 27 / 0.12);
     }
 
     /* ─── RESET ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
-    @media (prefers-reduced-motion: no-preference) {
-      html { scroll-behavior: smooth; }
-    }
+    [hidden] { display: none !important; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
     body {
-      background: var(--bg);
-      color: var(--ink);
+      background: var(--dark-bg);
+      color: var(--dark-ink);
       font-family: var(--font-b);
       line-height: 1.6;
+      letter-spacing: 0.01em;
       -webkit-font-smoothing: antialiased;
       font-optical-sizing: auto;
+      overscroll-behavior-y: none;
     }
-    a  { color: inherit; text-decoration: none; }
-    img, svg { display: block; }
-    button { cursor: pointer; border: none; background: none; font: inherit; }
+    a  { color: inherit; text-decoration: none; touch-action: manipulation; }
+    img, svg { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font: inherit; touch-action: manipulation; }
     :focus-visible {
       outline: 2px solid var(--lime);
       outline-offset: 3px;
       border-radius: 2px;
     }
-
-    /* ─── PAGE TRANSITION ───────────────────────────────── */
-    #page-veil {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--dark-bg);
-      pointer-events: none;
-      opacity: 1;
-      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    #page-veil.is-clear { opacity: 0; }
-    @media (prefers-reduced-motion: reduce) { #page-veil { display: none; } }
-
     .sr-only {
       position: absolute; width: 1px; height: 1px;
       padding: 0; margin: -1px; overflow: hidden;
       clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
     .container {
-      width: 100%;
-      max-width: 1200px;
-      margin-inline: auto;
-      padding-inline: var(--pad-x);
+      width: 100%; max-width: 1200px;
+      margin-inline: auto; padding-inline: var(--pad-x);
     }
+
+    /* ─── PAGE VEIL ─────────────────────────────────────── */
+    #page-veil {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--dark-bg); pointer-events: none;
+      opacity: 1; transition: opacity 0.42s var(--ease-expo);
+    }
+    #page-veil.is-clear { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { #page-veil { display: none; } }
 
     /* ─── SKIP LINK ─────────────────────────────────────── */
     .skip-link {
       position: absolute; top: -40px; left: 1rem; z-index: 9999;
-      background: var(--lime); color: var(--btn-ink);
+      background: var(--a-ink); color: #fff;
       padding: 0.5rem 1rem; border-radius: var(--radius-btn);
-      font-weight: 600; font-size: 0.875rem;
-      transition: top 0.2s;
+      font-weight: 600; font-size: 0.875rem; transition: top 0.2s;
     }
     .skip-link:focus { top: 1rem; }
 
@@ -125,30 +127,28 @@
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding-block: 0.75rem;
-      background: var(--dark-bg);
-      box-shadow: 0 1px 0 var(--dark-border);
       transition: background 0.35s var(--ease-quint), box-shadow 0.35s var(--ease-quint);
     }
-    .nav__inner {
-      display: flex; align-items: center; justify-content: space-between;
+    .nav.scrolled {
+      background: oklch(0.130 0.008 115 / 0.94);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      box-shadow: 0 1px 0 var(--dark-border);
     }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; }
     .nav__logo {
       display: flex; align-items: center; gap: 0.5rem;
       font-family: var(--font-b); font-weight: 700; font-size: 1.1rem;
       letter-spacing: -0.01em; color: var(--dark-ink);
     }
-    .nav__links {
-      display: flex; align-items: center; gap: 2rem; list-style: none;
-    }
+    .nav__links { display: flex; align-items: center; gap: 2rem; list-style: none; }
     .nav__links a {
-      font-size: 0.875rem; font-weight: 500; color: var(--dark-muted);
-      transition: color 0.15s;
+      font-size: 0.875rem; font-weight: 500; color: var(--dark-muted); transition: color 0.15s;
     }
     .nav__links a:hover { color: var(--dark-ink); }
     .nav__hamburger {
       display: none; flex-direction: column; gap: 5px;
-      width: 28px; cursor: pointer; padding: 8px;
-      background: none; border: none;
+      width: 28px; cursor: pointer; padding: 8px; background: none; border: none;
     }
     .nav__hamburger span {
       display: block; height: 2px; background: var(--dark-ink);
@@ -173,799 +173,1046 @@
       pointer-events: auto; visibility: visible;
       transition: opacity 0.28s var(--ease-expo), transform 0.28s var(--ease-expo), visibility 0s 0s;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .nav__mobile { transition: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { .nav__mobile { transition: none; } }
     .nav__mobile ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
     .nav__mobile a {
-      display: flex; align-items: center;
-      min-height: 44px; padding: 0.75rem 0;
+      display: flex; align-items: center; min-height: 44px; padding: 0.75rem 0;
       font-size: 1rem; font-weight: 500; color: var(--dark-ink);
       border-bottom: 1px solid var(--dark-border);
+      transition: color 0.15s;
     }
+    .nav__mobile a:hover { color: var(--lime); }
     .btn-cta {
       font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
       background: var(--lime-grad); color: var(--btn-ink);
       padding: 0.6rem 1.375rem; border-radius: var(--radius-btn);
-      transition: filter 0.15s, transform 0.2s var(--ease-expo);
-      white-space: nowrap;
+      transition: filter 0.15s, transform 0.2s var(--ease-expo); white-space: nowrap;
     }
     .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
     .btn-cta:active { transform: translateY(0); }
 
-    /* ─── PAGE HERO ─────────────────────────────────────── */
-    .cp-hero {
-      background: var(--dark-bg);
-      padding-top: clamp(7rem, 12vw, 10rem);
+    /* ─── AUDIT HERO ─────────────────────────────────────── */
+    .audit-hero {
+      background: var(--a-bg);
+      padding-top: clamp(7rem, 13vw, 10rem);
       padding-bottom: clamp(3.5rem, 6vw, 5rem);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden; text-align: center;
     }
-    .cp-hero::before {
-      content: '';
-      position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(to right, var(--dark-border) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--dark-border) 1px, transparent 1px);
-      background-size: 5.5rem 4.5rem;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%);
-      opacity: 0.55;
-    }
-    .cp-hero::after {
-      content: '';
-      position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background: radial-gradient(ellipse 70% 60% at 50% 100%,
-        oklch(0.770 0.206 151 / 0.14) 0%,
-        transparent 70%
-      );
-    }
-    .cp-hero > .container { position: relative; z-index: 1; }
-    .cp-hero__eyebrow {
+    .audit-hero > .container { position: relative; z-index: 1; }
+    .audit-hero__eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.3rem 0.875rem; border-radius: 999px;
-      border: 1px solid oklch(0.770 0.206 151 / 0.35);
-      background: oklch(0.770 0.206 151 / 0.10);
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--lime);
-      margin-bottom: 1.5rem;
-    }
-    .cp-hero__eyebrow-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--lime); flex-shrink: 0;
-    }
-    .cp-hero__h1 {
-      font-family: var(--font-d); font-weight: 200;
-      font-size: clamp(2rem, 4vw, 3.75rem);
-      line-height: 1.06; letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: var(--dark-ink);
-      margin-bottom: 1.25rem;
-      text-wrap: balance;
-    }
-    .cp-hero__h1 em {
-      font-style: normal; font-weight: 550;
-      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .cp-hero__sub {
-      font-size: clamp(1rem, 1.5vw, 1.15rem);
-      color: var(--dark-dim);
-      line-height: 1.65;
-      max-width: 52ch;
-    }
-
-    /* ─── MAIN CALCULATOR SECTION ───────────────────────── */
-    .calc-page {
-      background: var(--bg);
-      padding-top: clamp(3.5rem, 7vw, 5.5rem);
-      padding-bottom: clamp(4rem, 8vw, 7rem);
-    }
-    .calc-page__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(2rem, 4vw, 4rem);
-      align-items: start;
-    }
-
-    /* ── Inputs panel ── */
-    .calc-inputs {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: clamp(1.75rem, 3vw, 2.5rem);
-      position: sticky;
-      top: calc(3.5rem + 20px);
-    }
-    .calc-inputs__label {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 0.625rem;
-      display: block;
-    }
-    .calc-inputs__section {
-      margin-bottom: 2rem;
-    }
-    .calc-inputs__section:last-child { margin-bottom: 0; }
-
-    .calc-payroll-wrap {
-      display: flex; align-items: stretch;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      background: var(--bg);
-      overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .calc-payroll-wrap:focus-within {
-      border-color: var(--lime);
-      box-shadow: 0 0 0 3px var(--lime-glow);
-    }
-    .calc-currency {
-      padding: 0 0.875rem;
-      font-family: var(--font-b); font-size: 1.25rem; font-weight: 600;
-      color: var(--ink-dim); background: var(--surface);
-      display: flex; align-items: center;
-      border-right: 1px solid var(--border);
-      user-select: none; flex-shrink: 0;
-    }
-    .calc-payroll-input {
-      flex: 1; min-width: 0;
-      font-family: var(--font-b); font-size: 1.25rem; font-weight: 600;
-      color: var(--ink); background: transparent;
-      border: none; padding: 0.8rem 0.875rem;
-      font-variant-numeric: tabular-nums;
-    }
-    .calc-payroll-input:focus { outline: none; }
-    .calc-payroll-input::placeholder { font-size: 0.95rem; color: oklch(0.460 0.008 115); }
-    .calc-period-toggle {
-      display: flex; gap: 0.25rem;
-      margin-top: 0.75rem;
-    }
-    .calc-period-btn {
-      flex: 1;
-      padding: 0.5rem 0.75rem;
-      font-family: var(--font-b); font-size: 0.8rem; font-weight: 600;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      transition: color 0.15s, background 0.15s, border-color 0.15s;
-      letter-spacing: 0.02em;
-    }
-    .calc-period-btn:hover { color: var(--ink); background: var(--surface-2); }
-    .calc-period-btn.active {
-      color: var(--lime-dk);
-      background: oklch(0.220 0.018 145);
-      border-color: oklch(0.420 0.080 151);
-    }
-
-    /* Worker count */
-    .calc-worker-wrap {
-      display: flex; align-items: stretch;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      background: var(--bg);
-      overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .calc-worker-wrap:focus-within {
-      border-color: var(--lime);
-      box-shadow: 0 0 0 3px var(--lime-glow);
-    }
-    .calc-worker-input {
-      flex: 1; min-width: 0;
-      font-family: var(--font-b); font-size: 1.1rem; font-weight: 600;
-      color: var(--ink); background: transparent;
-      border: none; padding: 0.75rem 1rem;
-      font-variant-numeric: tabular-nums;
-    }
-    .calc-worker-input:focus { outline: none; }
-    .calc-worker-input::placeholder { font-size: 0.9rem; color: oklch(0.460 0.008 115); font-weight: 400; }
-    .calc-worker-suffix {
-      padding: 0 1rem;
-      font-size: 0.8rem; font-weight: 500; color: var(--muted);
-      background: var(--surface);
-      border-left: 1px solid var(--border);
-      display: flex; align-items: center;
-      white-space: nowrap;
-    }
-
-    /* Scenario buttons */
-    .calc-scenarios {
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .calc-scenario-btn {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.875rem 1rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      text-align: left;
-      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-    }
-    .calc-scenario-btn:hover {
-      border-color: oklch(0.420 0.080 151);
-      background: oklch(0.195 0.012 145);
-    }
-    .calc-scenario-btn.active {
-      background: oklch(0.220 0.018 145);
-      border-color: oklch(0.75 0.100 151);
-      box-shadow: 0 0 0 1px oklch(0.75 0.100 151 / 0.3);
-    }
-    .calc-scenario-btn__label {
-      font-size: 0.875rem; font-weight: 600; color: var(--ink);
-      line-height: 1.2;
-    }
-    .calc-scenario-btn__desc {
-      font-size: 0.75rem; color: var(--muted);
-      margin-top: 0.125rem;
-    }
-    .calc-scenario-btn__rate {
-      font-family: var(--font-d); font-weight: 700; text-transform: capitalize;
-      font-size: 1.5rem; letter-spacing: 0.02em; line-height: 1;
-      color: var(--muted);
-      flex-shrink: 0; margin-left: 1rem;
-    }
-    .calc-scenario-btn.active .calc-scenario-btn__rate { color: var(--lime-dk); }
-
-    /* ── Outputs panel ── */
-    .calc-outputs {
-      display: flex; flex-direction: column; gap: 1rem;
-    }
-
-    /* Primary output */
-    .calc-out-primary {
-      background: var(--dark-bg);
-      border: 1px solid var(--dark-border);
-      border-radius: 14px;
-      padding: clamp(2rem, 3.5vw, 2.75rem);
-      position: relative;
-      overflow: hidden;
-    }
-    .calc-out-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 80% 60% at 50% 120%,
-        oklch(0.770 0.206 151 / 0.18) 0%,
-        transparent 70%
-      );
-    }
-    .calc-out-primary__eyebrow {
+      border: 1px solid var(--a-accent-border);
+      background: var(--a-accent-faint);
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--dark-muted);
-      margin-bottom: 0.625rem;
+      margin-bottom: 1.5rem;
     }
-    .calc-out-primary__val {
-      font-family: var(--font-d);
-      font-weight: 700; font-style: italic;
-      font-size: clamp(4rem, 8vw, 6.5rem);
-      color: var(--lime);
-      line-height: 0.9;
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
-      margin-bottom: 0.375rem;
-      transition: color 0.25s;
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 3px oklch(0.770 0.206 151 / 0.28); }
+      50%       { box-shadow: 0 0 0 8px oklch(0.770 0.206 151 / 0); }
     }
-    .calc-out-primary__val.is-zero { color: var(--dark-muted); }
-    .calc-out-primary__lbl {
-      font-size: 0.8rem; font-weight: 500; color: var(--dark-dim);
+    .audit-hero__dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--lime); flex-shrink: 0;
+      box-shadow: 0 0 0 3px var(--lime-glow);
+      animation: badgePulse 2.4s ease-in-out 1.5s infinite;
+      animation-play-state: paused;
     }
-    .calc-out-primary__scenario-tag {
-      display: inline-flex; align-items: center; gap: 0.375rem;
-      margin-top: 1.25rem;
-      padding: 0.3rem 0.75rem; border-radius: 999px;
-      background: oklch(0.770 0.206 151 / 0.12);
-      border: 1px solid oklch(0.770 0.206 151 / 0.25);
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--lime);
+    .audit-hero__dot.is-animating { animation-play-state: running; }
+    .audit-hero__h1 {
+      font-family: var(--font-d); font-weight: 300; text-transform: capitalize;
+      font-size: clamp(2rem, 9vw, 4.25rem);
+      line-height: 1.08; letter-spacing: -0.025em;
+      color: var(--a-ink); text-wrap: balance; margin-bottom: 1.125rem;
     }
-
-    /* Secondary outputs row */
-    .calc-out-secondary {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
+    .audit-hero__h1 span { color: var(--lime); font-weight: 500; }
+    .audit-hero__sub {
+      font-size: clamp(1rem, 1.6vw, 1.125rem);
+      color: var(--a-ink-muted); line-height: 1.65;
+      max-width: 52ch; margin-inline: auto; margin-bottom: 2rem;
     }
-    .calc-out-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1rem;
-      text-align: center;
-    }
-    .calc-out-card__val {
-      font-family: var(--font-d);
-      font-weight: 700; font-style: italic;
-      font-size: clamp(1.6rem, 3vw, 2.25rem);
-      color: var(--ink);
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      margin-bottom: 0.375rem;
-      transition: color 0.25s;
-    }
-    .calc-out-card.is-zero .calc-out-card__val { color: var(--muted); }
-    .calc-out-card__lbl {
-      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--muted);
-    }
-    .calc-out-card--per-worker {
-      display: none;
-    }
-    .calc-out-card--per-worker.visible {
-      display: block;
-    }
-
-    /* Scenario comparison */
-    .calc-compare {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .calc-compare__head {
-      padding: 1rem 1.25rem;
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--muted);
-      border-bottom: 1px solid var(--border);
-    }
-    .calc-compare__row {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 1rem;
-      padding: 0.875rem 1.25rem;
-      align-items: center;
-      border-bottom: 1px solid var(--border-light);
-      transition: background 0.15s;
-    }
-    .calc-compare__row:last-child { border-bottom: none; }
-    .calc-compare__row.active-row {
-      background: oklch(0.220 0.018 145);
-    }
-    .calc-compare__name {
-      font-size: 0.875rem; font-weight: 600; color: var(--ink);
-    }
-    .calc-compare__rate-badge {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em;
-      color: var(--muted);
-      background: var(--surface-2);
-      padding: 0.2rem 0.5rem; border-radius: 4px;
-    }
-    .calc-compare__row.active-row .calc-compare__rate-badge {
-      background: oklch(0.770 0.206 151 / 0.15);
-      color: var(--lime-dk);
-    }
-    .calc-compare__fig {
-      font-family: var(--font-d);
-      font-weight: 700; font-style: italic;
-      font-size: 1.375rem; color: var(--ink-dim);
-      font-variant-numeric: tabular-nums;
-      text-align: right; min-width: 6rem;
-    }
-    .calc-compare__row.active-row .calc-compare__fig { color: var(--lime-dk); }
-    .calc-compare__empty {
-      padding: 1.25rem;
-      font-size: 0.85rem; color: var(--muted); text-align: center;
-    }
-
-    /* Source note */
-    .calc-page__source {
-      margin-top: 1.75rem;
-      font-size: 0.75rem; color: var(--muted); line-height: 1.65;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-    }
-    .calc-page__source a { text-decoration: underline; text-underline-offset: 2px; color: inherit; }
-    .calc-page__source a:hover { color: var(--ink); }
-
-    .calc-page__cta {
-      margin-top: 1.5rem;
-      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
-    }
-    .btn-primary {
-      font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime-grad); color: var(--btn-ink);
-      padding: 0.9rem 2.125rem; border-radius: var(--radius-btn);
-      position: relative; overflow: hidden;
-      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
-      display: inline-flex; align-items: center;
-    }
-    .btn-primary:hover {
-      filter: brightness(0.93); transform: translateY(-2px);
-      box-shadow: 0 6px 22px var(--lime-glow);
-    }
-    .btn-primary:active { transform: translateY(0); filter: brightness(0.88); }
-    .btn-ghost {
-      font-size: 0.9rem; font-weight: 500; color: var(--muted);
-      display: inline-flex; align-items: center; gap: 0.375rem;
-      padding: 0.5rem 0; min-height: 44px;
-      transition: color 0.15s;
-    }
-    .btn-ghost:hover { color: var(--ink); }
-
-    /* ─── STATS STRIP ───────────────────────────────────── */
-    .calc-stats {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding-top: clamp(6rem, 10vw, 8rem);
-      padding-bottom: clamp(6rem, 10vw, 8rem);
-    }
-    .calc-stats__intro {
-      text-align: center;
-      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
-    }
-    .calc-stats__h2 {
-      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
-      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
-      letter-spacing: 0.03em; line-height: 1.1;
-      color: var(--ink);
-      margin-bottom: 0.75rem;
-    }
-    .calc-stats__sub {
-      font-size: 1rem; color: var(--muted); max-width: 48ch; margin-inline: auto;
-    }
-    .calc-stats__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-    .calc-stat-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.75rem;
-      min-height: 210px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .calc-stat-card__kicker {
-      font-size: 0.8rem; color: var(--muted); font-weight: 400; line-height: 1.4;
-    }
-    .calc-stat-card__fig {
-      font-family: var(--font-d);
-      font-weight: 200; font-style: normal;
-      font-size: clamp(2.75rem, 5vw, 4.5rem);
-      letter-spacing: -0.02em; line-height: 1;
-      color: var(--lime);
-      font-variant-numeric: tabular-nums;
-    }
-    .calc-stat-card__fig--red { color: oklch(0.62 0.22 25); }
-    .calc-fig-sym { font-size: 0.55em; vertical-align: 0.15em; }
-    .calc-stat-card__desc {
-      font-size: 0.875rem; color: var(--ink-dim); line-height: 1.45; font-weight: 400;
-    }
-
-    /* ─── METHODOLOGY ───────────────────────────────────── */
-    .calc-method {
-      background: var(--bg);
-      padding-top: clamp(6rem, 10vw, 8rem);
-      padding-bottom: clamp(6rem, 10vw, 8rem);
-    }
-    .calc-method__inner {
-      display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: clamp(3rem, 5vw, 6rem);
-      align-items: start;
-    }
-    .calc-method__heading {
-      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
-      font-size: clamp(2.4rem, 5vw, 2.5rem);
-      letter-spacing: 0.03em; line-height: 1.1;
-      color: var(--ink);
-      position: sticky; top: 5rem;
-    }
-    .calc-method__heading em {
-      font-style: normal; font-weight: 550;
-      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .calc-method__items {
-      display: flex; flex-direction: column; gap: 0;
-    }
-    .calc-method__item {
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .calc-method__item:first-child { padding-top: 0; }
-    .calc-method__item:last-child { border-bottom: none; padding-bottom: 0; }
-    .calc-method__item-head {
-      display: flex; align-items: baseline; gap: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .calc-method__item-num {
-      font-family: var(--font-d); font-weight: 700; text-transform: capitalize;
-      font-size: 1.1rem; color: var(--lime-dk);
-      letter-spacing: 0.04em; flex-shrink: 0;
-    }
-    .calc-method__item-title {
-      font-size: 0.975rem; font-weight: 600; color: var(--ink);
-    }
-    .calc-method__item-body {
-      font-size: 0.9rem; color: var(--ink-dim); line-height: 1.65;
-      padding-left: calc(1.1rem + 1rem);
-    }
-    .calc-method__sources {
-      margin-top: 2.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-    }
-    .calc-method__sources-title {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 0.75rem;
-    }
-    .calc-method__sources ul {
-      list-style: none; display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .calc-method__sources li {
-      font-size: 0.8rem; color: var(--muted); line-height: 1.5;
-    }
-    .calc-method__sources a { text-decoration: underline; text-underline-offset: 2px; }
-    .calc-method__sources a:hover { color: var(--ink); }
-
-    /* ─── FAQ ───────────────────────────────────────────── */
-    .calc-faq {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding-top: clamp(6rem, 10vw, 8rem);
-      padding-bottom: clamp(6rem, 10vw, 8rem);
-    }
-    .calc-faq__inner {
-      display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: clamp(3rem, 5vw, 6rem);
-      align-items: start;
-    }
-    .calc-faq__h2 {
-      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
-      font-size: clamp(2.4rem, 5vw, 2.5rem);
-      letter-spacing: 0.03em; line-height: 1.1;
-      color: var(--ink);
-      position: sticky; top: 5rem;
-    }
-    .calc-faq__list {
-      display: flex; flex-direction: column; gap: 0;
-    }
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-    }
-    .faq-item:first-child { border-top: 1px solid var(--border); }
-    .faq-item__btn {
-      width: 100%; text-align: left;
-      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-      padding: 1.25rem 0;
-      font-size: 0.975rem; font-weight: 600; color: var(--ink);
-      background: none; border: none; cursor: pointer;
-      transition: color 0.15s;
-    }
-    .faq-item__btn:hover { color: var(--lime-dk); }
-    .faq-item__icon {
-      flex-shrink: 0;
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--surface-2);
+    .audit-trust {
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.3s var(--ease-expo);
+      gap: 0.5rem 1.5rem; flex-wrap: wrap;
     }
-    .faq-item__btn[aria-expanded="true"] .faq-item__icon {
-      background: oklch(0.220 0.018 145);
-      transform: rotate(45deg);
+    .audit-trust__item {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--a-ink-muted);
     }
-    .faq-item__icon svg { display: block; }
-    .faq-item__body {
-      display: grid; grid-template-rows: 0fr;
-      transition: grid-template-rows 0.32s var(--ease-expo);
+    .audit-trust__check {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--lime); border: 1px solid var(--lime);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .faq-item__body.open { grid-template-rows: 1fr; }
-    .faq-item__body-inner {
-      overflow: hidden;
-    }
-    .faq-item__body-inner p {
-      font-size: 0.9rem; color: var(--ink-dim); line-height: 1.7;
-      padding-bottom: 1.25rem;
-    }
-    .faq-item__body-inner p + p { margin-top: 0.75rem; }
 
-    /* ─── FINAL CTA ─────────────────────────────────────── */
-    .calc-final-cta {
-      background: var(--dark-bg);
-      border-top: 1px solid var(--dark-border);
-      padding-top: clamp(7rem, 12vw, 10rem);
-      padding-bottom: clamp(7rem, 12vw, 10rem);
-      position: relative;
-      overflow: hidden;
-      text-align: center;
+    /* ─── AUDIT CONTENT AREA ─────────────────────────────── */
+    .audit-main {
+      background: var(--a-bg);
+      padding-top: clamp(3rem, 6vw, 4.5rem);
+      padding-bottom: clamp(4rem, 8vw, 7rem);
+      min-height: 60vh;
     }
-    .calc-final-cta::before {
+
+    /* ─── FORM CARD ──────────────────────────────────────── */
+    .audit-card-wrap {
+      max-width: 640px; margin-inline: auto;
+      position: relative; isolation: isolate;
+    }
+    .audit-card-wrap::before {
       content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 60% 80% at 50% 100%,
-        oklch(0.770 0.206 151 / 0.16) 0%,
-        transparent 70%
-      );
+      position: absolute;
+      inset: -60px -80px;
+      z-index: -1;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, oklch(0.770 0.206 151 / 0.55) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .calc-final-cta > .container { position: relative; z-index: 1; }
-    .calc-final-cta__h2 {
-      font-family: var(--font-d); font-weight: 200;
-      font-size: clamp(2.2rem, 5vw, 4.5rem);
-      letter-spacing: 0.03em; line-height: 1.08;
-      text-transform: uppercase; color: var(--dark-ink);
-      margin-bottom: 1rem;
-      text-wrap: balance;
+    .audit-card {
+      background: var(--a-surface);
+      border: 1px solid var(--a-border);
+      border-radius: 14px;
+      padding: clamp(1.75rem, 4vw, 2.75rem);
+      box-shadow: 0 2px 24px oklch(0 0 0 / 0.32);
     }
-    .calc-final-cta__h2 em {
-      font-style: normal; font-weight: 550;
-      background: linear-gradient(135deg, oklch(0.95 0.004 220) 0%, oklch(0.72 0.006 240) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+
+    /* ─── STEP PROGRESS ──────────────────────────────────── */
+    .audit-progress { display: flex; align-items: center; margin-bottom: 2.25rem; }
+    .audit-progress__step {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem; flex-shrink: 0;
     }
-    .calc-final-cta__sub {
-      font-size: 1.05rem; color: var(--dark-dim);
-      max-width: 48ch; margin-inline: auto;
-      line-height: 1.65; margin-bottom: 2.5rem;
+    .audit-progress__circle {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700;
+      background: var(--a-border); color: var(--a-ink-muted);
+      border: 2px solid var(--a-border);
+      transition: background 0.3s var(--ease-expo), color 0.3s var(--ease-expo), border-color 0.3s;
     }
-    .calc-final-cta__actions {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    .audit-progress__step.is-active .audit-progress__circle,
+    .audit-progress__step.is-done .audit-progress__circle {
+      background: var(--lime-grad); color: var(--btn-ink); border-color: transparent;
     }
-    .btn-pilot {
+    .audit-progress__label {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--a-ink-muted); white-space: nowrap;
+    }
+    .audit-progress__step.is-active .audit-progress__label,
+    .audit-progress__step.is-done .audit-progress__label { color: var(--lime); }
+    .audit-progress__line {
+      flex: 1; height: 2px; background: var(--a-border);
+      margin: 0 0.5rem; margin-bottom: 1.2rem;
+      position: relative; overflow: hidden;
+    }
+    .audit-progress__line-fill {
+      position: absolute; inset: 0; right: 100%;
+      background: var(--a-lime-grad);
+      transition: right 0.5s var(--ease-expo);
+    }
+    .audit-progress__line.is-done .audit-progress__line-fill { right: 0; }
+
+    /* ─── STEP HEADER ─────────────────────────────────────── */
+    .audit-step__head { margin-bottom: 1.75rem; }
+    .audit-step__title {
+      font-family: var(--font-d); font-weight: 500; text-transform: capitalize;
+      font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+      line-height: 1.2; letter-spacing: -0.025em;
+      color: var(--a-ink); margin-bottom: 0.375rem;
+    }
+    .audit-step__sub { font-size: 0.875rem; color: var(--a-ink-muted); line-height: 1.5; }
+
+    /* ─── FORM FIELDS ────────────────────────────────────── */
+    .field { margin-bottom: 1.25rem; }
+    .field__label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--a-ink-dim); margin-bottom: 0.4rem; letter-spacing: 0.01em;
+    }
+    .field__input, .field__select {
+      width: 100%; padding: 0.75rem 1rem;
+      font-family: var(--font-b); font-size: 1rem; font-weight: 500;
+      color: var(--a-ink); background: var(--a-bg);
+      border: 1.5px solid var(--a-border); border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .field__input::placeholder { color: var(--a-ink-muted); font-weight: 400; }
+    .field__input:focus, .field__select:focus {
+      outline: none;
+      border-color: var(--a-accent);
+      box-shadow: 0 0 0 3px var(--a-lime-glow);
+    }
+    .field__select-wrap { position: relative; }
+    .field__select-wrap::after {
+      content: ''; pointer-events: none;
+      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--a-ink-muted);
+    }
+    .field__select { padding-right: 2.5rem; cursor: pointer; }
+    .field__input.has-error, .field__select.has-error { border-color: var(--a-error); }
+    .field__error {
+      display: none; font-size: 0.75rem; color: var(--a-error);
+      margin-top: 0.35rem; font-weight: 500;
+    }
+    .field__error.is-visible { display: block; }
+
+    /* Currency input */
+    .field__currency-wrap {
+      display: flex; align-items: stretch;
+      border: 1.5px solid var(--a-border); border-radius: 8px;
+      background: var(--a-bg); overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field__currency-wrap:focus-within {
+      border-color: var(--a-accent);
+      box-shadow: 0 0 0 3px var(--a-lime-glow);
+    }
+    .field__currency-wrap.has-error { border-color: var(--a-error); }
+    .field__currency-sym {
+      padding: 0 0.875rem; flex-shrink: 0;
+      font-size: 1rem; font-weight: 600; color: var(--a-ink-muted);
+      background: var(--a-border); display: flex; align-items: center;
+      border-right: 1.5px solid var(--dark-border); user-select: none;
+    }
+    .field__currency-input {
+      flex: 1; min-width: 0; border: none; background: transparent;
+      padding: 0.75rem 0.875rem;
       font-family: var(--font-b); font-size: 1rem; font-weight: 600;
-      background: var(--lime-grad); color: var(--btn-ink);
-      padding: 0.95rem 2.25rem; border-radius: var(--radius-btn);
-      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      color: var(--a-ink); font-variant-numeric: tabular-nums;
+    }
+    .field__currency-input:focus { outline: none; }
+    .field__currency-input::placeholder { color: var(--a-ink-muted); font-weight: 400; }
+
+    /* ─── WORKER SPLIT ───────────────────────────────────── */
+    .split-fields { display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 0.625rem; }
+    .split-row { display: grid; grid-template-columns: 1fr auto; gap: 0.625rem; align-items: center; }
+    .split-row__label { font-size: 0.8rem; font-weight: 500; color: var(--a-ink-dim); }
+    .split-input-wrap {
+      display: flex; align-items: stretch;
+      border: 1.5px solid var(--a-border); border-radius: 8px;
+      background: var(--a-bg); width: 90px; min-height: 44px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .split-input-wrap:focus-within {
+      border-color: var(--a-accent); box-shadow: 0 0 0 3px var(--a-lime-glow);
+    }
+    .split-input {
+      flex: 1; min-width: 0; width: 0; border: none; background: transparent;
+      padding: 0.55rem 0.375rem 0.55rem 0.625rem;
+      font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
+      color: var(--a-ink); font-variant-numeric: tabular-nums; text-align: right;
+    }
+    .split-input:focus { outline: none; }
+    .split-pct {
+      padding: 0 0.5rem 0 0.125rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--a-ink-muted);
+      display: flex; align-items: center; user-select: none;
+    }
+    .split-total {
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.4rem 0.75rem; border-radius: 6px;
+      background: var(--a-accent-faint); color: var(--a-ink);
       display: inline-flex; align-items: center;
+    }
+    .split-total.is-error { background: var(--a-error-bg); color: var(--a-error); }
+
+    /* ─── STEP NAV ───────────────────────────────────────── */
+    .audit-step-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2rem; gap: 1rem;
+    }
+    .btn-back {
+      font-size: 0.9rem; font-weight: 600; color: var(--a-ink-muted);
+      padding: 0.7rem 1.25rem; border-radius: var(--radius-btn);
+      border: 1.5px solid var(--a-border); background: transparent;
+      transition: color 0.15s, border-color 0.15s; min-height: 44px;
+    }
+    .btn-back:hover { color: var(--a-ink); border-color: var(--a-ink-dim); }
+    .btn-back[hidden] { display: none; }
+    .btn-next {
+      font-family: var(--font-b); font-size: 0.95rem; font-weight: 600; text-transform: capitalize;
+      background: var(--a-lime-grad); color: var(--a-btn-ink);
+      padding: 0.75rem 1.75rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.2s var(--ease-expo), box-shadow 0.2s;
+      min-height: 44px; margin-left: auto;
+    }
+    .btn-next:hover {
+      filter: brightness(0.93); transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--a-lime-glow);
+    }
+    .btn-next:active { transform: translateY(0); }
+
+    /* ─── LOADING SCREEN ─────────────────────────────────── */
+    .audit-loading {
+      background: var(--a-bg);
+      padding-top: clamp(3rem, 6vw, 5rem);
+      padding-bottom: clamp(4rem, 8vw, 7rem);
+      min-height: 60vh; display: flex; align-items: center;
+    }
+    .audit-loading__inner { max-width: 480px; margin-inline: auto; text-align: center; }
+    .audit-loading__icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--a-accent-faint); color: var(--lime);
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 1.75rem;
+    }
+    .audit-loading__title {
+      font-family: var(--font-d); font-weight: 500; font-size: 1.35rem;
+      color: var(--a-ink); letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .audit-loading__sub { font-size: 0.875rem; color: var(--a-ink-muted); margin-bottom: 2rem; }
+    .audit-loading__bar-track {
+      height: 4px; background: var(--a-border); border-radius: 999px;
+      overflow: hidden; margin-bottom: 1.75rem;
+    }
+    .audit-loading__bar-fill {
+      height: 100%; width: 0; border-radius: 999px;
+      background: var(--a-lime-grad);
+      transition: width 3.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @media (prefers-reduced-motion: reduce) { .audit-loading__bar-fill { transition: none; } }
+    .audit-loading__steps { display: flex; flex-direction: column; gap: 0.625rem; text-align: left; }
+    .audit-loading__step {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.85rem; color: var(--a-ink-muted);
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 0.4s var(--ease-expo), transform 0.4s var(--ease-expo), color 0.3s;
+    }
+    .audit-loading__step.is-visible { opacity: 1; transform: translateY(0); }
+    .audit-loading__step.is-done { color: var(--a-ink); font-weight: 500; }
+    .audit-loading__step-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      background: var(--a-border); transition: background 0.3s;
+    }
+    .audit-loading__step.is-done .audit-loading__step-dot { background: var(--a-accent); }
+    @media (prefers-reduced-motion: reduce) {
+      .audit-loading__step { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── RESULTS ─────────────────────────────────────────── */
+    .audit-results {
+      background: var(--a-bg);
+      padding-top: clamp(3rem, 6vw, 4.5rem);
+      padding-bottom: clamp(4rem, 8vw, 7rem);
+    }
+    .audit-results__wrap { max-width: 780px; margin-inline: auto; }
+
+    /* Teaser */
+    .audit-teaser { text-align: center; margin-bottom: 2rem; }
+    .audit-teaser__label {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--a-ink-muted); margin-bottom: 0.5rem;
+    }
+    .audit-teaser__val {
+      font-family: var(--font-d); font-weight: 300;
+      font-size: clamp(3.25rem, 7vw, 5rem); line-height: 1;
+      letter-spacing: -0.04em; color: var(--a-ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .audit-teaser__sub { font-size: 0.8rem; color: var(--a-ink-muted); margin-top: 0.4rem; }
+
+    /* Gate wrap */
+    .audit-gate-wrap { position: relative; }
+    .audit-gate-content { transition: filter 0.6s var(--ease-expo); will-change: filter; }
+    .audit-gate-content.is-blurred {
+      filter: blur(7px); pointer-events: none; user-select: none;
+    }
+
+    /* Gate overlay */
+    .audit-gate-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .audit-gate-overlay[hidden] { display: none; }
+    .audit-gate-box {
+      background: var(--a-surface); border: 1px solid var(--a-border);
+      border-radius: 14px; padding: clamp(1.75rem, 4vw, 2.5rem);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      width: 100%; max-width: 420px; text-align: center;
+    }
+    .audit-gate-box__title {
+      font-family: var(--font-d); font-weight: 450; font-size: 1.3rem;
+      letter-spacing: -0.02em; color: var(--a-ink); margin-bottom: 0.5rem;
+    }
+    .audit-gate-box__sub {
+      font-size: 0.85rem; color: var(--a-ink-muted); line-height: 1.55;
+      margin-bottom: 1.5rem; max-width: 36ch; margin-inline: auto;
+    }
+    .audit-gate-form { display: flex; flex-direction: column; gap: 0.75rem; }
+    .audit-gate-input {
+      width: 100%; padding: 0.8rem 1rem; text-align: center;
+      font-family: var(--font-b); font-size: 1rem; font-weight: 500;
+      color: var(--a-ink); background: var(--a-bg);
+      border: 1.5px solid var(--a-border); border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .audit-gate-input::placeholder { color: var(--a-ink-muted); font-weight: 400; }
+    .audit-gate-input:focus {
+      outline: none; border-color: var(--a-accent);
+      box-shadow: 0 0 0 3px var(--a-lime-glow);
+    }
+    .audit-gate-input.has-error { border-color: var(--a-error); }
+    .audit-gate-error {
+      display: none; font-size: 0.75rem; color: var(--a-error); font-weight: 500;
+    }
+    .audit-gate-error.is-visible { display: block; }
+    .btn-unlock {
+      font-family: var(--font-b); font-size: 0.95rem; font-weight: 600; text-transform: capitalize;
+      background: var(--a-lime-grad); color: var(--a-btn-ink);
+      padding: 0.85rem 1.5rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.2s var(--ease-expo), box-shadow 0.2s;
+      width: 100%; min-height: 44px;
+    }
+    .btn-unlock:hover {
+      filter: brightness(0.93); transform: translateY(-1px);
+      box-shadow: 0 4px 16px var(--a-lime-glow);
+    }
+    .btn-unlock:active { transform: translateY(0); }
+    .btn-unlock:disabled { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; box-shadow: none; }
+    .audit-gate-note { font-size: 0.7rem; color: var(--a-ink-muted); }
+
+    /* Results layout */
+    .audit-scenarios {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.875rem; margin-bottom: 1.25rem;
+    }
+    .audit-scenario-card {
+      border: 1.5px solid var(--a-border); border-radius: 12px;
+      padding: 1.375rem 1.125rem; text-align: center; background: var(--a-surface);
+    }
+    .audit-scenario-card.is-featured {
+      border-color: var(--a-accent-border); background: var(--a-accent-faint);
+    }
+    .audit-scenario-card__badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem;
+      background: var(--a-border); color: var(--a-ink-muted);
+    }
+    .audit-scenario-card.is-featured .audit-scenario-card__badge { background: var(--a-ink); color: #fff; }
+    .audit-scenario-card__rate { font-size: 0.75rem; font-weight: 600; color: var(--a-ink-muted); margin-bottom: 0.625rem; }
+    .audit-scenario-card.is-featured .audit-scenario-card__rate { color: var(--a-ink-dim); }
+    .audit-scenario-card__val {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1;
+      letter-spacing: -0.02em; color: var(--a-ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .audit-scenario-card.is-featured .audit-scenario-card__val { color: var(--a-ink); }
+    .audit-scenario-card__period {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--a-ink-muted); margin-top: 0.3rem;
+    }
+
+    .audit-metrics {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.875rem; margin-bottom: 1.5rem;
+    }
+    .audit-metric {
+      border: 1.5px solid var(--a-border); border-radius: 12px;
+      padding: 1.25rem; background: var(--a-surface);
+    }
+    .audit-metric__label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--a-ink-muted); margin-bottom: 0.5rem;
+    }
+    .audit-metric__val {
+      font-family: var(--font-d); font-weight: 700;
+      font-size: clamp(1.5rem, 2.5vw, 1.875rem); line-height: 1;
+      letter-spacing: -0.02em; color: var(--a-ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .audit-metric__sub { font-size: 0.75rem; color: var(--a-ink-muted); margin-top: 0.25rem; }
+
+    .audit-interpretation {
+      background: var(--a-accent-faint);
+      border: 1px solid var(--a-accent-border);
+      border-radius: 12px; padding: 1.375rem 1.5rem; margin-bottom: 1.5rem;
+    }
+    .audit-interpretation__label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--a-ink-dim); margin-bottom: 0.625rem;
+    }
+    .audit-interpretation__text {
+      font-size: 0.9rem; color: var(--a-ink-dim); line-height: 1.7;
+    }
+
+    .audit-post-ctas { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-pilot {
+      font-family: var(--font-b); font-size: 1rem; font-weight: 600; text-transform: capitalize;
+      background: var(--a-lime-grad); color: var(--a-btn-ink);
+      padding: 0.9rem 2rem; border-radius: var(--radius-btn);
+      transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
+      display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
     }
     .btn-pilot:hover {
       filter: brightness(0.93); transform: translateY(-2px);
-      box-shadow: 0 8px 28px var(--lime-glow);
+      box-shadow: 0 6px 22px var(--a-lime-glow);
     }
     .btn-pilot:active { transform: translateY(0); }
-    .btn-ghost-dark {
-      font-size: 0.9rem; font-weight: 500; color: var(--dark-muted);
+    .btn-ghost-audit {
+      font-size: 0.9rem; font-weight: 500; color: var(--a-ink-muted);
       display: inline-flex; align-items: center; gap: 0.375rem;
-      padding: 0.5rem 0; min-height: 44px;
-      transition: color 0.15s;
+      padding: 0.5rem 0; min-height: 44px; transition: color 0.15s;
     }
-    .btn-ghost-dark:hover { color: var(--dark-ink); }
+    .btn-ghost-audit:hover { color: var(--a-ink); }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     .footer {
-      background: var(--dark-bg);
-      border-top: 1px solid var(--dark-border);
+      background: var(--dark-bg); border-top: 1px solid var(--dark-border);
       padding-block: 2.25rem;
     }
     .footer__inner {
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 1rem;
     }
-    .footer__nav {
-      display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap;
-    }
-    .footer__nav a {
-      font-size: 0.85rem; color: oklch(0.63 0.006 115);
-      transition: color 0.15s;
-    }
+    .footer__nav { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+    .footer__nav a { font-size: 0.85rem; color: oklch(0.63 0.006 115); transition: color 0.15s; }
     .footer__nav a:hover { color: oklch(0.80 0.006 115); }
     .footer__copy { font-size: 0.8rem; color: oklch(0.58 0.005 115); }
 
     /* ─── REVEAL ANIMATIONS ─────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 1; transform: none;
-    }
-    .no-js .reveal, .no-js .reveal-left { opacity: 1; transform: none; }
+    .reveal { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: no-preference) {
       .reveal {
-        opacity: 0; transform: translateY(20px);
-        transition: opacity 0.6s var(--ease-expo), transform 0.6s var(--ease-expo);
+        opacity: 0; transform: translateY(16px);
+        transition: opacity 0.55s var(--ease-expo), transform 0.55s var(--ease-expo);
       }
       .reveal.in { opacity: 1; transform: translateY(0); }
-      .d1 { transition-delay: 0.08s; }
-      .d2 { transition-delay: 0.16s; }
-      .d3 { transition-delay: 0.24s; }
+      .d1 { transition-delay: 0.10s; }
+      .d2 { transition-delay: 0.22s; }
+      .d3 { transition-delay: 0.36s; }
+      .d4 { transition-delay: 0.52s; }
+    }
+
+    /* ─── TITLE CASE ────────────────────────────────────── */
+    .field__label,
+    .split-row__label,
+    .audit-loading__title,
+    .audit-loading__step,
+    .audit-gate-box__title { text-transform: capitalize; }
+
+    /* ─── DELIGHT ────────────────────────────────────────── */
+    .spend-preview {
+      font-size: 0.72rem; font-weight: 600; color: var(--a-accent);
+      letter-spacing: 0.01em; margin-top: 0.375rem; min-height: 1.1em;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .spend-preview.is-visible { opacity: 1; }
+
+    @keyframes cardGlowPulse {
+      0%   { box-shadow: 0 0 0 0 oklch(0.770 0.206 151 / 0); }
+      35%  { box-shadow: 0 0 0 7px oklch(0.770 0.206 151 / 0.18); }
+      100% { box-shadow: 0 0 0 0 oklch(0.770 0.206 151 / 0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .audit-scenarios.in .audit-scenario-card.is-featured {
+        animation: cardGlowPulse 1.2s var(--ease-expo) 0.5s both;
+      }
+    }
+
+    /* ─── MOTION LIBRARY ─────────────────────────────────── */
+    @keyframes iconSpin { to { transform: rotate(360deg); } }
+    @keyframes stepSlideIn {
+      from { opacity: 0; transform: translateX(12px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes stepInFwd   { from { opacity:0; transform:translateX(28px);  } to { opacity:1; transform:translateX(0); } }
+    @keyframes stepInBwd   { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes cardBreathe { 0%,100% { transform:scale(1); } 45% { transform:scale(0.989); } }
+    @keyframes circActivate { 0% { box-shadow:0 0 0 0 oklch(0.770 0.206 151 / 0.65); } 100% { box-shadow:0 0 0 12px oklch(0.770 0.206 151 / 0); } }
+    @keyframes shimmerSwipe { from { transform:translateX(-100%); } to { transform:translateX(200%); } }
+    @keyframes sectionFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15%      { transform: translateX(-7px); }
+      30%      { transform: translateX(6px); }
+      50%      { transform: translateX(-4px); }
+      68%      { transform: translateX(4px); }
+      84%      { transform: translateX(-2px); }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .audit-loading__icon svg { animation: iconSpin 1.8s linear infinite; transform-origin: center; }
+      .step-enter  { animation: stepSlideIn  0.38s var(--ease-expo) both; }
+      .step-in-fwd { animation: stepInFwd    0.44s var(--ease-expo) both; }
+      .step-in-bwd { animation: stepInBwd    0.44s var(--ease-expo) both; }
+      .card-breathe { animation: cardBreathe 0.42s var(--ease-expo) both; }
+      .section-enter { animation: sectionFadeIn 0.45s var(--ease-expo) both; }
+      .shake { animation: shake 0.44s var(--ease-quint) both; }
+
+      /* Progress circle glow pulse on activation */
+      .audit-progress__step.is-active .audit-progress__circle {
+        animation: circActivate 0.75s var(--ease-expo) both;
+      }
+
+      /* Progress line shimmer sweep after fill completes */
+      .audit-progress__line-fill { overflow: hidden; }
+      .audit-progress__line-fill::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.55), transparent);
+        transform: translateX(-100%);
+      }
+      .audit-progress__line.is-done .audit-progress__line-fill::after {
+        animation: shimmerSwipe 0.55s var(--ease-expo) 0.48s both;
+      }
+
+      /* Field focus: lime underline draws in from left */
+      .field__input, .field__select {
+        background-image: linear-gradient(oklch(0.770 0.206 151), oklch(0.770 0.206 151));
+        background-size: 0% 2px;
+        background-repeat: no-repeat;
+        background-position: left bottom;
+        transition: border-color 0.15s, box-shadow 0.15s, background-size 0.44s var(--ease-expo);
+      }
+      .field__input:focus, .field__select:focus { background-size: 100% 2px; }
+
+      /* Currency wrap underline */
+      .field__currency-wrap {
+        background-image: linear-gradient(oklch(0.770 0.206 151), oklch(0.770 0.206 151));
+        background-size: 0% 2px;
+        background-repeat: no-repeat;
+        background-position: left bottom;
+        transition: border-color 0.15s, box-shadow 0.15s, background-size 0.44s var(--ease-expo);
+      }
+      .field__currency-wrap:focus-within { background-size: 100% 2px; }
+
+      .btn-next, .btn-unlock, .btn-pilot { position: relative; overflow: hidden; }
+      .btn-next::after, .btn-unlock::after, .btn-pilot::after {
+        content: ''; position: absolute; inset: 0; pointer-events: none;
+        background: linear-gradient(105deg, transparent 35%, oklch(1 0 0 / 0.20) 50%, transparent 65%);
+        transform: translateX(-150%);
+        transition: transform 0.55s var(--ease-expo);
+      }
+      .btn-next:hover::after, .btn-unlock:hover::after, .btn-pilot:hover::after { transform: translateX(150%); }
     }
 
     /* ─── RESPONSIVE ─────────────────────────────────────── */
+
+    /* Safe areas — notch / home indicator */
+    .nav {
+      padding-top: max(0.75rem, calc(0.75rem + env(safe-area-inset-top)));
+    }
+    .footer {
+      padding-bottom: max(2rem, calc(2rem + env(safe-area-inset-bottom)));
+    }
+
+    @media (max-width: 640px) {
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      /* "Book a Call" already lives in mobile menu — hide duplicate in nav bar */
+      .nav .btn-cta { display: none; }
+      /* Gate overlay fixed so email form is always in viewport, not lost inside tall blurred block */
+      .audit-gate-overlay { position: fixed; z-index: 50; padding: 1rem; }
+      .audit-gate-content.is-blurred { max-height: 260px; overflow: hidden; }
+      .footer__inner { flex-direction: column; align-items: flex-start; }
+      .audit-scenarios { grid-template-columns: 1fr; }
+      .audit-metrics { grid-template-columns: 1fr; }
+      .audit-post-ctas { flex-direction: column; align-items: stretch; }
+    }
+
+    @media (max-width: 767px) {
+      /* Reduce hero top padding — 7rem min is too deep on mobile with fixed nav */
+      .audit-hero { padding-top: clamp(5rem, 18vw, 7rem); text-align: left; }
+      .audit-hero__sub { margin-inline: 0; }
+      .audit-trust { justify-content: flex-start; }
+      /* h1 font-size consolidated into base clamp — no override needed */
+    }
+
+    @media (max-width: 480px) {
+      .audit-trust { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+      /* Tighter card padding on small screens so fields have more width */
+      .audit-card { padding: 1.25rem; }
+      /* Step-nav: Continue fills remaining width — full-width on step 1 (no back), natural on steps 2-3 */
+      .btn-next { flex: 1; margin-left: 0; }
+      /* Ensure step-nav gap still separates back + next */
+      .audit-step-nav { gap: 0.75rem; }
+    }
+
+    @media (max-width: 360px) {
+      /* Progress step labels clutter at extreme narrow widths */
+      .audit-progress__label { display: none; }
+    }
+
+    @media (min-width: 641px) { .nav__hamburger { display: none; } }
+
     @media (max-width: 900px) {
-      .calc-page__grid {
-        grid-template-columns: 1fr;
+      .btn-next, .btn-unlock, .btn-pilot { min-height: 48px; }
+    }
+
+    /* Touch devices — shimmer is hover-only, skip the pseudo-element entirely */
+    @media (hover: none) {
+      .btn-next::after, .btn-unlock::after, .btn-pilot::after { display: none; }
+    }
+
+    /* ─── REVEAL-RIGHT ───────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal-right {
+        opacity: 0; transform: translateX(28px);
+        transition: opacity 0.65s var(--ease-expo), transform 0.65s var(--ease-expo);
       }
-      .calc-inputs {
-        position: static;
+      .reveal-right.in { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────── */
+    .hiw {
+      padding: clamp(3.5rem, 8vw, 6rem) 0;
+      border-top: 1px solid var(--dark-border);
+      background: var(--dark-mid);
+      position: relative;
+      view-timeline: --hiw-vt block;
+    }
+    /* Scroll-driven progress bar */
+    .hiw__prog {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--dark-border);
+    }
+    .hiw__prog-fill {
+      height: 100%;
+      background: var(--lime-grad);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    @supports (animation-timeline: scroll()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .hiw__prog-fill {
+          animation: hiwProgFill linear both;
+          animation-timeline: --hiw-vt;
+          animation-range: entry 5% cover 55%;
+        }
+        @keyframes hiwProgFill {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
+        }
       }
-      .calc-method__inner,
-      .calc-faq__inner {
-        grid-template-columns: 1fr;
+    }
+    .hiw__head { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+    .hiw__eyebrow {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1rem;
+    }
+    .hiw__h2 {
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
+      font-size: clamp(1.875rem, 3.5vw, 3rem);
+      letter-spacing: -0.025em; line-height: 1.12; text-wrap: balance;
+      color: var(--dark-ink);
+    }
+    .hiw__h2 span { color: var(--lime); font-weight: 500; }
+    .hiw__steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.5rem, 4vw, 3rem);
+      position: relative;
+    }
+    .hiw__step { position: relative; }
+    .hiw__num {
+      font-family: var(--font-d); font-weight: 200;
+      font-size: 3rem; line-height: 1;
+      color: oklch(0.770 0.206 151 / 0.20); letter-spacing: -0.04em;
+      margin-bottom: 0.875rem;
+    }
+    .hiw__step-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: oklch(0.770 0.206 151 / 0.10);
+      border: 1px solid oklch(0.770 0.206 151 / 0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--lime); margin-bottom: 1.25rem;
+    }
+    .hiw__step-h { font-weight: 500; font-size: 1.05rem; color: var(--dark-ink); margin-bottom: 0.5rem; }
+    .hiw__step-p { font-size: 0.9rem; color: var(--dark-muted); line-height: 1.65; margin: 0; }
+    /* Step activation — IO-triggered, staggered */
+    @media (prefers-reduced-motion: no-preference) {
+      .hiw__num {
+        transition: color 0.7s var(--ease-expo);
       }
-      .calc-method__heading,
-      .calc-faq__h2 {
-        position: static;
+      .hiw__step-icon {
+        transition: background 0.5s var(--ease-expo), border-color 0.5s var(--ease-expo), box-shadow 0.5s var(--ease-expo);
       }
-      .calc-stats__grid {
-        grid-template-columns: repeat(3, 1fr);
+      .hiw--active .hiw__step:nth-child(1) .hiw__num  { color: var(--lime); transition-delay: 0.06s; }
+      .hiw--active .hiw__step:nth-child(2) .hiw__num  { color: var(--lime); transition-delay: 0.30s; }
+      .hiw--active .hiw__step:nth-child(3) .hiw__num  { color: var(--lime); transition-delay: 0.54s; }
+      .hiw--active .hiw__step:nth-child(1) .hiw__step-icon {
+        background: oklch(0.770 0.206 151 / 0.16);
+        border-color: oklch(0.770 0.206 151 / 0.55);
+        box-shadow: 0 0 0 5px oklch(0.770 0.206 151 / 0.10);
+        transition-delay: 0.06s;
+      }
+      .hiw--active .hiw__step:nth-child(2) .hiw__step-icon {
+        background: oklch(0.770 0.206 151 / 0.16);
+        border-color: oklch(0.770 0.206 151 / 0.55);
+        box-shadow: 0 0 0 5px oklch(0.770 0.206 151 / 0.10);
+        transition-delay: 0.30s;
+      }
+      .hiw--active .hiw__step:nth-child(3) .hiw__step-icon {
+        background: oklch(0.770 0.206 151 / 0.16);
+        border-color: oklch(0.770 0.206 151 / 0.55);
+        box-shadow: 0 0 0 5px oklch(0.770 0.206 151 / 0.10);
+        transition-delay: 0.54s;
       }
     }
     @media (max-width: 640px) {
-      .calc-stats__grid {
-        grid-template-columns: 1fr;
-      }
-      .calc-out-secondary {
-        grid-template-columns: 1fr 1fr;
-      }
-      .calc-compare__row {
-        grid-template-columns: 1fr auto;
-      }
-      .calc-compare__rate-badge { display: none; }
-      .nav__links { display: none; }
-      .nav__hamburger { display: flex; }
-      .footer__inner { flex-direction: column; align-items: flex-start; }
-    }
-    @media (max-width: 480px) {
-      .calc-out-secondary {
-        grid-template-columns: 1fr;
-      }
+      .hiw__steps { grid-template-columns: 1fr; }
     }
 
-    /* Touch target sizing */
-    @media (max-width: 900px) {
-      .btn-primary { min-height: 44px; }
-      .btn-cta     { min-height: 44px; display: inline-flex; align-items: center; }
-      .btn-pilot   { min-height: 44px; }
-      .faq-item__btn { min-height: 48px; }
+    /* ─── WHY TRUST THE FIGURES ──────────────────────────── */
+    .trust-fig {
+      padding: clamp(3.5rem, 8vw, 6rem) 0;
+      border-top: 1px solid var(--dark-border);
+      background: var(--dark-bg);
     }
-
+    .trust-fig__grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem); align-items: center;
+    }
+    .trust-fig__eyebrow {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1.25rem;
+    }
+    .trust-fig__h2 {
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
+      font-size: clamp(1.875rem, 3.5vw, 3rem);
+      letter-spacing: -0.025em; line-height: 1.12; text-wrap: balance;
+      margin-bottom: 1.125rem; color: var(--dark-ink);
+    }
+    .trust-fig__h2 span { color: var(--lime); font-weight: 500; }
+    .trust-fig__sub {
+      font-size: clamp(0.9rem, 1.4vw, 1rem); color: var(--dark-muted);
+      line-height: 1.7; margin-bottom: 2rem;
+    }
+    .trust-fig__points { display: flex; flex-direction: column; gap: 1rem; }
+    .trust-fig__point { display: flex; gap: 0.875rem; align-items: flex-start; }
+    .trust-fig__point-icon {
+      width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%;
+      background: oklch(0.770 0.206 151 / 0.10);
+      border: 1px solid oklch(0.770 0.206 151 / 0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--lime); margin-top: 0.1rem;
+    }
+    .trust-fig__point-h { font-weight: 500; font-size: 0.9rem; color: var(--dark-ink); margin-bottom: 0.25rem; }
+    .trust-fig__point-p { font-size: 0.875rem; color: var(--dark-muted); line-height: 1.6; margin: 0; }
+    .trust-fig__rates {
+      background: var(--dark-mid);
+      border: 1px solid var(--dark-border);
+      border-radius: 14px;
+      padding: 2rem;
+    }
+    .trust-fig__rates-h {
+      font-weight: 700; font-size: 0.75rem; color: var(--dark-dim);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+    .trust-fig__rate {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .trust-fig__rate:last-of-type { border-bottom: none; }
+    .trust-fig__rate-bar {
+      flex: 0 0 100%; height: 2px; margin-top: 0.125rem;
+      background: oklch(0.770 0.206 151 / 0.08); border-radius: 1px;
+    }
+    .trust-fig__rate-bar-fill {
+      height: 100%;
+      width: calc(var(--bar-w, 1) * 100%);
+      background: var(--lime-grad); border-radius: 1px;
+      transform: scaleX(0); transform-origin: left;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .trust-fig__rate-bar-fill {
+        transition: transform 1s var(--ease-expo);
+      }
+      .trust-fig--active .trust-fig__rate:nth-of-type(1) .trust-fig__rate-bar-fill { transform: scaleX(1); transition-delay: 0.10s; }
+      .trust-fig--active .trust-fig__rate:nth-of-type(2) .trust-fig__rate-bar-fill { transform: scaleX(1); transition-delay: 0.38s; }
+      .trust-fig--active .trust-fig__rate:nth-of-type(3) .trust-fig__rate-bar-fill { transform: scaleX(1); transition-delay: 0.66s; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .calc-out-primary__val { transition: none; }
-      .calc-out-card__val { transition: none; }
-      .faq-item__body { transition: none; }
+      .trust-fig--active .trust-fig__rate-bar-fill { transform: scaleX(1); }
+    }
+    .trust-fig__rate-pct {
+      font-family: var(--font-d); font-weight: 200;
+      font-size: 2.25rem; letter-spacing: -0.04em; line-height: 1;
+      min-width: 4ch;
+    }
+    .trust-fig__rate-pct.low  { color: oklch(0.72 0.17 145); }
+    .trust-fig__rate-pct.mid  { color: oklch(0.72 0.17 65); }
+    .trust-fig__rate-pct.high { color: oklch(0.65 0.20 25); }
+    .trust-fig__rate-label { font-size: 0.875rem; color: var(--dark-muted); line-height: 1.5; }
+    .trust-fig__rate-label strong { display: block; color: var(--dark-ink); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .trust-fig__source {
+      font-size: 0.72rem; color: var(--dark-muted);
+      margin-top: 1.25rem; line-height: 1.5;
+      border-top: 1px solid var(--dark-border); padding-top: 1rem;
+    }
+    @media (max-width: 800px) {
+      .trust-fig__grid { grid-template-columns: 1fr; }
     }
 
-    /* ─── URBANIST HEADINGS ─────────────────────────────── */
-    .cp-hero__h1,
-    .calc-stats__h2,
-    .calc-method__heading,
-    .calc-faq__h2,
-    .calc-final-cta__h2 {
-      letter-spacing: -0.025em;
-      text-transform: capitalize;
+    /* ─── FAQ (calc) ─────────────────────────────────────── */
+    .calc-faq {
+      padding-top: clamp(3rem, 6vw, 4.5rem);
+      padding-bottom: clamp(5rem, 10vw, 7.5rem);
+      background: var(--dark-mid);
+      border-top: 1px solid var(--dark-border);
     }
-    .cp-hero__h1 { font-weight: 200; letter-spacing: -0.03em; }
-    .calc-stats__h2,
-    .calc-method__heading,
+    .calc-faq__head { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
     .calc-faq__h2 {
-      font-weight: 200;
-      font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-      line-height: 1.1;
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -0.025em; line-height: 1.12; text-wrap: balance;
     }
-    .calc-final-cta__h2 { font-weight: 200; }
+    .calc-faq__h2 span { color: var(--lime); font-weight: 500; }
+    .calc-faq__list { max-width: 760px; margin: 0 auto; }
+    .calc-faq__item { border-bottom: 1px solid var(--dark-border); }
+    .calc-faq__item:first-child { border-top: 1px solid var(--dark-border); }
+    .calc-faq__summary {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1.25rem 0;
+      font-size: 1rem; font-weight: 400; color: var(--dark-ink);
+      cursor: pointer; list-style: none;
+      transition: color 0.18s; user-select: none;
+    }
+    .calc-faq__summary::-webkit-details-marker { display: none; }
+    .calc-faq__summary:hover { color: var(--lime); }
+    .calc-faq__icon { flex-shrink: 0; width: 20px; height: 20px; position: relative; }
+    .calc-faq__icon::before,
+    .calc-faq__icon::after {
+      content: ''; position: absolute;
+      background: currentColor; border-radius: 2px;
+      transition: transform 0.22s var(--ease-expo), opacity 0.22s;
+    }
+    .calc-faq__icon::before { width: 12px; height: 2px; top: 9px; left: 4px; }
+    .calc-faq__icon::after  { width: 2px; height: 12px; top: 4px; left: 9px; }
+    details[open] .calc-faq__icon::after { transform: rotate(90deg); opacity: 0; }
+    .calc-faq__body {
+      padding-bottom: 1.25rem;
+      font-size: 0.9375rem; color: var(--dark-muted);
+      line-height: 1.65; max-width: 65ch;
+    }
+    .calc-faq__body p + p { margin-top: 0.75rem; }
+
+    /* ─── CTAP (calc) ────────────────────────────────────── */
+    .ctap {
+      background: var(--dark-bg);
+      border-top: 1px solid var(--dark-border);
+      padding: clamp(4rem, 10vw, 7rem) 0;
+      position: relative; overflow: hidden;
+    }
+    .ctap::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 55% 50% at 80% 40%, oklch(0.710 0.215 148 / 0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 38% 52% at 18% 62%, oklch(0.58 0.14 25 / 0.10) 0%, transparent 70%);
+    }
+    .ctap > .container { position: relative; z-index: 1; }
+    .ctap__grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem); align-items: center;
+    }
+    .ctap__eyebrow {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1.25rem;
+    }
+    .ctap__h2 {
+      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -0.025em; line-height: 1.12; text-wrap: balance; margin-bottom: 1.375rem;
+    }
+    .ctap__h2 span { color: var(--lime); font-weight: 500; }
+    .ctap__sub {
+      font-size: clamp(0.9rem, 1.4vw, 1rem);
+      color: var(--dark-muted); line-height: 1.7; margin-bottom: 2.25rem;
+    }
+    .ctap__trust { display: flex; gap: 0; border-top: 1px solid var(--dark-border); padding-top: 1.75rem; }
+    .ctap__trust-item { flex: 1; padding-right: 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start; }
+    .ctap__trust-item + .ctap__trust-item { padding-left: 1.25rem; border-left: 1px solid var(--dark-border); }
+    .ctap__trust-item:last-child { padding-right: 0; }
+    .ctap__trust-icon {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      background: oklch(0.770 0.206 151 / 0.10);
+      border: 1px solid oklch(0.770 0.206 151 / 0.22);
+      display: flex; align-items: center; justify-content: center; color: var(--lime);
+    }
+    .ctap__trust-name {
+      font-size: 0.88rem; font-weight: 500;
+      color: var(--dark-ink); line-height: 1; display: block; margin-bottom: 0.28rem;
+    }
+    .ctap__trust-desc { font-size: 0.72rem; color: var(--dark-muted); line-height: 1.5; margin: 0; }
+    .ctap__card { border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px var(--dark-border), 0 8px 36px oklch(0.770 0.206 151 / 0.14); }
+    .ctap__card-head {
+      background: var(--lime-grad);
+      padding: 1.125rem 1.5rem;
+      display: flex; align-items: center; gap: 0.875rem;
+    }
+    .ctap__shield {
+      width: 38px; height: 38px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: oklch(0.18 0.015 145 / 0.22); border-radius: 8px;
+    }
+    .ctap__card-title { font-size: 1.1rem; font-weight: 700; color: var(--btn-ink); line-height: 1; }
+    .ctap__card-body {
+      padding: 1.5rem;
+      background: oklch(0.165 0.010 115 / 0.72);
+      backdrop-filter: blur(28px) saturate(150%);
+      -webkit-backdrop-filter: blur(28px) saturate(150%);
+    }
+    .ctap__checks { display: flex; flex-direction: column; gap: 0.875rem; margin-bottom: 1.625rem; }
+    .ctap__check { display: flex; align-items: center; gap: 0.75rem; }
+    .ctap__check-icon {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: oklch(0.770 0.206 151 / 0.14);
+      border: 1px solid oklch(0.770 0.206 151 / 0.30);
+      display: flex; align-items: center; justify-content: center; color: var(--lime);
+    }
+    .ctap__check-txt { font-size: 0.9rem; color: var(--dark-ink); line-height: 1.4; }
+    .ctap__cta-btn {
+      display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.625rem;
+      background: var(--lime-grad); color: var(--btn-ink);
+      font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
+      padding: 0.875rem 1.75rem; border-radius: var(--radius-btn);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: filter 0.18s var(--ease-expo), transform 0.22s var(--ease-expo);
+    }
+    .ctap__cta-btn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .ctap__cta-btn:active { transform: scale(0.97); }
+    .ctap__trust-note {
+      display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+      margin-top: 1rem; font-size: 0.72rem; color: var(--dark-dim);
+    }
+    @keyframes pilotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 oklch(0.770 0.206 151 / 0.55); }
+      60%       { box-shadow: 0 0 0 12px oklch(0.770 0.206 151 / 0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .ctap__cta-btn.is-pulsing { animation: pilotPulse 3s ease-in-out infinite; }
+    }
+    @media (max-width: 900px) {
+      .ctap__grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 640px) {
+      .ctap__trust { flex-direction: column; gap: 1rem; }
+      .ctap__trust-item { padding: 0 !important; border-left: none !important; }
+    }
   </style>
 </head>
 <body>
 
 <div id="page-veil" aria-hidden="true"></div>
-
-<a href="#main-calc" class="skip-link">Skip to calculator</a>
+<a href="#audit-main" class="skip-link">Skip to audit</a>
 
 <!-- NAV -->
 <nav class="nav" id="site-nav" aria-label="Main navigation">
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo" aria-label="PayRoll Protect — Home">
-        <img src="assets/pp-logo-horizontal-dark.webp" alt="PayRoll Protect" height="40" style="display:block;height:40px;width:auto;">
+        <img src="assets/pp-logo-horizontal-dark.webp" alt="PayRoll Protect" height="40" style="display:block;height:40px;width:auto;" fetchpriority="high" decoding="async">
       </a>
       <ul class="nav__links" role="list">
         <li><a href="index.html#how-it-works">How It Works</a></li>
         <li><a href="index.html#benefits">Benefits</a></li>
         <li><a href="index.html#numbers">The Numbers</a></li>
-        <li><a href="index.html#calculator">Back to Site</a></li>
+        <li><a href="index.html">Back to Site</a></li>
       </ul>
       <button class="nav__hamburger" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open navigation">
         <span></span><span></span><span></span>
@@ -973,7 +1220,7 @@
       <a href="contact.html" class="btn-cta">Book a Call</a>
     </div>
   </div>
-  <div class="nav__mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
+  <div class="nav__mobile" id="nav-mobile" aria-label="Mobile navigation">
     <ul>
       <li><a href="index.html#how-it-works">How It Works</a></li>
       <li><a href="index.html#benefits">Benefits</a></li>
@@ -983,366 +1230,642 @@
   </div>
 </nav>
 
-<!-- PAGE HERO -->
-<section class="cp-hero" aria-labelledby="cp-hero-h">
+<!-- AUDIT HERO -->
+<section class="audit-hero" aria-labelledby="audit-h1">
   <div class="container">
-    <div class="cp-hero__eyebrow">
-      <span class="cp-hero__eyebrow-dot" aria-hidden="true"></span>
-      Labour Cost Exposure Tool
+    <div class="audit-hero__eyebrow reveal">
+      <span class="audit-hero__dot" aria-hidden="true"></span>
+      Payroll Risk Intelligence
     </div>
-    <h1 class="cp-hero__h1" id="cp-hero-h">
-      What Is Unverified Labour<br><em>Costing Your Sites?</em>
-    </h1>
-    <p class="cp-hero__sub">
-      Enter your total payroll spend. We apply three industry scenarios — conservative, average, and high-risk — and show you your annual exposure before a single invoice is queried.
+    <h1 class="audit-hero__h1 reveal d1" id="audit-h1">Your Payroll Exposure <span>Audit</span></h1>
+    <p class="audit-hero__sub reveal d2">
+      Enter four inputs. Get a sector-benchmarked exposure estimate, three scenario projections, and a site-level breakdown —<br>in under 60 seconds.
     </p>
+    <div class="audit-trust reveal d3" role="list">
+      <div class="audit-trust__item" role="listitem">
+        <span class="audit-trust__check" aria-hidden="true">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        No Obligation
+      </div>
+      <div class="audit-trust__item" role="listitem">
+        <span class="audit-trust__check" aria-hidden="true">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        60 Seconds
+      </div>
+      <div class="audit-trust__item" role="listitem">
+        <span class="audit-trust__check" aria-hidden="true">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Trusted By HR, Finance &amp; Commercial
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- MAIN CALCULATOR -->
-<main id="main-calc">
-<section class="calc-page" aria-label="Labour cost exposure calculator">
-  <div class="container">
-    <div class="calc-page__grid">
+<!-- MAIN -->
+<main id="audit-main">
 
-      <!-- INPUTS -->
-      <div class="calc-inputs reveal" role="form" aria-label="Calculator inputs">
+  <!-- FORM SECTION -->
+  <section class="audit-main" id="audit-form-section" aria-label="Payroll exposure audit form">
+    <div class="container">
+      <div class="audit-card-wrap">
+        <div class="audit-card">
 
-        <!-- Payroll spend -->
-        <div class="calc-inputs__section">
-          <label class="calc-inputs__label" for="cp-payroll">Your payroll spend</label>
-          <div class="calc-payroll-wrap">
-            <span class="calc-currency" aria-hidden="true">£</span>
-            <input
-              type="text"
-              id="cp-payroll"
-              class="calc-payroll-input"
-              inputmode="numeric"
-              autocomplete="off"
-              maxlength="12"
-              placeholder="e.g. 50,000"
-              aria-describedby="cp-payroll-desc">
-          </div>
-          <p id="cp-payroll-desc" class="sr-only">Enter your weekly or monthly payroll total in pounds</p>
-          <div class="calc-period-toggle" role="group" aria-label="Select payroll period">
-            <button type="button" class="calc-period-btn active" id="btn-week" aria-pressed="true">Per week</button>
-            <button type="button" class="calc-period-btn" id="btn-month" aria-pressed="false">Per month</button>
-          </div>
-        </div>
+          <!-- Progress -->
+          <nav class="audit-progress" aria-label="Audit steps">
+            <div class="audit-progress__step is-active" id="prog-step-1">
+              <div class="audit-progress__circle" aria-hidden="true">1</div>
+              <span class="audit-progress__label">Organisation</span>
+            </div>
+            <div class="audit-progress__line" id="prog-line-1">
+              <div class="audit-progress__line-fill"></div>
+            </div>
+            <div class="audit-progress__step" id="prog-step-2">
+              <div class="audit-progress__circle" aria-hidden="true">2</div>
+              <span class="audit-progress__label">Workforce</span>
+            </div>
+            <div class="audit-progress__line" id="prog-line-2">
+              <div class="audit-progress__line-fill"></div>
+            </div>
+            <div class="audit-progress__step" id="prog-step-3">
+              <div class="audit-progress__circle" aria-hidden="true">3</div>
+              <span class="audit-progress__label">Payroll</span>
+            </div>
+          </nav>
 
-        <!-- Worker count -->
-        <div class="calc-inputs__section">
-          <label class="calc-inputs__label" for="cp-workers">Number of workers <span style="color:var(--muted);font-weight:400;letter-spacing:0">(optional)</span></label>
-          <div class="calc-worker-wrap">
-            <input
-              type="text"
-              id="cp-workers"
-              class="calc-worker-input"
-              inputmode="numeric"
-              autocomplete="off"
-              maxlength="6"
-              placeholder="e.g. 120">
-            <span class="calc-worker-suffix" aria-hidden="true">workers on site</span>
-          </div>
-        </div>
+          <form id="audit-form" novalidate>
 
-        <!-- Scenario -->
-        <div class="calc-inputs__section">
-          <span class="calc-inputs__label" id="scenario-label">Discrepancy scenario</span>
-          <div class="calc-scenarios" role="radiogroup" aria-labelledby="scenario-label">
-            <button type="button" class="calc-scenario-btn" id="sc-conservative" role="radio" aria-checked="false" data-rate="0.03">
-              <div>
-                <p class="calc-scenario-btn__label">Conservative</p>
-                <p class="calc-scenario-btn__desc">Lower-risk sites, strong supervision</p>
+            <!-- STEP 1 -->
+            <div id="step-1" role="group" aria-labelledby="step1-title">
+              <div class="audit-step__head">
+                <h2 class="audit-step__title" id="step1-title">Your organisation</h2>
+                <p class="audit-step__sub">Tell us about the business we're auditing.</p>
               </div>
-              <span class="calc-scenario-btn__rate" aria-hidden="true">3%</span>
-            </button>
-            <button type="button" class="calc-scenario-btn active" id="sc-average" role="radio" aria-checked="true" data-rate="0.04">
-              <div>
-                <p class="calc-scenario-btn__label">Industry Average</p>
-                <p class="calc-scenario-btn__desc">UK construction sector benchmark</p>
-              </div>
-              <span class="calc-scenario-btn__rate" aria-hidden="true">4%</span>
-            </button>
-            <button type="button" class="calc-scenario-btn" id="sc-highrisk" role="radio" aria-checked="false" data-rate="0.075">
-              <div>
-                <p class="calc-scenario-btn__label">High Risk</p>
-                <p class="calc-scenario-btn__desc">Multi-agency, high-turnover sites</p>
-              </div>
-              <span class="calc-scenario-btn__rate" aria-hidden="true">7.5%</span>
-            </button>
-          </div>
-        </div>
 
+              <div class="field">
+                <label class="field__label" for="f-company">Company name</label>
+                <input type="text" id="f-company" class="field__input"
+                  placeholder="e.g. Apex Civils Ltd" autocomplete="organization"
+                  required aria-required="true" aria-describedby="f-company-err">
+                <span class="field__error" id="f-company-err" role="alert">Enter your company name to continue.</span>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="f-sector">Sector</label>
+                <div class="field__select-wrap">
+                  <select id="f-sector" class="field__select" aria-describedby="f-sector-err">
+                    <option value="" disabled selected>Select your sector</option>
+                    <option>Construction &amp; Civil Engineering</option>
+                    <option>Fit-out &amp; Interior</option>
+                    <option>Infrastructure &amp; Rail</option>
+                    <option>Mechanical &amp; Electrical</option>
+                    <option>Commercial Development</option>
+                    <option>Residential Development</option>
+                    <option>Housebuilding</option>
+                    <option>Industrial &amp; Logistics</option>
+                    <option>Facilities Management</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <span class="field__error" id="f-sector-err" role="alert">Select your sector to continue.</span>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="f-sites">Number of active sites</label>
+                <input type="text" id="f-sites" class="field__input"
+                  inputmode="numeric" placeholder="e.g. 4" maxlength="4"
+                  required aria-required="true" aria-describedby="f-sites-err">
+                <span class="field__error" id="f-sites-err" role="alert">Enter the number of active sites (minimum 1).</span>
+              </div>
+
+              <div class="audit-step-nav">
+                <span></span>
+                <button type="button" class="btn-next" id="next-1">Continue</button>
+              </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div id="step-2" hidden>
+              <div class="audit-step__head">
+                <h2 class="audit-step__title" id="step2-title">Your workforce</h2>
+                <p class="audit-step__sub">How many workers are on payroll, and what's the mix?</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="f-workers">Total workers on payroll</label>
+                <input type="text" id="f-workers" class="field__input"
+                  inputmode="numeric" placeholder="e.g. 85" maxlength="6"
+                  required aria-required="true" aria-describedby="f-workers-err">
+                <span class="field__error" id="f-workers-err" role="alert">Enter your total worker count (minimum 1).</span>
+              </div>
+
+              <div class="field">
+                <label class="field__label" id="split-label">Worker mix <span style="font-weight:400;color:var(--a-ink-muted)">(must total 100%)</span></label>
+                <div class="split-fields" role="group" aria-labelledby="split-label">
+                  <div class="split-row">
+                    <span class="split-row__label">Direct employees</span>
+                    <div class="split-input-wrap">
+                      <input type="text" class="split-input" id="f-split-direct"
+                        inputmode="numeric" value="20" maxlength="3"
+                        aria-label="Direct employees percentage">
+                      <span class="split-pct" aria-hidden="true">%</span>
+                    </div>
+                  </div>
+                  <div class="split-row">
+                    <span class="split-row__label">Subcontractors</span>
+                    <div class="split-input-wrap">
+                      <input type="text" class="split-input" id="f-split-sub"
+                        inputmode="numeric" value="60" maxlength="3"
+                        aria-label="Subcontractors percentage">
+                      <span class="split-pct" aria-hidden="true">%</span>
+                    </div>
+                  </div>
+                  <div class="split-row">
+                    <span class="split-row__label">Agency workers</span>
+                    <div class="split-input-wrap">
+                      <input type="text" class="split-input" id="f-split-agency"
+                        inputmode="numeric" value="20" maxlength="3"
+                        aria-label="Agency workers percentage">
+                      <span class="split-pct" aria-hidden="true">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:0.625rem">
+                  <span class="split-total" id="split-total-display" aria-live="polite">Total: 100%</span>
+                </div>
+                <span class="field__error" id="f-split-err" role="alert" style="margin-top:0.5rem">Worker mix must total 100%. Adjust the values above.</span>
+              </div>
+
+              <div class="audit-step-nav">
+                <button type="button" class="btn-back" id="back-2">Back</button>
+                <button type="button" class="btn-next" id="next-2">Continue</button>
+              </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div id="step-3" hidden>
+              <div class="audit-step__head">
+                <h2 class="audit-step__title" id="step3-title">Your payroll spend</h2>
+                <p class="audit-step__sub">Weekly labour spend and how you currently track attendance.</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="f-spend">Weekly labour spend</label>
+                <div class="field__currency-wrap" id="spend-wrap">
+                  <span class="field__currency-sym" aria-hidden="true">£</span>
+                  <input type="text" id="f-spend" class="field__currency-input"
+                    inputmode="numeric" placeholder="e.g. 56,000" maxlength="14"
+                    required aria-required="true" aria-describedby="f-spend-err" autocomplete="off">
+                </div>
+                <span class="field__error" id="f-spend-err" role="alert">Enter your weekly labour spend to continue.</span>
+                <div class="spend-preview" id="spend-preview" aria-live="polite"></div>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="f-attendance">Current attendance verification method</label>
+                <div class="field__select-wrap">
+                  <select id="f-attendance" class="field__select" aria-describedby="f-attendance-err">
+                    <option value="" disabled selected>Select a method</option>
+                    <option>Paper register only</option>
+                    <option>Digital sign-in (tablet/app)</option>
+                    <option>RFID / access control card</option>
+                    <option>Biometric verification</option>
+                    <option>No formal system</option>
+                  </select>
+                </div>
+                <span class="field__error" id="f-attendance-err" role="alert">Select your attendance verification method.</span>
+              </div>
+
+              <div class="audit-step-nav">
+                <button type="button" class="btn-back" id="back-3">Back</button>
+                <button type="button" class="btn-next" id="btn-submit">Get My Audit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <!-- OUTPUTS -->
-      <div class="calc-outputs">
-
-        <!-- Primary: Annual loss -->
-        <div class="calc-out-primary reveal d1" aria-live="polite" aria-atomic="true">
-          <p class="calc-out-primary__eyebrow">Estimated annual labour exposure</p>
-          <p class="calc-out-primary__val is-zero" id="cp-annual">—</p>
-          <p class="calc-out-primary__lbl">lost per year on unverified attendance</p>
-          <div class="calc-out-primary__scenario-tag" id="cp-scenario-tag" aria-hidden="true">
-            Industry Average · 4%
+  <!-- LOADING -->
+  <section class="audit-loading" id="audit-loading-section" hidden aria-label="Generating your audit" aria-live="polite">
+    <div class="container">
+      <div class="audit-loading__inner">
+        <div class="audit-loading__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 4v4M14 20v4M4 14H8M20 14h4M6.34 6.34l2.83 2.83M18.83 18.83l2.83 2.83M6.34 21.66l2.83-2.83M18.83 9.17l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="audit-loading__title">Generating your audit</h2>
+        <p class="audit-loading__sub">Applying sector benchmarks to your inputs</p>
+        <div class="audit-loading__bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loading-bar-role">
+          <div class="audit-loading__bar-fill" id="loading-bar"></div>
+        </div>
+        <div class="audit-loading__steps" aria-hidden="true">
+          <div class="audit-loading__step" id="ls-1">
+            <span class="audit-loading__step-dot"></span>Reviewing your workforce mix
+          </div>
+          <div class="audit-loading__step" id="ls-2">
+            <span class="audit-loading__step-dot"></span>Modelling discrepancy scenarios
+          </div>
+          <div class="audit-loading__step" id="ls-3">
+            <span class="audit-loading__step-dot"></span>Calculating annual exposure
+          </div>
+          <div class="audit-loading__step" id="ls-4">
+            <span class="audit-loading__step-dot"></span>Preparing your report
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Secondary: Monthly / 5yr / per-worker -->
-        <div class="calc-out-secondary" aria-live="polite" aria-atomic="true">
-          <div class="calc-out-card">
-            <p class="calc-out-card__val" id="cp-monthly">—</p>
-            <p class="calc-out-card__lbl">Per month</p>
-          </div>
-          <div class="calc-out-card">
-            <p class="calc-out-card__val" id="cp-5yr">—</p>
-            <p class="calc-out-card__lbl">5-year cumulative</p>
-          </div>
-          <div class="calc-out-card calc-out-card--per-worker" id="cp-worker-card">
-            <p class="calc-out-card__val" id="cp-per-worker">—</p>
-            <p class="calc-out-card__lbl">Per worker / yr</p>
-          </div>
+  <!-- RESULTS -->
+  <section class="audit-results" id="audit-results-section" hidden aria-label="Your payroll exposure audit results">
+    <div class="container">
+      <div class="audit-results__wrap">
+
+        <!-- Teaser: visible even while gated -->
+        <div class="audit-teaser reveal">
+          <p class="audit-teaser__label">Your estimated weekly exposure</p>
+          <p class="audit-teaser__val" id="r-weekly-teaser" aria-live="polite">—</p>
+          <p class="audit-teaser__sub">Likely scenario · 5% discrepancy rate</p>
         </div>
 
-        <!-- Comparison table -->
-        <div class="calc-compare reveal d2" aria-label="Scenario comparison">
-          <p class="calc-compare__head">Annual exposure across all scenarios</p>
-          <div id="cp-compare-empty" class="calc-compare__empty">
-            Enter a payroll figure above to compare scenarios.
-          </div>
-          <div id="cp-compare-rows" aria-hidden="true">
-            <div class="calc-compare__row" id="cpr-conservative">
-              <span class="calc-compare__name">Conservative</span>
-              <span class="calc-compare__rate-badge">3%</span>
-              <span class="calc-compare__fig" id="cpr-conservative-fig">—</span>
+        <!-- Gate wrap -->
+        <div class="audit-gate-wrap reveal d1">
+          <div class="audit-gate-content is-blurred" id="gate-content" aria-hidden="true">
+
+            <div class="audit-scenarios reveal" role="list">
+              <div class="audit-scenario-card" role="listitem">
+                <div class="audit-scenario-card__badge">Conservative</div>
+                <div class="audit-scenario-card__rate">2.5% discrepancy</div>
+                <div class="audit-scenario-card__val" id="r-cons">—</div>
+                <div class="audit-scenario-card__period">per year</div>
+              </div>
+              <div class="audit-scenario-card is-featured" role="listitem">
+                <div class="audit-scenario-card__badge">Likely</div>
+                <div class="audit-scenario-card__rate">5% discrepancy</div>
+                <div class="audit-scenario-card__val" id="r-likely">—</div>
+                <div class="audit-scenario-card__period">per year</div>
+              </div>
+              <div class="audit-scenario-card" role="listitem">
+                <div class="audit-scenario-card__badge">High Risk</div>
+                <div class="audit-scenario-card__rate">7.5% discrepancy</div>
+                <div class="audit-scenario-card__val" id="r-high">—</div>
+                <div class="audit-scenario-card__period">per year</div>
+              </div>
             </div>
-            <div class="calc-compare__row active-row" id="cpr-average">
-              <span class="calc-compare__name">Industry Average</span>
-              <span class="calc-compare__rate-badge">4%</span>
-              <span class="calc-compare__fig" id="cpr-average-fig">—</span>
+
+            <div class="audit-metrics reveal d1" role="list">
+              <div class="audit-metric" role="listitem">
+                <p class="audit-metric__label">Cost per site / year</p>
+                <p class="audit-metric__val" id="r-per-site">—</p>
+                <p class="audit-metric__sub">Likely scenario</p>
+              </div>
+              <div class="audit-metric" role="listitem">
+                <p class="audit-metric__label">Recoverable in 90-day pilot</p>
+                <p class="audit-metric__val" id="r-pilot">—</p>
+                <p class="audit-metric__sub">Based on likely exposure</p>
+              </div>
             </div>
-            <div class="calc-compare__row" id="cpr-highrisk">
-              <span class="calc-compare__name">High Risk</span>
-              <span class="calc-compare__rate-badge">7.5%</span>
-              <span class="calc-compare__fig" id="cpr-highrisk-fig">—</span>
+
+            <div class="audit-interpretation reveal d2">
+              <p class="audit-interpretation__label">What this means for you</p>
+              <p class="audit-interpretation__text" id="r-interpretation">Your full interpretation will appear here.</p>
+            </div>
+
+            <div class="audit-post-ctas reveal d3">
+              <a href="contact.html" class="btn-pilot">
+                Book your 90-day pilot
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <button type="button" class="btn-ghost-audit" id="btn-restart">
+                Start again
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                  <path d="M2 6.5a4.5 4.5 0 1 0 1-2.8M2 2v2h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Email gate overlay -->
+          <div class="audit-gate-overlay" id="gate-overlay" aria-label="Unlock your report">
+            <div class="audit-gate-box">
+              <h2 class="audit-gate-box__title">Unlock your full report</h2>
+              <p class="audit-gate-box__sub">Enter your work email and we'll send the full breakdown — including site-level figures and your pilot projection.</p>
+              <div class="audit-gate-form">
+                <input type="email" class="audit-gate-input" id="gate-email"
+                  placeholder="your@company.com" autocomplete="email"
+                  aria-label="Work email address" aria-describedby="gate-email-err">
+                <span class="audit-gate-error" id="gate-email-err" role="alert"></span>
+                <button type="button" class="btn-unlock" id="btn-unlock">View my report</button>
+                <p class="audit-gate-note">Your work email lets us tailor the report to your sector.</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Source + CTA -->
-        <div class="calc-page__source reveal d3">
-          Based on the UK construction sector average payroll discrepancy rate reported by HMRC Tax Gap Statistics and the CIPP Annual Benchmarking Report. High-risk scenario reflects sites with multi-agency subcontractor chains. Figures are estimates only — actual exposure depends on site-specific conditions.
-          <br><br>
-          Sources: <a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC Tax Gap Statistics</a> · CIPP Annual Benchmarking Report 2023.
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="calc-page__cta reveal d3">
-          <a href="contact.html" class="btn-primary">See What This Means for Your Sites</a>
-          <a href="index.html#how-it-works" class="btn-ghost">
-            How PayRoll Protect works
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- HOW IT WORKS -->
+  <section class="hiw" id="how-it-works" aria-labelledby="hiw-h">
+    <div class="hiw__prog" aria-hidden="true"><div class="hiw__prog-fill"></div></div>
+    <div class="container">
+      <div class="hiw__head reveal">
+        <span class="hiw__eyebrow">Simple 3-Step Process</span>
+        <h2 class="hiw__h2" id="hiw-h">From Your Numbers To <span>Clear Answers</span></h2>
+      </div>
+      <div class="hiw__steps">
+
+        <div class="hiw__step reveal d1">
+          <div class="hiw__step-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h12M10 4v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
-          </a>
+          </div>
+          <div class="hiw__num" aria-hidden="true">01</div>
+          <h3 class="hiw__step-h">Enter Your Site Details</h3>
+          <p class="hiw__step-p">Tell us your weekly labour spend and number of sites. No login, no account — takes under 60 seconds.</p>
+        </div>
+
+        <div class="hiw__step reveal d2">
+          <div class="hiw__step-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 9h6M7 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hiw__num" aria-hidden="true">02</div>
+          <h3 class="hiw__step-h">Benchmark Against Sector Rates</h3>
+          <p class="hiw__step-p">Your figures are run against industry-verified discrepancy rates — 2.5%, 5%, and 7.5% of annual spend — drawn from live construction payroll audits.</p>
+        </div>
+
+        <div class="hiw__step reveal d3">
+          <div class="hiw__step-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 3L3 7v5c0 3 2.5 5 7 6.5 4.5-1.5 7-3.5 7-6.5V7L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hiw__num" aria-hidden="true">03</div>
+          <h3 class="hiw__step-h">Receive Your Exposure Report</h3>
+          <p class="hiw__step-p">Instant breakdown of conservative, likely, and high-risk exposure — plus your projected 90-day pilot saving, in pounds.</p>
         </div>
 
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- STATS STRIP -->
-<section class="calc-stats" aria-labelledby="calc-stats-h">
-  <div class="container">
-    <div class="calc-stats__intro">
-      <h2 class="calc-stats__h2 reveal" id="calc-stats-h">The Numbers Behind The Estimate</h2>
-      <p class="calc-stats__sub reveal d1">These aren't projections. They're industry benchmarks drawn from HMRC data and construction sector reporting.</p>
-    </div>
-    <div class="calc-stats__grid">
-      <div class="calc-stat-card reveal">
-        <p class="calc-stat-card__kicker">Ghost clocking &amp; time fraud</p>
-        <div>
-          <p class="calc-stat-card__fig"><span class="calc-fig-sym">£</span>4,200</p>
-          <p class="calc-stat-card__desc">lost per worker, per year at 7.5% discrepancy</p>
-        </div>
-      </div>
-      <div class="calc-stat-card reveal d1">
-        <p class="calc-stat-card__kicker">Unconfirmed site attendance</p>
-        <div>
-          <p class="calc-stat-card__fig">1 in 13</p>
-          <p class="calc-stat-card__desc">workers never physically confirmed on site</p>
-        </div>
-      </div>
-      <div class="calc-stat-card reveal d2">
-        <p class="calc-stat-card__kicker">Invoice overpayment recovery</p>
-        <div>
-          <p class="calc-stat-card__fig calc-stat-card__fig--red"><span class="calc-fig-sym">£</span>0</p>
-          <p class="calc-stat-card__desc">recovered once invoices are approved and paid</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- WHY TRUST THE FIGURES -->
+  <section class="trust-fig" id="trust-figures" aria-labelledby="trust-fig-h">
+    <div class="container">
+      <div class="trust-fig__grid">
 
-<!-- METHODOLOGY -->
-<section class="calc-method" aria-labelledby="method-h">
-  <div class="container">
-    <div class="calc-method__inner">
-      <h2 class="calc-method__heading reveal" id="method-h">
-        How The <em>Estimate</em> Works
-      </h2>
-      <div>
-        <div class="calc-method__items">
-          <div class="calc-method__item reveal">
-            <div class="calc-method__item-head">
-              <span class="calc-method__item-num">01</span>
-              <span class="calc-method__item-title">You enter your total payroll spend</span>
+        <div class="reveal">
+          <h2 class="trust-fig__h2" id="trust-fig-h">Why You Can <span>Trust These Numbers</span></h2>
+          <p class="trust-fig__sub">The figures in this audit aren't estimates — they're benchmarks drawn from PayRoll Protect's own site deployments and UK construction payroll analysis.</p>
+          <div class="trust-fig__points">
+            <div class="trust-fig__point">
+              <div class="trust-fig__point-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <p class="trust-fig__point-h">Verified Attendance Data</p>
+                <p class="trust-fig__point-p">Discrepancy rates come from biometric attendance records cross-referenced against subcontractor invoices on live construction sites.</p>
+              </div>
             </div>
-            <p class="calc-method__item-body">Weekly or monthly — your choice. This is the gross payroll you're processing across subcontractors and agency workers on site. Not headcount, not day rates: total spend.</p>
-          </div>
-          <div class="calc-method__item reveal d1">
-            <div class="calc-method__item-head">
-              <span class="calc-method__item-num">02</span>
-              <span class="calc-method__item-title">We apply a discrepancy rate to your spend</span>
+            <div class="trust-fig__point">
+              <div class="trust-fig__point-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <p class="trust-fig__point-h">Conservative Methodology</p>
+                <p class="trust-fig__point-p">Three scenarios — 2.5%, 5%, and 7.5% — let you plan at the level of risk you're comfortable acknowledging. The 5% figure is the median seen across audited sites.</p>
+              </div>
             </div>
-            <p class="calc-method__item-body">A discrepancy is the gap between what's claimed on a timesheet and what was actually worked. The UK construction average sits at around 4%, sourced from HMRC Tax Gap Statistics and CIPP benchmarking data. High-risk sites — those running multiple agencies, high turnover, or paper-based registers — typically land at 7–8%.</p>
-          </div>
-          <div class="calc-method__item reveal d2">
-            <div class="calc-method__item-head">
-              <span class="calc-method__item-num">03</span>
-              <span class="calc-method__item-title">The output is your exposure, not confirmed fraud</span>
+            <div class="trust-fig__point">
+              <div class="trust-fig__point-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <p class="trust-fig__point-h">No Incentive To Inflate</p>
+                <p class="trust-fig__point-p">This tool exists to show you a realistic picture, not to sell you a bigger number. The lower-end scenario is always presented first.</p>
+              </div>
             </div>
-            <p class="calc-method__item-body">This figure is what you're statistically likely to be overpaying based on sector-wide data. Some of it is deliberate fraud. Some is administrative error. Some is supervisors signing off what they didn't verify. The cause matters less than the outcome: once those invoices are paid, that money doesn't come back.</p>
-          </div>
-          <div class="calc-method__item reveal d3">
-            <div class="calc-method__item-head">
-              <span class="calc-method__item-num">04</span>
-              <span class="calc-method__item-title">PayRoll Protect eliminates the discrepancy at source</span>
-            </div>
-            <p class="calc-method__item-body">Rather than auditing after the fact, PPP verifies attendance in real time — biometric, timestamped, site-gated. Discrepancies surface before payment approval, not after legal action starts. The goal isn't to recover money already lost. It's to stop it leaving in the first place.</p>
           </div>
         </div>
-        <div class="calc-method__sources reveal">
-          <p class="calc-method__sources-title">Sources</p>
-          <ul>
-            <li><a href="https://www.gov.uk/government/statistics/measuring-tax-gaps" target="_blank" rel="noopener">HMRC — Measuring Tax Gaps 2023 to 2024 edition</a></li>
-            <li>CIPP Annual Benchmarking Report 2023 — Construction sector payroll compliance</li>
-            <li>UK Construction Industry Training Board (CITB) — Workforce and labour mobility data</li>
-          </ul>
+
+        <div class="reveal-right d1">
+          <div class="trust-fig__rates">
+            <p class="trust-fig__rates-h">Industry Discrepancy Benchmarks</p>
+            <div class="trust-fig__rate">
+              <div class="trust-fig__rate-pct low" data-count="2.5">2.5%</div>
+              <div class="trust-fig__rate-label">
+                <strong>Conservative</strong>
+                Minimal unverified claims. Best-case for well-managed sites.
+              </div>
+              <div class="trust-fig__rate-bar" aria-hidden="true"><div class="trust-fig__rate-bar-fill" style="--bar-w: 0.333"></div></div>
+            </div>
+            <div class="trust-fig__rate">
+              <div class="trust-fig__rate-pct mid" data-count="5.0">5.0%</div>
+              <div class="trust-fig__rate-label">
+                <strong>Likely</strong>
+                Median rate seen across audited construction payrolls. Most sites fall here.
+              </div>
+              <div class="trust-fig__rate-bar" aria-hidden="true"><div class="trust-fig__rate-bar-fill" style="--bar-w: 0.667"></div></div>
+            </div>
+            <div class="trust-fig__rate">
+              <div class="trust-fig__rate-pct high" data-count="7.5">7.5%</div>
+              <div class="trust-fig__rate-label">
+                <strong>High Risk</strong>
+                Sites with multiple subcontractors and no verification layer.
+              </div>
+              <div class="trust-fig__rate-bar" aria-hidden="true"><div class="trust-fig__rate-bar-fill" style="--bar-w: 1"></div></div>
+            </div>
+            <p class="trust-fig__source">Figures derived from PayRoll Protect biometric attendance audits across UK construction sites, 2023–2025.</p>
+          </div>
         </div>
+
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FAQ -->
-<section class="calc-faq" aria-labelledby="faq-h">
-  <div class="container">
-    <div class="calc-faq__inner">
-      <h2 class="calc-faq__h2 reveal" id="faq-h">Common Questions</h2>
+  <!-- FAQ -->
+  <section class="calc-faq" id="faq" aria-labelledby="calc-faq-h">
+    <div class="container">
+      <div class="calc-faq__head reveal">
+        <h2 class="calc-faq__h2" id="calc-faq-h">Common <span>Questions</span></h2>
+      </div>
       <div class="calc-faq__list">
 
-        <div class="faq-item">
-          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-1">
-            Is this figure accurate for my site?
-            <span class="faq-item__icon" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-          </button>
-          <div class="faq-item__body" id="faq-1" role="region">
-            <div class="faq-item__body-inner">
-              <p>It's a sector-level estimate, not a site-specific audit. The 4% industry average is derived from HMRC Tax Gap Statistics and CIPP benchmarking data — it reflects the mean across the UK construction sector, which skews toward larger multi-subcontractor operations.</p>
-              <p>Your actual exposure will depend on how many agencies you use, the sophistication of your current sign-off process, and how long discrepancies have gone unchecked. The calculator gives you a starting point — a real PayRoll Protect assessment gives you the actual figure.</p>
+        <details class="calc-faq__item reveal d1">
+          <summary class="calc-faq__summary">
+            How accurate is this exposure estimate?
+            <span class="calc-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="calc-faq__body">
+            <p>The figures are benchmarks, not predictions. They show what companies with similar payroll profiles have found when their attendance data is reconciled against invoices. Your actual exposure will depend on how many subcontractors you use, how payment is verified, and how tightly sites are managed.</p>
+            <p>Think of the output as a planning range — the "likely" scenario is the median seen across audited sites, not a worst case.</p>
+          </div>
+        </details>
+
+        <details class="calc-faq__item reveal d2">
+          <summary class="calc-faq__summary">
+            Does entering my details here commit me to anything?
+            <span class="calc-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="calc-faq__body">
+            <p>No. This tool is entirely free, and viewing your results creates no obligation. To unlock the full breakdown, you'll be asked for a work email — that's so we can follow up if you have questions, not to sign you up for anything.</p>
+          </div>
+        </details>
+
+        <details class="calc-faq__item reveal d3">
+          <summary class="calc-faq__summary">
+            What is the 90-day pilot saving?
+            <span class="calc-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="calc-faq__body">
+            <p>It's the portion of your likely annual exposure that falls within a 90-day window. PayRoll Protect offers a 90-day pilot so you can measure real results before committing long-term. The figure gives you a concrete target for what that trial period could recover.</p>
+          </div>
+        </details>
+
+        <details class="calc-faq__item reveal d4">
+          <summary class="calc-faq__summary">
+            We use gang-rate or all-in subcontractor packages — does this still apply?
+            <span class="calc-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="calc-faq__body">
+            <p>Yes. Inflated headcount affects gang-rate payments just as it does day-rate ones — if workers aren't present but are counted, you're paying for labour that wasn't delivered regardless of how the rate is structured. Verified attendance closes that gap for any payment model.</p>
+          </div>
+        </details>
+
+        <details class="calc-faq__item reveal d5">
+          <summary class="calc-faq__summary">
+            How does PayRoll Protect actually verify attendance?
+            <span class="calc-faq__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="calc-faq__body">
+            <p>A fixed device at site entry records each worker's arrival and departure against a registered biometric profile — face or fingerprint. The result is a timestamped record tied to a verified identity, not an assumed one. Devices work offline and sync when connectivity is restored. No smartphone or app required.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="ctap" id="pilot" aria-labelledby="ctap-calc-h">
+    <div class="container">
+      <div class="ctap__grid">
+
+        <div>
+          <h2 class="ctap__h2 reveal" id="ctap-calc-h">Stop Payroll Fraud.<br><span>Start Protecting Profit.</span></h2>
+          <p class="ctap__sub reveal d2">See how PayRoll Protect verifies every labour claim before your payroll runs — and stops unverified work from leaving your account.</p>
+          <div class="ctap__trust reveal d3">
+            <div class="ctap__trust-item">
+              <div class="ctap__trust-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M9 1.5L3 9h5.5L7 14.5 13 7H7.5L9 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <span class="ctap__trust-name">Quick Setup</span>
+                <p class="ctap__trust-desc">Get started in days, not weeks. Full onboarding included.</p>
+              </div>
+            </div>
+            <div class="ctap__trust-item">
+              <div class="ctap__trust-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1.5L2 5v4c0 3.2 2.5 5.6 6 6.5 3.5-.9 6-3.3 6-6.5V5L8 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  <path d="M5.5 8l2 2 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <span class="ctap__trust-name">No Obligation</span>
+                <p class="ctap__trust-desc">Try it risk-free with our 90-day pilot. No long-term commitment.</p>
+              </div>
+            </div>
+            <div class="ctap__trust-item">
+              <div class="ctap__trust-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="6" r="3.25" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M2 14c0-2.761 2.686-5 6-5s6 2.239 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <span class="ctap__trust-name">Expert Support</span>
+                <p class="ctap__trust-desc">Dedicated team here to help every step of the way.</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-2">
-            What counts as a payroll discrepancy?
-            <span class="faq-item__icon" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-          </button>
-          <div class="faq-item__body" id="faq-2" role="region">
-            <div class="faq-item__body-inner">
-              <p>Any gap between what a subcontractor or agency claims on a timesheet and what can be independently verified on site. This includes ghost clocking (workers claiming hours they weren't present for), early departures billed as full days, duplicate billing across agencies, and inflated headcounts on gang-rate submissions.</p>
-              <p>Administrative errors — supervisors signing off sheets without checking — account for a significant portion. Intent is irrelevant to the financial outcome: the invoice still clears at the wrong figure.</p>
+        <div class="reveal-right d1">
+          <div class="ctap__card">
+            <div class="ctap__card-head">
+              <div class="ctap__shield" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <path d="M11 2L3 5.5v6C3 16 7 20 11 21c4-1 8-5 8-9.5v-6L11 2z" fill="oklch(0.18 0.015 145 / 0.30)" stroke="oklch(0.18 0.015 145)" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="ctap__card-title">Book a 90-Day Pilot</span>
             </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-3">
-            Can't we just audit timesheets after the fact?
-            <span class="faq-item__icon" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-          </button>
-          <div class="faq-item__body" id="faq-3" role="region">
-            <div class="faq-item__body-inner">
-              <p>Post-payment audits surface discrepancies after the money has left. Recovery requires disputes, legal action, or writing the amount off. The construction industry standard is to write it off — the cost and friction of recovery typically exceeds the recovered sum, especially when spread across multiple subcontractors.</p>
-              <p>PayRoll Protect operates at the point of claim, not after payment. Discrepancies are flagged before any payment decision is made, with biometric-backed timestamps rather than someone's signature.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-4">
-            How quickly can PayRoll Protect be deployed on site?
-            <span class="faq-item__icon" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-          </button>
-          <div class="faq-item__body" id="faq-4" role="region">
-            <div class="faq-item__body-inner">
-              <p>Most sites are operational within a single day. The pilot programme is designed around a 90-day onboarding window: install on one site, generate verified attendance data from your own operation, and use that evidence internally before rolling out across the portfolio.</p>
-              <p>You don't need to overhaul existing payroll systems. PPP sits alongside your current process and flags discrepancies before the approval step — no rework, no disruption to what already runs.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-item__btn" aria-expanded="false" aria-controls="faq-5">
-            Which scenario should I use?
-            <span class="faq-item__icon" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </span>
-          </button>
-          <div class="faq-item__body" id="faq-5" role="region">
-            <div class="faq-item__body-inner">
-              <p>Use <strong>Conservative (3%)</strong> if your sites have strong supervisory oversight, few agencies, and existing digital sign-off tools. Use <strong>Industry Average (4%)</strong> as the baseline — it reflects what HMRC data indicates across the sector. Use <strong>High Risk (7.5%)</strong> if you're running multi-agency subcontractor chains, paper registers, or high-turnover workforces with limited verification.</p>
-              <p>If you're unsure, start with the industry average. It's the number that tends to hold up in practice, and it's the figure most commercial directors find credible when presenting to boards.</p>
+            <div class="ctap__card-body">
+              <ul class="ctap__checks" role="list">
+                <li class="ctap__check">
+                  <div class="ctap__check-icon" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="ctap__check-txt">See real results on your live sites</span>
+                </li>
+                <li class="ctap__check">
+                  <div class="ctap__check-icon" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="ctap__check-txt">Identify savings and stop losses</span>
+                </li>
+                <li class="ctap__check">
+                  <div class="ctap__check-icon" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="ctap__check-txt">Full onboarding and expert support included</span>
+                </li>
+                <li class="ctap__check">
+                  <div class="ctap__check-icon" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="ctap__check-txt">No commitment, no obligation</span>
+                </li>
+              </ul>
+              <a href="contact.html" class="ctap__cta-btn">
+                Book Your 90-Day Pilot
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <p class="ctap__trust-note">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                  <rect x="2" y="6" width="9" height="6.5" rx="1.2" stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M4.25 6V4.5a2.25 2.25 0 014.5 0V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Your data is secure and never shared
+              </p>
             </div>
           </div>
         </div>
 
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FINAL CTA -->
-<section class="calc-final-cta" aria-labelledby="cta-h">
-  <div class="container">
-    <h2 class="calc-final-cta__h2 reveal" id="cta-h">
-      Stop Estimating.<br><em>Start Verifying.</em>
-    </h2>
-    <p class="calc-final-cta__sub reveal d1">
-      Get a site-specific assessment from a PayRoll Protect specialist. No generic pitch — an actual figure for your operation, based on your payroll, your agencies, your risk profile.
-    </p>
-    <div class="calc-final-cta__actions reveal d2">
-      <a href="contact.html" class="btn-pilot">Book a Free Assessment</a>
-      <a href="index.html" class="btn-ghost-dark">
-        Back to PayRoll Protect
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
 </main>
 
 <!-- FOOTER -->
@@ -1364,266 +1887,565 @@
 </footer>
 
 <script>
-  // ── NAV ─────────────────────────────────────────────────
-  const nav = document.getElementById('site-nav');
-  const toggle = document.getElementById('nav-toggle');
-  const mobileNav = document.getElementById('nav-mobile');
+/* ── CONFIG ──────────────────────────────────────────────────────────────────
+   Set GHL_WEBHOOK_URL to your GoHighLevel custom webhook endpoint.
+   IMPORTANT: This is a static HTML file. The URL will be visible in page
+   source. For a production deployment, proxy this through a serverless
+   function (Netlify/Cloudflare Worker) to keep the endpoint private.
+   ─────────────────────────────────────────────────────────────────────────── */
+var GHL_WEBHOOK_URL = '';
 
-  toggle.addEventListener('click', () => {
-    const open = mobileNav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+/* ── FREE EMAIL DOMAINS ──────────────────────────────────────────────────── */
+var FREE_DOMAINS = [
+  'gmail.com','googlemail.com','hotmail.com','hotmail.co.uk',
+  'outlook.com','live.com','live.co.uk','yahoo.com','yahoo.co.uk',
+  'icloud.com','me.com','aol.com','protonmail.com','proton.me',
+  'gmx.com','mail.com','yandex.com'
+];
+
+/* ── CALCULATION MODULE ───────────────────────────────────────────────────
+   Pure function. All monetary inputs in GBP (no pence).
+   Rates: conservative 2.5%, likely 5.0%, high 7.5% of annual spend.
+   Annual spend = weeklySpend * 52.
+   ──────────────────────────────────────────────────────────────────────── */
+function calcExposure(weeklySpend, siteCount) {
+  var annual = weeklySpend * 52;
+  var sites  = Math.max(siteCount, 1);
+  var likely = annual * 0.05;
+  return {
+    annualSpend:   annual,
+    conservative:  annual * 0.025,
+    likely:        likely,
+    high:          annual * 0.075,
+    weeklyLikely:  weeklySpend * 0.05,
+    perSiteLikely: likely / sites,
+    pilot90:       likely * (90 / 365)
+  };
+}
+
+function fmtGBP(n) {
+  if (!n || n < 1) return '—';
+  if (n >= 1000000) return '£' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
+  if (n >= 10000)   return '£' + Math.round(n / 1000) + 'k';
+  return '£' + Math.round(n).toLocaleString('en-GB');
+}
+
+/* ── STATE ─────────────────────────────────────────────────────────────── */
+var formData = { company:'', sector:'', siteCount:1, totalWorkers:0, direct:20, sub:60, agency:20, weeklySpend:0, attendance:'' };
+var calcResults = null;
+
+/* ── DOM ────────────────────────────────────────────────────────────────── */
+var formSection    = document.getElementById('audit-form-section');
+var loadingSection = document.getElementById('audit-loading-section');
+var resultsSection = document.getElementById('audit-results-section');
+var step1 = document.getElementById('step-1');
+var step2 = document.getElementById('step-2');
+var step3 = document.getElementById('step-3');
+
+/* ── PROGRESS ───────────────────────────────────────────────────────────── */
+function setProgress(active) {
+  [1,2,3].forEach(function(n) {
+    var el   = document.getElementById('prog-step-' + n);
+    var done = n < active;
+    el.classList.toggle('is-active', n === active);
+    el.classList.toggle('is-done',   done);
+    var c = el.querySelector('.audit-progress__circle');
+    c.innerHTML = done
+      ? '<svg width="13" height="10" viewBox="0 0 13 10" fill="none"><path d="M1.5 5l3.5 3.5L11.5 1" stroke="#162900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : n;
+    if (n < 3) document.getElementById('prog-line-' + n).classList.toggle('is-done', done);
   });
-  mobileNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileNav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
-      mobileNav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Open navigation');
-      toggle.focus();
+}
+
+var _activeStep = 1;
+function showStep(n) {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dir = n > _activeStep ? 'fwd' : 'bwd';
+  _activeStep = n;
+
+  [step1, step2, step3].forEach(function(s, i) {
+    var vis = (i + 1) === n;
+    s.hidden = !vis;
+    if (vis && !reduced) {
+      s.classList.remove('step-enter', 'step-in-fwd', 'step-in-bwd');
+      void s.offsetWidth;
+      s.classList.add('step-in-' + dir);
     }
   });
 
-  // ── REVEAL ANIMATIONS ───────────────────────────────────
-  (function() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const els = document.querySelectorAll('.reveal');
-    if (!els.length) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
+  if (!reduced) {
+    var card = document.querySelector('.audit-card');
+    card.classList.remove('card-breathe');
+    void card.offsetWidth;
+    card.classList.add('card-breathe');
+    card.addEventListener('animationend', function h(e) {
+      if (e.animationName === 'cardBreathe') { card.classList.remove('card-breathe'); card.removeEventListener('animationend', h); }
+    });
+  }
+
+  setProgress(n);
+}
+
+function shakeCard() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c = document.querySelector('.audit-card');
+  c.classList.remove('shake');
+  void c.offsetWidth;
+  c.classList.add('shake');
+}
+
+/* ── VALIDATION ─────────────────────────────────────────────────────────── */
+function fieldErr(id, errId, show) {
+  var el = document.getElementById(id); var er = document.getElementById(errId);
+  if (el) el.classList.toggle('has-error', show);
+  if (er) er.classList.toggle('is-visible', show);
+}
+
+function validateStep1() {
+  var company = document.getElementById('f-company').value.trim();
+  var sector  = document.getElementById('f-sector').value;
+  var sites   = parseInt(document.getElementById('f-sites').value.replace(/\D/g,''),10)||0;
+  var ok = true;
+  fieldErr('f-company','f-company-err', !company); if (!company) ok=false;
+  fieldErr('f-sector', 'f-sector-err',  !sector);  if (!sector)  ok=false;
+  fieldErr('f-sites',  'f-sites-err',   sites<1);  if (sites<1)  ok=false;
+  if (ok) { formData.company=company; formData.sector=sector; formData.siteCount=sites; }
+  return ok;
+}
+
+function getSplitTotal() {
+  return (parseInt(document.getElementById('f-split-direct').value,10)||0)
+       + (parseInt(document.getElementById('f-split-sub').value,10)||0)
+       + (parseInt(document.getElementById('f-split-agency').value,10)||0);
+}
+
+function validateStep2() {
+  var workers = parseInt(document.getElementById('f-workers').value.replace(/\D/g,''),10)||0;
+  var total   = getSplitTotal();
+  var ok = true;
+  fieldErr('f-workers','f-workers-err', workers<1); if (workers<1) ok=false;
+  document.getElementById('f-split-err').classList.toggle('is-visible', total!==100);
+  if (total!==100) ok=false;
+  if (ok) {
+    formData.totalWorkers = workers;
+    formData.direct = parseInt(document.getElementById('f-split-direct').value,10)||0;
+    formData.sub    = parseInt(document.getElementById('f-split-sub').value,10)||0;
+    formData.agency = parseInt(document.getElementById('f-split-agency').value,10)||0;
+  }
+  return ok;
+}
+
+function validateStep3() {
+  var spend  = parseInt(document.getElementById('f-spend').value.replace(/\D/g,''),10)||0;
+  var attend = document.getElementById('f-attendance').value;
+  var ok = true;
+  var sw = document.getElementById('spend-wrap'), se = document.getElementById('f-spend-err');
+  sw.classList.toggle('has-error', spend<1); se.classList.toggle('is-visible', spend<1);
+  if (spend<1) ok=false;
+  fieldErr('f-attendance','f-attendance-err', !attend); if (!attend) ok=false;
+  if (ok) { formData.weeklySpend=spend; formData.attendance=attend; }
+  return ok;
+}
+
+/* ── STEP NAVIGATION ────────────────────────────────────────────────────── */
+document.getElementById('next-1').addEventListener('click', function(){ if(validateStep1()) showStep(2); else shakeCard(); });
+document.getElementById('next-2').addEventListener('click', function(){ if(validateStep2()) showStep(3); else shakeCard(); });
+document.getElementById('back-2').addEventListener('click', function(){ showStep(1); });
+document.getElementById('back-3').addEventListener('click', function(){ showStep(2); });
+document.getElementById('btn-submit').addEventListener('click', function(){ if(validateStep3()) runAudit(); else shakeCard(); });
+
+document.getElementById('audit-form').addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  if (!step1.hidden) document.getElementById('next-1').click();
+  else if (!step2.hidden) document.getElementById('next-2').click();
+  else if (!step3.hidden) document.getElementById('btn-submit').click();
+});
+
+/* ── SPLIT TOTAL ────────────────────────────────────────────────────────── */
+function updateSplitTotal() {
+  var t = getSplitTotal(), el = document.getElementById('split-total-display');
+  el.textContent = 'Total: ' + t + '%';
+  el.classList.toggle('is-error', t !== 100);
+}
+['f-split-direct','f-split-sub','f-split-agency'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g,'').slice(0,3);
+    updateSplitTotal();
+  });
+});
+
+/* ── CURRENCY FORMAT ────────────────────────────────────────────────────── */
+document.getElementById('f-spend').addEventListener('input', function() {
+  var raw = this.value.replace(/\D/g,'');
+  if (!raw) { this.value=''; }
+  else {
+    var n=parseInt(raw,10), old=this.value.length, pos=this.selectionStart;
+    this.value = n.toLocaleString('en-GB');
+    try { var d=this.value.length-old; this.setSelectionRange(Math.min(Math.max(pos+d,0),this.value.length),Math.min(Math.max(pos+d,0),this.value.length)); } catch(e){}
+  }
+  var preview = document.getElementById('spend-preview');
+  var val = parseInt(raw, 10) || 0;
+  if (val > 0) {
+    preview.textContent = '≈ £' + (val * 52).toLocaleString('en-GB') + ' annual payroll';
+    preview.classList.add('is-visible');
+  } else {
+    preview.textContent = '';
+    preview.classList.remove('is-visible');
+  }
+});
+['f-sites','f-workers'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){ this.value=this.value.replace(/\D/g,''); });
+});
+
+/* ── LOADING SEQUENCE ───────────────────────────────────────────────────── */
+function runLoadingSequence(onComplete) {
+  var bar = document.getElementById('loading-bar');
+  var brl = document.getElementById('loading-bar-role');
+  var steps = [{id:'ls-1',delay:0},{id:'ls-2',delay:850},{id:'ls-3',delay:1750},{id:'ls-4',delay:2600}];
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    steps.forEach(function(s){ var el=document.getElementById(s.id); el.classList.add('is-visible','is-done'); });
+    setTimeout(onComplete, 300); return;
+  }
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ bar.style.width='100%'; }); });
+  steps.forEach(function(s,i) {
+    setTimeout(function() {
+      document.getElementById(s.id).classList.add('is-visible');
+      if (i>0) document.getElementById(steps[i-1].id).classList.add('is-done');
+      brl.setAttribute('aria-valuenow', Math.round(((i+1)/steps.length)*100));
+    }, s.delay);
+  });
+  setTimeout(function(){ document.getElementById('ls-4').classList.add('is-done'); }, 3100);
+  setTimeout(onComplete, 3400);
+}
+
+/* ── RUN AUDIT ──────────────────────────────────────────────────────────── */
+function runAudit() {
+  calcResults = calcExposure(formData.weeklySpend, formData.siteCount);
+  populateResults();
+  try { sessionStorage.setItem('ppp_audit_data', JSON.stringify({formData:formData, calc:calcResults})); } catch(e){}
+  if (formData.company) {
+    var ls1 = document.getElementById('ls-1');
+    if (ls1) {
+      var dot = ls1.querySelector('.audit-loading__step-dot').cloneNode(true);
+      ls1.innerHTML = '';
+      ls1.appendChild(dot);
+      ls1.appendChild(document.createTextNode('Reviewing ' + formData.company + '’s workforce mix'));
+    }
+  }
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  formSection.hidden    = true;
+  loadingSection.hidden = false;
+  resultsSection.hidden = true;
+  if (!reduced) {
+    loadingSection.classList.remove('section-enter');
+    void loadingSection.offsetWidth;
+    loadingSection.classList.add('section-enter');
+  }
+  runLoadingSequence(function() {
+    setTimeout(function() {
+      loadingSection.hidden = true;
+      showResults();
+    }, 200);
+  });
+}
+
+function populateResults() {
+  document.getElementById('r-weekly-teaser').textContent = fmtGBP(calcResults.weeklyLikely);
+  document.getElementById('r-cons').textContent          = fmtGBP(calcResults.conservative);
+  document.getElementById('r-likely').textContent        = fmtGBP(calcResults.likely);
+  document.getElementById('r-high').textContent          = fmtGBP(calcResults.high);
+  document.getElementById('r-per-site').textContent      = fmtGBP(calcResults.perSiteLikely);
+  document.getElementById('r-pilot').textContent         = fmtGBP(calcResults.pilot90);
+  document.getElementById('r-interpretation').textContent = buildInterpretation();
+}
+
+function countUpTeaser(el, target, duration) {
+  if (!el || !target || target < 1) return;
+  el.textContent = '—';
+  var startTime = null;
+  function fmt(n) { return '£' + Math.round(n).toLocaleString('en-GB'); }
+  function tick(ts) {
+    if (!startTime) startTime = ts;
+    var p = Math.min((ts - startTime) / duration, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(target * eased);
+    if (p < 1) { requestAnimationFrame(tick); } else { el.textContent = fmt(target); }
+  }
+  requestAnimationFrame(tick);
+}
+
+function showResults() {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resultsSection.hidden = false;
+  if (!reduced) {
+    resultsSection.classList.remove('section-enter');
+    void resultsSection.offsetWidth;
+    resultsSection.classList.add('section-enter');
+    requestAnimationFrame(function() {
+      resultsSection.querySelectorAll('.reveal').forEach(function(el) {
+        requestAnimationFrame(function(){ el.classList.add('in'); });
       });
-    }, { threshold: 0.12 });
-    els.forEach(el => io.observe(el));
-  })();
-
-  // ── CALCULATOR ──────────────────────────────────────────
-  (function() {
-    const payrollInput  = document.getElementById('cp-payroll');
-    const workerInput   = document.getElementById('cp-workers');
-    const btnWeek       = document.getElementById('btn-week');
-    const btnMonth      = document.getElementById('btn-month');
-    const scBtns        = document.querySelectorAll('.calc-scenario-btn');
-
-    const outAnnual     = document.getElementById('cp-annual');
-    const outMonthly    = document.getElementById('cp-monthly');
-    const out5yr        = document.getElementById('cp-5yr');
-    const outPerWorker  = document.getElementById('cp-per-worker');
-    const workerCard    = document.getElementById('cp-worker-card');
-    const scenarioTag   = document.getElementById('cp-scenario-tag');
-
-    const cprConsFig    = document.getElementById('cpr-conservative-fig');
-    const cprAvgFig     = document.getElementById('cpr-average-fig');
-    const cprHrFig      = document.getElementById('cpr-highrisk-fig');
-    const cprConsRow    = document.getElementById('cpr-conservative');
-    const cprAvgRow     = document.getElementById('cpr-average');
-    const cprHrRow      = document.getElementById('cpr-highrisk');
-    const compareEmpty  = document.getElementById('cp-compare-empty');
-    const compareRows   = document.getElementById('cp-compare-rows');
-
-    let period = 'week';
-    let rate   = 0.04;
-    let activeScenario = 'average';
-
-    const SCENARIOS = {
-      conservative: { rate: 0.03, label: 'Conservative · 3%' },
-      average:      { rate: 0.04, label: 'Industry Average · 4%' },
-      highrisk:     { rate: 0.075, label: 'High Risk · 7.5%' },
-    };
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function multiplier() { return period === 'week' ? 52 : 12; }
-
-    function fmt(n) {
-      if (n === 0) return '—';
-      if (n >= 1000000) return '£' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
-      if (n >= 10000)   return '£' + Math.round(n / 1000) + 'k';
-      return '£' + Math.round(n).toLocaleString('en-GB');
-    }
-
-    const rafRefs = {};
-    const prevVals = {};
-
-    function animateEl(id, to) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (reducedMotion || to === 0) {
-        el.textContent = to === 0 ? '—' : fmt(to);
-        prevVals[id] = to;
-        return;
-      }
-      const from = prevVals[id] || 0;
-      prevVals[id] = to;
-      cancelAnimationFrame(rafRefs[id]);
-      const t0 = performance.now();
-      function tick(now) {
-        const p = Math.min((now - t0) / 320, 1);
-        const e = 1 - Math.pow(1 - p, 4);
-        el.textContent = fmt(Math.round(from + (to - from) * e));
-        if (p < 1) rafRefs[id] = requestAnimationFrame(tick);
-        else el.textContent = fmt(to);
-      }
-      rafRefs[id] = requestAnimationFrame(tick);
-    }
-
-    function getPayroll() {
-      return Math.min(parseInt((payrollInput.value || '').replace(/[^0-9]/g, ''), 10) || 0, 99999999);
-    }
-
-    function getWorkers() {
-      return Math.min(parseInt((workerInput.value || '').replace(/[^0-9]/g, ''), 10) || 0, 99999);
-    }
-
-    function update() {
-      const raw     = getPayroll();
-      const workers = getWorkers();
-      const annualSpend = raw * multiplier();
-      const annualLoss  = annualSpend * rate;
-      const monthlyLoss = annualLoss / 12;
-      const fiveYrLoss  = annualLoss * 5;
-
-      const hasValue = raw > 0;
-
-      // Primary output
-      if (outAnnual) {
-        outAnnual.textContent = hasValue ? '—' : '—';
-        animateEl('cp-annual', hasValue ? annualLoss : 0);
-        outAnnual.classList.toggle('is-zero', !hasValue);
-      }
-
-      animateEl('cp-monthly',  hasValue ? monthlyLoss : 0);
-      animateEl('cp-5yr',      hasValue ? fiveYrLoss  : 0);
-
-      // Per-worker card
-      if (workerCard && outPerWorker) {
-        const showWorker = workers > 0 && hasValue;
-        workerCard.classList.toggle('visible', showWorker);
-        if (showWorker) {
-          animateEl('cp-per-worker', annualLoss / workers);
-        }
-      }
-
-      // Scenario tag
-      if (scenarioTag) {
-        scenarioTag.textContent = SCENARIOS[activeScenario].label;
-      }
-
-      // Comparison table
-      if (hasValue) {
-        compareEmpty.style.display = 'none';
-        compareRows.removeAttribute('aria-hidden');
-        const cons = annualSpend * SCENARIOS.conservative.rate;
-        const avg  = annualSpend * SCENARIOS.average.rate;
-        const hr   = annualSpend * SCENARIOS.highrisk.rate;
-        cprConsFig.textContent = fmt(cons);
-        cprAvgFig.textContent  = fmt(avg);
-        cprHrFig.textContent   = fmt(hr);
-      } else {
-        compareEmpty.style.display = '';
-        compareRows.setAttribute('aria-hidden', 'true');
-        cprConsFig.textContent = '—';
-        cprAvgFig.textContent  = '—';
-        cprHrFig.textContent   = '—';
-      }
-    }
-
-    // Period toggle
-    function setPeriod(p) {
-      period = p;
-      btnWeek.classList.toggle('active',  p === 'week');
-      btnMonth.classList.toggle('active', p === 'month');
-      btnWeek.setAttribute('aria-pressed',  String(p === 'week'));
-      btnMonth.setAttribute('aria-pressed', String(p === 'month'));
-      update();
-    }
-    btnWeek.addEventListener('click',  () => setPeriod('week'));
-    btnMonth.addEventListener('click', () => setPeriod('month'));
-
-    // Scenario toggle
-    function setScenario(id) {
-      activeScenario = id;
-      rate = SCENARIOS[id].rate;
-      scBtns.forEach(btn => {
-        const isActive = btn.id === 'sc-' + id;
-        btn.classList.toggle('active', isActive);
-        btn.setAttribute('aria-checked', String(isActive));
-      });
-      // Update comparison row highlights
-      cprConsRow.classList.toggle('active-row', id === 'conservative');
-      cprAvgRow.classList.toggle('active-row',  id === 'average');
-      cprHrRow.classList.toggle('active-row',   id === 'highrisk');
-      update();
-    }
-    document.getElementById('sc-conservative').addEventListener('click', () => setScenario('conservative'));
-    document.getElementById('sc-average').addEventListener('click',      () => setScenario('average'));
-    document.getElementById('sc-highrisk').addEventListener('click',     () => setScenario('highrisk'));
-
-    // Payroll input
-    payrollInput.addEventListener('input', () => {
-      const raw = payrollInput.value.replace(/[^0-9]/g, '');
-      if (raw) {
-        const n = parseInt(raw, 10);
-        const oldLen = payrollInput.value.length;
-        const pos = payrollInput.selectionStart;
-        payrollInput.value = n.toLocaleString('en-GB');
-        try {
-          const d = payrollInput.value.length - oldLen;
-          const p = Math.min(Math.max(pos + d, 0), payrollInput.value.length);
-          payrollInput.setSelectionRange(p, p);
-        } catch(e) {}
-      } else {
-        payrollInput.value = '';
-      }
-      update();
     });
+    if (calcResults && calcResults.weeklyLikely) {
+      setTimeout(function() {
+        countUpTeaser(document.getElementById('r-weekly-teaser'), calcResults.weeklyLikely, 1350);
+      }, 180);
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try { if (sessionStorage.getItem('ppp_audit_unlocked')==='true') unlockResults(true); } catch(e){}
+}
 
-    workerInput.addEventListener('input', () => {
-      workerInput.value = workerInput.value.replace(/[^0-9]/g, '');
-      update();
-    });
+/* ── INTERPRETATION ─────────────────────────────────────────────────────── */
+function buildInterpretation() {
+  var m = formData.attendance;
+  var risk = m === 'Paper register only' || m === 'No formal system'
+    ? 'Your current approach — ' + m.toLowerCase() + ' — leaves the majority of attendance claims unverifiable before invoice approval.'
+    : m === 'Digital sign-in (tablet/app)'
+    ? 'Digital sign-in reduces manual error but still allows proxy clocking without biometric confirmation.'
+    : m === 'RFID / access control card'
+    ? 'Card-based access creates an entry record, but cards can be shared between workers — biometric verification eliminates this gap.'
+    : 'Biometric verification is the most robust method. The figures above reflect residual discrepancy from agency-chain administrative errors.';
+  var sites = formData.siteCount;
+  return 'With ' + formData.totalWorkers + ' workers across ' + sites + ' site' + (sites>1?'s':'') +
+    ' and a weekly payroll of ' + fmtGBP(formData.weeklySpend) + ', ' + (formData.company||'your organisation') +
+    ' has an estimated annual exposure of ' + fmtGBP(calcResults.likely) +
+    ' under the industry-average scenario — equivalent to ' + fmtGBP(calcResults.perSiteLikely) + ' per site. ' + risk;
+}
 
-    update();
-  })();
+/* ── EMAIL VALIDATION ───────────────────────────────────────────────────── */
+function validateEmail(email) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address.';
+  var domain = email.split('@')[1].toLowerCase();
+  if (FREE_DOMAINS.indexOf(domain) !== -1) return 'Please use your work email so we can tailor your report.';
+  return null;
+}
 
-  // ── FAQ ACCORDION ───────────────────────────────────────
-  document.querySelectorAll('.faq-item__btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      const bodyId   = btn.getAttribute('aria-controls');
-      const body     = document.getElementById(bodyId);
-      btn.setAttribute('aria-expanded', String(!expanded));
-      if (body) body.classList.toggle('open', !expanded);
-    });
+document.getElementById('btn-unlock').addEventListener('click', function() {
+  var input = document.getElementById('gate-email');
+  var errEl = document.getElementById('gate-email-err');
+  var email = input.value.trim();
+  var err   = validateEmail(email);
+  input.classList.toggle('has-error', !!err);
+  errEl.classList.toggle('is-visible', !!err);
+  errEl.textContent = err || '';
+  if (err) return;
+  this.disabled = true;
+  this.textContent = 'Unlocking…';
+  var btn = this;
+  submitToGHL(email).finally(function() {
+    try { sessionStorage.setItem('ppp_audit_unlocked','true'); sessionStorage.setItem('ppp_audit_email', email); } catch(e){}
+    unlockResults(false);
   });
+});
 
-  console.log('%c PayRoll Protect ', 'background:#0FD76A;color:#0a1a0f;font-weight:700;font-size:14px;padding:2px 6px;border-radius:3px;');
+/* ── GHL SUBMIT ─────────────────────────────────────────────────────────── */
+function submitToGHL(email) {
+  if (!GHL_WEBHOOK_URL) return Promise.resolve();
+  return fetch(GHL_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      company_name: formData.company, sector: formData.sector,
+      site_count: formData.siteCount, total_workers: formData.totalWorkers,
+      workers_direct_pct: formData.direct, workers_sub_pct: formData.sub, workers_agency_pct: formData.agency,
+      weekly_spend: formData.weeklySpend, attendance_method: formData.attendance,
+      annual_exposure_conservative: calcResults.conservative,
+      annual_exposure_likely: calcResults.likely,
+      annual_exposure_high: calcResults.high
+    })
+  }).catch(function(){});
+}
 
-  // ── PAGE TRANSITIONS ────────────────────────────────────
-  (function(){
-    var veil = document.getElementById('page-veil');
-    if (!veil) return;
-    requestAnimationFrame(function(){ requestAnimationFrame(function(){ veil.classList.add('is-clear'); }); });
-    document.addEventListener('click', function(e) {
-      var a = e.target.closest('a[href]');
-      if (!a) return;
-      var href = a.getAttribute('href');
-      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0 || a.target === '_blank') return;
-      try { if (new URL(a.href).origin !== location.origin) return; } catch(err) { return; }
-      e.preventDefault();
-      var dest = a.href;
-      veil.classList.remove('is-clear');
-      veil.addEventListener('transitionend', function(){ location.href = dest; }, { once: true });
+/* ── UNLOCK ─────────────────────────────────────────────────────────────── */
+function unlockResults(instant) {
+  var overlay = document.getElementById('gate-overlay');
+  var content = document.getElementById('gate-content');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (instant || reduced) {
+    overlay.hidden = true;
+    content.classList.remove('is-blurred');
+    content.style.willChange = 'auto';
+    content.removeAttribute('aria-hidden');
+    return;
+  }
+  overlay.style.transition = 'opacity 0.35s';
+  overlay.style.opacity = '0';
+  setTimeout(function() {
+    overlay.hidden = true;
+    content.classList.remove('is-blurred');
+    content.style.willChange = 'auto';
+    content.removeAttribute('aria-hidden');
+  }, 360);
+}
+
+/* ── RESTART ────────────────────────────────────────────────────────────── */
+document.getElementById('btn-restart').addEventListener('click', function() {
+  try { sessionStorage.removeItem('ppp_audit_unlocked'); sessionStorage.removeItem('ppp_audit_data'); } catch(e){}
+  formData    = { company:'', sector:'', siteCount:1, totalWorkers:0, direct:20, sub:60, agency:20, weeklySpend:0, attendance:'' };
+  calcResults = null;
+  document.getElementById('audit-form').reset();
+  document.getElementById('f-split-direct').value = '20';
+  document.getElementById('f-split-sub').value    = '60';
+  document.getElementById('f-split-agency').value = '20';
+  document.getElementById('gate-email').value = '';
+  document.getElementById('gate-overlay').hidden = false;
+  document.getElementById('gate-overlay').style.opacity = '';
+  document.getElementById('gate-content').classList.add('is-blurred');
+  document.getElementById('gate-content').setAttribute('aria-hidden','true');
+  var btn = document.getElementById('btn-unlock');
+  btn.disabled = false; btn.textContent = 'View my report';
+  resultsSection.hidden = true; loadingSection.hidden = true;
+  document.getElementById('loading-bar').style.width = '0';
+  ['ls-1','ls-2','ls-3','ls-4'].forEach(function(id){
+    var el=document.getElementById(id); el.classList.remove('is-visible','is-done');
+  });
+  formSection.hidden = false;
+  showStep(1);
+});
+
+/* ── SESSION RESTORE ────────────────────────────────────────────────────── */
+(function() {
+  try {
+    var saved    = sessionStorage.getItem('ppp_audit_data');
+    var unlocked = sessionStorage.getItem('ppp_audit_unlocked') === 'true';
+    if (!saved || !unlocked) return;
+    var d = JSON.parse(saved);
+    formData = d.formData; calcResults = d.calc;
+    populateResults();
+    formSection.hidden = true;
+    showResults();
+  } catch(e) {}
+})();
+
+/* ── NAV ────────────────────────────────────────────────────────────────── */
+(function() {
+  var nav = document.getElementById('site-nav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 20); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+var toggle = document.getElementById('nav-toggle');
+var mobileNav = document.getElementById('nav-mobile');
+toggle.addEventListener('click', function() {
+  var open = mobileNav.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+});
+mobileNav.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    mobileNav.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+  });
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+    mobileNav.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Open navigation');
+    toggle.focus();
+  }
+});
+
+/* ── REVEAL ─────────────────────────────────────────────────────────────── */
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal, .reveal-right').forEach(function(el) { io.observe(el); });
+
+  /* Trust-fig: count-up percentages + fill bars */
+  (function() {
+    var tf = document.getElementById('trust-figures');
+    if (!tf) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function countUpPct(el, target, duration, delay) {
+      if (reduced) return;
+      setTimeout(function() {
+        el.textContent = '0.0%';
+        var start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = (target * eased).toFixed(1) + '%';
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = target.toFixed(1) + '%';
+        }
+        requestAnimationFrame(step);
+      }, delay);
+    }
+    var tfIo = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) return;
+      tf.classList.add('trust-fig--active');
+      var pcts = tf.querySelectorAll('.trust-fig__rate-pct[data-count]');
+      pcts.forEach(function(el, i) {
+        countUpPct(el, parseFloat(el.dataset.count), 950, 100 + i * 280);
+      });
+      tfIo.disconnect();
+    }, { threshold: 0.35 });
+    tfIo.observe(tf);
+  }());
+
+  /* HIW step activation — fires once at 35% section visibility */
+  var hiwSection = document.getElementById('how-it-works');
+  if (hiwSection) {
+    var hiwIo = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        hiwSection.classList.add('hiw--active');
+        hiwIo.disconnect();
+      }
+    }, { threshold: 0.35 });
+    hiwIo.observe(hiwSection);
+  }
+
+  /* Animation visibility guards — pause infinite animations when off-screen */
+  var animIo = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.target.classList.contains('audit-hero__dot')) {
+        e.target.classList.toggle('is-animating', e.isIntersecting);
+      } else if (e.target.classList.contains('ctap__cta-btn')) {
+        e.target.classList.toggle('is-pulsing', e.isIntersecting);
+      }
     });
-  })();
+  }, { threshold: 0.1 });
+  var heroDot = document.querySelector('.audit-hero__dot');
+  var pilotBtn = document.querySelector('.ctap__cta-btn');
+  if (heroDot) animIo.observe(heroDot);
+  if (pilotBtn) animIo.observe(pilotBtn);
+})();
+
+/* ── PAGE TRANSITION ────────────────────────────────────────────────────── */
+(function(){
+  var veil = document.getElementById('page-veil');
+  if (!veil) return;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ veil.classList.add('is-clear'); }); });
+  document.addEventListener('click', function(e) {
+    var a = e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href[0]==='#' || href.indexOf('mailto:')==0 || href.indexOf('tel:')==0 || a.target==='_blank') return;
+    try { if (new URL(a.href).origin !== location.origin) return; } catch(err) { return; }
+    e.preventDefault();
+    veil.classList.remove('is-clear');
+    veil.addEventListener('transitionend', function(){ location.href=a.href; }, { once:true });
+  });
+})();
+
+(function() {
+  try {
+    console.log(
+      '%cPayRoll Protect%c\n\nBuilt to find what unverified payroll costs UK businesses.\nWant to know more? hello@payrollprotect.co.uk',
+      'color:#7ac800;font-size:15px;font-weight:700;letter-spacing:-0.02em;',
+      'color:#6a7a62;font-size:11px;line-height:1.6;'
+    );
+  } catch(e) {}
+})();
 </script>
 
 </body>
