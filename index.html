@@ -1610,6 +1610,7 @@
       border-top: 1px solid var(--dark-border);
       padding: clamp(6.5rem, 12vw, 10rem) 0 0;
       position: relative; overflow: hidden;
+      view-timeline: --gap-vt block;
     }
     .gap__eyebrow {
       font-family: var(--font-b); font-size: 0.7rem; font-weight: 700;
@@ -1812,10 +1813,7 @@
     }
     .gap__close-fig em {
       font-style: normal; font-weight: 550;
-      background: linear-gradient(135deg, oklch(0.72 0.22 25) 0%, oklch(0.55 0.20 20) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: oklch(0.65 0.20 25);
     }
     .gap__close-tag {
       font-family: var(--font-b); font-size: clamp(0.875rem, 1.3vw, 1rem);
@@ -2024,6 +2022,96 @@
     @media (prefers-reduced-motion: reduce) {
       .gap3-row { opacity: 1; transform: none; transition: none; }
       .gap3-stamp { opacity: 1; transform: translate(-50%, -50%) rotate(-12deg) scale(1); transition: none; }
+    }
+
+    /* ─── GAP: SCROLL-DRIVEN CHOREOGRAPHY ───────────────────── */
+    @supports (animation-timeline: scroll()) {
+      @media (prefers-reduced-motion: no-preference) {
+        /* Bypass group reveal — each child animates independently */
+        .gap__flow { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+        @keyframes gapCardIn {
+          from { opacity: 0; transform: translateY(22px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gapArrowIn {
+          from { opacity: 0; transform: scaleX(0.15); }
+          to   { opacity: 1; transform: scaleX(1); }
+        }
+        @keyframes gapRowIn {
+          from { opacity: 0; transform: translateX(-10px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes gapDotsReveal {
+          from { clip-path: inset(0 100% 0 0); }
+          to   { clip-path: inset(0 0% 0 0); }
+        }
+
+        /* Step 1: card fades up */
+        .gap__flow > div:nth-child(1) {
+          animation: gapCardIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 0% entry 20%;
+        }
+        /* Step 1: rows slide in from left, staggered */
+        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(1) {
+          animation: gapRowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 8% entry 26%;
+        }
+        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(2) {
+          animation: gapRowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 15% entry 33%;
+        }
+        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(3) {
+          animation: gapRowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 22% entry 40%;
+        }
+        .gap__flow > div:nth-child(1) .gap__data-total {
+          animation: gapRowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 29% entry 46%;
+        }
+
+        /* Arrow 1 draws in from left */
+        .gap__flow > div:nth-child(2) {
+          transform-origin: left center;
+          animation: gapArrowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 30% entry 46%;
+        }
+
+        /* Step 2: card */
+        .gap__flow > div:nth-child(3) {
+          animation: gapCardIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 40% entry 58%;
+        }
+        /* Step 2: dot grid reveals left→right */
+        .gap__dots {
+          clip-path: inset(0 100% 0 0);
+          animation: gapDotsReveal linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 47% entry 68%;
+        }
+
+        /* Arrow 2 */
+        .gap__flow > div:nth-child(4) {
+          transform-origin: left center;
+          animation: gapArrowIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 57% entry 72%;
+        }
+
+        /* Step 3: card */
+        .gap__flow > div:nth-child(5) {
+          animation: gapCardIn linear both;
+          animation-timeline: --gap-vt;
+          animation-range: entry 66% entry 86%;
+        }
+      }
     }
 
     @media (max-width: 900px) {
@@ -4603,7 +4691,7 @@
   <!-- Section close: promoted stat -->
   <div class="gap__close">
     <div class="container">
-      <p class="gap__close-fig">3% discrepancy on a £1M payroll <em>= £30,000 gone.</em></p>
+      <p class="gap__close-fig">3% discrepancy on a £1M payroll <em>= £<span id="gap-close-stat">30,000</span> gone.</em></p>
       <p class="gap__close-tag">Don't approve what you can't prove.</p>
     </div>
   </div>
@@ -6097,6 +6185,28 @@
       dot.setAttribute('aria-hidden', 'true');
       grid.appendChild(dot);
     }
+  })();
+
+  // ── GAP CLOSE STAT COUNT-UP ──────────────────────────────
+  (function() {
+    var el = document.getElementById('gap-close-stat');
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var done = false;
+    var io = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting || done) return;
+      done = true; io.disconnect();
+      var target = 30000, dur = 1100, start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('en-GB');
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString('en-GB');
+      }
+      requestAnimationFrame(step);
+    }, { threshold: 0.8 });
+    io.observe(el);
   })();
 
   // ── PAGE TRANSITIONS ────────────────────────────────────
