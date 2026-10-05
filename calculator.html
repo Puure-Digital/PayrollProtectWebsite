@@ -7,20 +7,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Payroll Exposure Audit — PayRoll Protect</title>
   <meta name="description" content="Quantify your unverified labour risk in 60 seconds. Get a sector-benchmarked payroll exposure estimate and tailored report.">
+  <link rel="canonical" href="https://payrollprotect.co.uk/calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://payrollprotect.co.uk/calculator.html">
+  <meta property="og:title" content="Payroll Exposure Audit — PayRoll Protect">
+  <meta property="og:description" content="Quantify your unverified labour risk in 60 seconds. Get a sector-benchmarked payroll exposure estimate and tailored report.">
+  <meta property="og:image" content="https://payrollprotect.co.uk/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="PayRoll Protect">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Payroll Exposure Audit — PayRoll Protect">
+  <meta name="twitter:description" content="Quantify your unverified labour risk in 60 seconds. Get a sector-benchmarked payroll exposure estimate and tailored report.">
+  <meta name="twitter:image" content="https://payrollprotect.co.uk/assets/og-card.png">
   <link rel="icon" type="image/png" href="assets/favicon-light-sm.png">
   <link rel="apple-touch-icon" href="assets/favicon-light-sm.png">
   <link rel="icon" type="image/png" href="assets/favicon-dark-sm.png" media="(prefers-color-scheme: dark)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400;500;600;700&family=Barlow+Condensed:ital,wght@1,700&display=swap"></noscript>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700&display=swap"></noscript>
   <style>
-    /* ─── FONTS ─────────────────────────────────────────── */
+    /* ─── FONTS (self-hosted, SIL OFL — see assets/fonts/OFL.txt) ─── */
     @font-face {
-      font-family: 'Sk-Modernist';
-      src: url('assets/Sk-Modernist-Regular.otf') format('opentype');
+      font-family: 'Montserrat';
+      src: url('assets/fonts/Montserrat-Variable.woff2') format('woff2-variations');
       font-weight: 100 900; font-style: normal; font-display: swap;
     }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('assets/fonts/Montserrat-Italic-Variable.woff2') format('woff2-variations');
+      font-weight: 100 900; font-style: italic; font-display: swap;
+    }
+
     /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
       color-scheme: dark;
@@ -48,11 +68,11 @@
       --dark-ink:     oklch(0.920 0.004 110);
       --dark-deep:    oklch(0.203 0.008 115);
       --radius-btn:   7px;
-      --font-d:       'Urbanist', system-ui, sans-serif;
-      --font-b:       'Urbanist', system-ui, sans-serif;
+      --font-d:       'Montserrat', system-ui, sans-serif;
+      --font-b:       'Montserrat', system-ui, sans-serif;
       --ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
       --ease-quint:   cubic-bezier(0.22, 1, 0.36, 1);
-      --pad-x:        clamp(1.25rem, 5vw, 3rem);
+      --pad-x:        clamp(1.5rem, 5vw, 3.5rem);
       --gap-section:  clamp(5rem, 10vw, 8rem);
 
       /* Audit theme — aliases to canonical tokens */
@@ -81,7 +101,7 @@
       background: var(--dark-bg);
       color: var(--dark-ink);
       font-family: var(--font-b);
-      line-height: 1.6;
+      line-height: 1.65;
       letter-spacing: 0.01em;
       -webkit-font-smoothing: antialiased;
       font-optical-sizing: auto;
@@ -101,7 +121,7 @@
       clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
     .container {
-      width: 100%; max-width: 1200px;
+      width: 100%; max-width: 1320px;
       margin-inline: auto; padding-inline: var(--pad-x);
     }
 
@@ -138,7 +158,7 @@
     .nav__inner { display: flex; align-items: center; justify-content: space-between; }
     .nav__logo {
       display: flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-b); font-weight: 700; font-size: 1.1rem;
+      font-family: var(--font-b); font-weight: 600; font-size: 1.1rem;
       letter-spacing: -0.01em; color: var(--dark-ink);
     }
     .nav__links { display: flex; align-items: center; gap: 2rem; list-style: none; }
@@ -183,13 +203,13 @@
     }
     .nav__mobile a:hover { color: var(--lime); }
     .btn-cta {
-      font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
+      font-family: var(--font-b); font-size: 0.825rem; font-weight: 600;
       background: var(--lime-grad); color: var(--btn-ink);
-      padding: 0.6rem 1.375rem; border-radius: var(--radius-btn);
+      padding: 0.55rem 1.2rem; border-radius: var(--radius-btn);
       transition: filter 0.15s, transform 0.2s var(--ease-expo); white-space: nowrap;
     }
-    .btn-cta:hover { filter: brightness(0.93); transform: translateY(-1px); }
-    .btn-cta:active { transform: translateY(0); }
+    .btn-cta:hover { filter: brightness(0.93); }
+    .btn-cta:active { transform: scale(0.97); transition: transform 80ms ease-out; }
 
     /* ─── AUDIT HERO ─────────────────────────────────────── */
     .audit-hero {
@@ -270,7 +290,7 @@
     .audit-card {
       background: var(--a-surface);
       border: 1px solid var(--a-border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: clamp(1.75rem, 4vw, 2.75rem);
       box-shadow: 0 2px 24px oklch(0 0 0 / 0.32);
     }
@@ -283,7 +303,7 @@
     .audit-progress__circle {
       width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700;
+      font-size: 0.8rem; font-weight: 600;
       background: var(--a-border); color: var(--a-ink-muted);
       border: 2px solid var(--a-border);
       transition: background 0.3s var(--ease-expo), color 0.3s var(--ease-expo), border-color 0.3s;
@@ -330,7 +350,7 @@
       width: 100%; padding: 0.75rem 1rem;
       font-family: var(--font-b); font-size: 1rem; font-weight: 500;
       color: var(--a-ink); background: var(--a-bg);
-      border: 1.5px solid var(--a-border); border-radius: 8px;
+      border: 1.5px solid var(--a-border); border-radius: 7px;
       transition: border-color 0.15s, box-shadow 0.15s;
       appearance: none; -webkit-appearance: none;
     }
@@ -360,7 +380,7 @@
     /* Currency input */
     .field__currency-wrap {
       display: flex; align-items: stretch;
-      border: 1.5px solid var(--a-border); border-radius: 8px;
+      border: 1.5px solid var(--a-border); border-radius: 7px;
       background: var(--a-bg); overflow: hidden;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
@@ -390,7 +410,7 @@
     .split-row__label { font-size: 0.8rem; font-weight: 500; color: var(--a-ink-dim); }
     .split-input-wrap {
       display: flex; align-items: stretch;
-      border: 1.5px solid var(--a-border); border-radius: 8px;
+      border: 1.5px solid var(--a-border); border-radius: 7px;
       background: var(--a-bg); width: 90px; min-height: 44px;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
@@ -411,7 +431,7 @@
     }
     .split-total {
       font-size: 0.78rem; font-weight: 600;
-      padding: 0.4rem 0.75rem; border-radius: 6px;
+      padding: 0.4rem 0.75rem; border-radius: 7px;
       background: var(--a-accent-faint); color: var(--a-ink);
       display: inline-flex; align-items: center;
     }
@@ -423,25 +443,24 @@
       margin-top: 2rem; gap: 1rem;
     }
     .btn-back {
-      font-size: 0.9rem; font-weight: 600; color: var(--a-ink-muted);
-      padding: 0.7rem 1.25rem; border-radius: var(--radius-btn);
+      font-size: 0.825rem; font-weight: 600; color: var(--a-ink-muted);
+      padding: 0.625rem 1.1rem; border-radius: var(--radius-btn);
       border: 1.5px solid var(--a-border); background: transparent;
       transition: color 0.15s, border-color 0.15s; min-height: 44px;
     }
     .btn-back:hover { color: var(--a-ink); border-color: var(--a-ink-dim); }
     .btn-back[hidden] { display: none; }
     .btn-next {
-      font-family: var(--font-b); font-size: 0.95rem; font-weight: 600; text-transform: capitalize;
+      font-family: var(--font-b); font-size: 0.875rem; font-weight: 600;
       background: var(--a-lime-grad); color: var(--a-btn-ink);
-      padding: 0.75rem 1.75rem; border-radius: var(--radius-btn);
+      padding: 0.675rem 1.55rem; border-radius: var(--radius-btn);
       transition: filter 0.15s, transform 0.2s var(--ease-expo), box-shadow 0.2s;
       min-height: 44px; margin-left: auto;
     }
     .btn-next:hover {
-      filter: brightness(0.93); transform: translateY(-1px);
-      box-shadow: 0 4px 16px var(--a-lime-glow);
+      filter: brightness(0.93);
     }
-    .btn-next:active { transform: translateY(0); }
+    .btn-next:active { transform: scale(0.97); transition: transform 80ms ease-out; }
 
     /* ─── LOADING SCREEN ─────────────────────────────────── */
     .audit-loading {
@@ -466,9 +485,10 @@
       overflow: hidden; margin-bottom: 1.75rem;
     }
     .audit-loading__bar-fill {
-      height: 100%; width: 0; border-radius: 999px;
+      height: 100%; width: 100%; border-radius: 999px;
       background: var(--a-lime-grad);
-      transition: width 3.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 3.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     @media (prefers-reduced-motion: reduce) { .audit-loading__bar-fill { transition: none; } }
     .audit-loading__steps { display: flex; flex-direction: column; gap: 0.625rem; text-align: left; }
@@ -526,7 +546,7 @@
     .audit-gate-overlay[hidden] { display: none; }
     .audit-gate-box {
       background: var(--a-surface); border: 1px solid var(--a-border);
-      border-radius: 14px; padding: clamp(1.75rem, 4vw, 2.5rem);
+      border-radius: 16px; padding: clamp(1.75rem, 4vw, 2.5rem);
       box-shadow: 0 4px 24px rgba(0,0,0,0.10);
       width: 100%; max-width: 420px; text-align: center;
     }
@@ -543,7 +563,7 @@
       width: 100%; padding: 0.8rem 1rem; text-align: center;
       font-family: var(--font-b); font-size: 1rem; font-weight: 500;
       color: var(--a-ink); background: var(--a-bg);
-      border: 1.5px solid var(--a-border); border-radius: 8px;
+      border: 1.5px solid var(--a-border); border-radius: 7px;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .audit-gate-input::placeholder { color: var(--a-ink-muted); font-weight: 400; }
@@ -557,17 +577,16 @@
     }
     .audit-gate-error.is-visible { display: block; }
     .btn-unlock {
-      font-family: var(--font-b); font-size: 0.95rem; font-weight: 600; text-transform: capitalize;
+      font-family: var(--font-b); font-size: 0.875rem; font-weight: 600;
       background: var(--a-lime-grad); color: var(--a-btn-ink);
-      padding: 0.85rem 1.5rem; border-radius: var(--radius-btn);
+      padding: 0.75rem 1.35rem; border-radius: var(--radius-btn);
       transition: filter 0.15s, transform 0.2s var(--ease-expo), box-shadow 0.2s;
       width: 100%; min-height: 44px;
     }
     .btn-unlock:hover {
-      filter: brightness(0.93); transform: translateY(-1px);
-      box-shadow: 0 4px 16px var(--a-lime-glow);
+      filter: brightness(0.93);
     }
-    .btn-unlock:active { transform: translateY(0); }
+    .btn-unlock:active { transform: scale(0.97); transition: transform 80ms ease-out; }
     .btn-unlock:disabled { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; box-shadow: none; }
     .audit-gate-note { font-size: 0.7rem; color: var(--a-ink-muted); }
 
@@ -577,14 +596,14 @@
       gap: 0.875rem; margin-bottom: 1.25rem;
     }
     .audit-scenario-card {
-      border: 1.5px solid var(--a-border); border-radius: 12px;
+      border: 1.5px solid var(--a-border); border-radius: 10px;
       padding: 1.375rem 1.125rem; text-align: center; background: var(--a-surface);
     }
     .audit-scenario-card.is-featured {
       border-color: var(--a-accent-border); background: var(--a-accent-faint);
     }
     .audit-scenario-card__badge {
-      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      display: inline-block; font-size: 0.65rem; font-weight: 600;
       letter-spacing: 0.05em; text-transform: uppercase;
       padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem;
       background: var(--a-border); color: var(--a-ink-muted);
@@ -593,7 +612,7 @@
     .audit-scenario-card__rate { font-size: 0.75rem; font-weight: 600; color: var(--a-ink-muted); margin-bottom: 0.625rem; }
     .audit-scenario-card.is-featured .audit-scenario-card__rate { color: var(--a-ink-dim); }
     .audit-scenario-card__val {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 600;
       font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1;
       letter-spacing: -0.02em; color: var(--a-ink);
       font-variant-numeric: tabular-nums;
@@ -609,7 +628,7 @@
       gap: 0.875rem; margin-bottom: 1.5rem;
     }
     .audit-metric {
-      border: 1.5px solid var(--a-border); border-radius: 12px;
+      border: 1.5px solid var(--a-border); border-radius: 10px;
       padding: 1.25rem; background: var(--a-surface);
     }
     .audit-metric__label {
@@ -617,7 +636,7 @@
       text-transform: uppercase; color: var(--a-ink-muted); margin-bottom: 0.5rem;
     }
     .audit-metric__val {
-      font-family: var(--font-d); font-weight: 700;
+      font-family: var(--font-d); font-weight: 600;
       font-size: clamp(1.5rem, 2.5vw, 1.875rem); line-height: 1;
       letter-spacing: -0.02em; color: var(--a-ink);
       font-variant-numeric: tabular-nums;
@@ -627,7 +646,7 @@
     .audit-interpretation {
       background: var(--a-accent-faint);
       border: 1px solid var(--a-accent-border);
-      border-radius: 12px; padding: 1.375rem 1.5rem; margin-bottom: 1.5rem;
+      border-radius: 10px; padding: 1.375rem 1.5rem; margin-bottom: 1.5rem;
     }
     .audit-interpretation__label {
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
@@ -639,19 +658,18 @@
 
     .audit-post-ctas { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
     .btn-pilot {
-      font-family: var(--font-b); font-size: 1rem; font-weight: 600; text-transform: capitalize;
+      font-family: var(--font-b); font-size: 0.9rem; font-weight: 600;
       background: var(--a-lime-grad); color: var(--a-btn-ink);
-      padding: 0.9rem 2rem; border-radius: var(--radius-btn);
+      padding: 0.8rem 1.75rem; border-radius: var(--radius-btn);
       transition: filter 0.15s, transform 0.22s var(--ease-expo), box-shadow 0.22s;
       display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
     }
     .btn-pilot:hover {
-      filter: brightness(0.93); transform: translateY(-2px);
-      box-shadow: 0 6px 22px var(--a-lime-glow);
+      filter: brightness(0.93);
     }
-    .btn-pilot:active { transform: translateY(0); }
+    .btn-pilot:active { transform: scale(0.97); transition: transform 80ms ease-out; }
     .btn-ghost-audit {
-      font-size: 0.9rem; font-weight: 500; color: var(--a-ink-muted);
+      font-size: 0.825rem; font-weight: 500; color: var(--a-ink-muted);
       display: inline-flex; align-items: center; gap: 0.375rem;
       padding: 0.5rem 0; min-height: 44px; transition: color 0.15s;
     }
@@ -891,7 +909,7 @@
     }
     .hiw__head { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
     .hiw__eyebrow {
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1rem;
     }
     .hiw__h2 {
@@ -967,7 +985,7 @@
       gap: clamp(3rem, 6vw, 6rem); align-items: center;
     }
     .trust-fig__eyebrow {
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1.25rem;
     }
     .trust-fig__h2 {
@@ -995,11 +1013,11 @@
     .trust-fig__rates {
       background: var(--dark-mid);
       border: 1px solid var(--dark-border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 2rem;
     }
     .trust-fig__rates-h {
-      font-weight: 700; font-size: 0.75rem; color: var(--dark-dim);
+      font-weight: 600; font-size: 0.75rem; color: var(--dark-dim);
       text-transform: uppercase; letter-spacing: 0.08em;
       margin-bottom: 1.5rem;
     }
@@ -1111,7 +1129,7 @@
       gap: clamp(3rem, 6vw, 6rem); align-items: center;
     }
     .ctap__eyebrow {
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.14em; color: var(--lime); display: block; margin-bottom: 1.25rem;
     }
     .ctap__h2 {
@@ -1139,7 +1157,7 @@
       color: var(--dark-ink); line-height: 1; display: block; margin-bottom: 0.28rem;
     }
     .ctap__trust-desc { font-size: 0.72rem; color: var(--dark-muted); line-height: 1.5; margin: 0; }
-    .ctap__card { border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px var(--dark-border), 0 8px 36px oklch(0.770 0.206 151 / 0.14); }
+    .ctap__card { border-radius: 16px; overflow: hidden; border: 1px solid var(--dark-border); }
     .ctap__card-head {
       background: var(--lime-grad);
       padding: 1.125rem 1.5rem;
@@ -1148,9 +1166,9 @@
     .ctap__shield {
       width: 38px; height: 38px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      background: oklch(0.18 0.015 145 / 0.22); border-radius: 8px;
+      background: oklch(0.18 0.015 145 / 0.22); border-radius: 7px;
     }
-    .ctap__card-title { font-size: 1.1rem; font-weight: 700; color: var(--btn-ink); line-height: 1; }
+    .ctap__card-title { font-size: 1.1rem; font-weight: 600; color: var(--btn-ink); line-height: 1; }
     .ctap__card-body {
       padding: 1.5rem;
       background: oklch(0.165 0.010 115 / 0.72);
@@ -1169,12 +1187,12 @@
     .ctap__cta-btn {
       display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.625rem;
       background: var(--lime-grad); color: var(--btn-ink);
-      font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
-      padding: 0.875rem 1.75rem; border-radius: var(--radius-btn);
+      font-size: 0.9rem; font-weight: 600; letter-spacing: -0.01em;
+      padding: 0.775rem 1.55rem; border-radius: var(--radius-btn);
       text-decoration: none; border: none; cursor: pointer;
       transition: filter 0.18s var(--ease-expo), transform 0.22s var(--ease-expo);
     }
-    .ctap__cta-btn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .ctap__cta-btn:hover { filter: brightness(1.08); }
     .ctap__cta-btn:active { transform: scale(0.97); }
     .ctap__trust-note {
       display: flex; align-items: center; gap: 0.5rem; justify-content: center;
@@ -1193,6 +1211,41 @@
     @media (max-width: 640px) {
       .ctap__trust { flex-direction: column; gap: 1rem; }
       .ctap__trust-item { padding: 0 !important; border-left: none !important; }
+    }
+
+    /* ─── BUTTON CASE ───────────────────────────────────── */
+    .btn-cta,
+    .btn-back,
+    .btn-next,
+    .btn-unlock,
+    .btn-pilot,
+    .btn-ghost-audit,
+    .ctap__cta-btn {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── BUTTON CASE: MOBILE ───────────────────────────── */
+    @media (max-width: 560px) {
+      .btn-cta, .btn-next, .btn-unlock, .btn-pilot, .ctap__cta-btn {
+        white-space: normal;
+        text-align: center;
+        padding-inline: 1.5rem;
+        letter-spacing: 0.04em;
+      }
+      .btn-next, .btn-unlock { width: 100%; justify-content: center; }
+    }
+
+    /* ─── TOUCH TARGETS ─────────────────────────────────── */
+    /* Buttons are compact by design; on any touch pointer they still
+       need a 44px hit area (WCAG 2.5.5), regardless of screen width. */
+    @media (pointer: coarse) {
+      .btn-cta, .btn-pilot, .ctap__cta-btn, .btn-next, .btn-back, .btn-unlock {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -2108,7 +2161,7 @@ function runLoadingSequence(onComplete) {
     steps.forEach(function(s){ var el=document.getElementById(s.id); el.classList.add('is-visible','is-done'); });
     setTimeout(onComplete, 300); return;
   }
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ bar.style.width='100%'; }); });
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ bar.style.transform='scaleX(1)'; }); });
   steps.forEach(function(s,i) {
     setTimeout(function() {
       document.getElementById(s.id).classList.add('is-visible');
@@ -2299,7 +2352,7 @@ document.getElementById('btn-restart').addEventListener('click', function() {
   var btn = document.getElementById('btn-unlock');
   btn.disabled = false; btn.textContent = 'View my report';
   resultsSection.hidden = true; loadingSection.hidden = true;
-  document.getElementById('loading-bar').style.width = '0';
+  document.getElementById('loading-bar').style.transform = 'scaleX(0)';
   ['ls-1','ls-2','ls-3','ls-4'].forEach(function(id){
     var el=document.getElementById(id); el.classList.remove('is-visible','is-done');
   });
@@ -2441,7 +2494,7 @@ document.addEventListener('keydown', function(e) {
   try {
     console.log(
       '%cPayRoll Protect%c\n\nBuilt to find what unverified payroll costs UK businesses.\nWant to know more? hello@payrollprotect.co.uk',
-      'color:#7ac800;font-size:15px;font-weight:700;letter-spacing:-0.02em;',
+      'color:#7ac800;font-size:15px;font-weight: 600;letter-spacing:-0.02em;',
       'color:#6a7a62;font-size:11px;line-height:1.6;'
     );
   } catch(e) {}

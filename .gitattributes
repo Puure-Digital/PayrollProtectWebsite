@@ -1,0 +1,23 @@
+# Normalise line endings in the repo (LF stored, native on checkout).
+# Prevents whole-file diffs when the project is opened on another machine.
+* text=auto
+
+# Explicit text types
+*.html  text
+*.css   text
+*.js    text
+*.json  text
+*.md    text
+*.svg   text
+
+# Binary — never touch these
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+*.otf   binary
+*.ttf   binary
+*.woff  binary
+*.woff2 binary
+*.pdf   binary

@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-20T00:00:00Z",
+  "title": "Design System: PayRoll Protect",
+  "extensions": {
+    "colorMeta": {
+      "lime": {
+        "role": "primary",
+        "displayName": "Verification Green",
+        "canonical": "oklch(0.770 0.206 151)",
+        "tonalRamp": [
+          "oklch(0.15 0.060 151)",
+          "oklch(0.25 0.090 151)",
+          "oklch(0.35 0.130 151)",
+          "oklch(0.45 0.165 151)",
+          "oklch(0.55 0.185 151)",
+          "oklch(0.65 0.200 151)",
+          "oklch(0.770 0.206 151)",
+          "oklch(0.90 0.090 151)"
+        ]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Unverified Red",
+        "canonical": "oklch(0.65 0.20 25)",
+        "tonalRamp": [
+          "oklch(0.12 0.050 25)",
+          "oklch(0.20 0.080 25)",
+          "oklch(0.30 0.120 25)",
+          "oklch(0.40 0.155 25)",
+          "oklch(0.50 0.180 25)",
+          "oklch(0.60 0.195 25)",
+          "oklch(0.65 0.20 25)",
+          "oklch(0.80 0.130 25)"
+        ]
+      },
+      "audit-night": {
+        "role": "neutral",
+        "displayName": "Audit Night",
+        "canonical": "oklch(0.170 0.008 115)",
+        "tonalRamp": [
+          "oklch(0.08 0.006 115)",
+          "oklch(0.170 0.008 115)",
+          "oklch(0.225 0.010 115)",
+          "oklch(0.280 0.008 115)",
+          "oklch(0.380 0.008 115)",
+          "oklch(0.500 0.008 115)",
+          "oklch(0.630 0.008 115)",
+          "oklch(0.850 0.004 115)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Primary Text",
+        "canonical": "oklch(0.920 0.004 110)",
+        "tonalRamp": [
+          "oklch(0.20 0.004 110)",
+          "oklch(0.35 0.004 110)",
+          "oklch(0.50 0.004 110)",
+          "oklch(0.63 0.006 110)",
+          "oklch(0.70 0.005 110)",
+          "oklch(0.78 0.004 110)",
+          "oklch(0.86 0.004 110)",
+          "oklch(0.920 0.004 110)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display / Hero",
+        "purpose": "Hero h1 only. Uppercase Montserrat 450. The promise before the evidence."
+      },
+      "headline": {
+        "displayName": "Headline / Section h2",
+        "purpose": "All section headings. Montserrat 200 — authority without aggression."
+      },
+      "body": {
+        "displayName": "Body Copy",
+        "purpose": "All running prose and descriptions. Geist 300. Max 54ch."
+      },
+      "label": {
+        "displayName": "Label / Eyebrow",
+        "purpose": "Section tags and stat labels only. Uppercase, loose tracking. Categorises, never leads."
+      },
+      "display-numeric": {
+        "displayName": "Display Numeric",
+        "fontFamily": "'Barlow Condensed', var(--font-d)",
+        "purpose": "Large statistical figures only. Barlow Condensed italic 700, tabular-nums. Hard numbers at hero scale; used nowhere else."
+      }
+    },
+    "shadows": [
+      {
+        "name": "structural-float",
+        "value": "0 4px 24px oklch(0.08 0.008 115 / 0.6)",
+        "purpose": "Nav on scroll, social FAB, overlays. The only permitted shadow in the system."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default easing for scroll reveals, nav, and entrance animations."
+      },
+      {
+        "name": "ease-quint",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Scanner and continuous loop animations."
+      },
+      {
+        "name": "press-in",
+        "value": "80ms ease-out",
+        "purpose": "Active/press state transition for all buttons. Must feel instant."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "480px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide", "value": "1200px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single strongest action on any section. Lime gradient, dark ink text. One per viewport.",
+      "html": "<button class=\"ds-btn-primary\">See what you're overpaying</button>",
+      "css": ".ds-btn-primary { font-family: 'Geist', system-ui, sans-serif; font-size: 1rem; font-weight: 300; background: linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155)); color: oklch(0.18 0.015 145); padding: 0.9rem 2.125rem; border-radius: 7px; border: none; cursor: pointer; position: relative; overflow: hidden; text-transform: capitalize; white-space: nowrap; touch-action: manipulation; transition: filter 0.15s, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { filter: brightness(0.93); } .ds-btn-primary:active { transform: scale(0.97); transition: transform 80ms ease-out, filter 80ms ease-out; } .ds-btn-primary:focus-visible { outline: 2px solid oklch(0.770 0.206 151); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action. Transparent, steps back from the primary CTA.",
+      "html": "<button class=\"ds-btn-ghost\">See how it works <svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\"><path d=\"M2.5 7H11.5M8 3.5L11.5 7L8 10.5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-ghost { font-family: 'Geist', system-ui, sans-serif; font-size: 0.9rem; font-weight: 300; color: oklch(0.630 0.008 115); background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0; min-height: 44px; touch-action: manipulation; transition: color 0.15s, opacity 0.15s; } .ds-btn-ghost:hover { color: oklch(0.920 0.004 110); } .ds-btn-ghost:active { opacity: 0.6; transition-duration: 60ms; } .ds-btn-ghost:focus-visible { outline: 2px solid oklch(0.770 0.206 151); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "CTA Nav Button",
+      "kind": "button",
+      "refersTo": "button-cta",
+      "description": "Compact lime button used in the navigation bar only.",
+      "html": "<a class=\"ds-btn-cta\" href=\"#\">Book a Call</a>",
+      "css": ".ds-btn-cta { font-family: 'Geist', system-ui, sans-serif; font-size: 0.9rem; font-weight: 300; background: linear-gradient(90deg, oklch(0.710 0.215 148), oklch(0.840 0.210 155)); color: oklch(0.18 0.015 145); padding: 0.6rem 1.375rem; border-radius: 7px; text-decoration: none; white-space: nowrap; display: inline-block; touch-action: manipulation; transition: filter 0.15s, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-cta:hover { filter: brightness(0.93); } .ds-btn-cta:active { transform: scale(0.97); transition: transform 80ms ease-out; } .ds-btn-cta:focus-visible { outline: 2px solid oklch(0.770 0.206 151); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Data Card",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Standard content card — dark surface, border, no shadow.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-title\">Step title</p><p class=\"ds-card-body\">Supporting description text for this verification step.</p></div>",
+      "css": ".ds-card { background: oklch(0.225 0.010 115); border: 1px solid oklch(0.280 0.008 115); border-radius: 10px; padding: clamp(1.5rem, 3vw, 2.25rem); } .ds-card-title { font-family: 'Geist', system-ui, sans-serif; font-size: 1rem; font-weight: 400; color: oklch(0.920 0.004 110); text-transform: capitalize; line-height: 1.3; margin-bottom: 0.45rem; } .ds-card-body { font-family: 'Geist', system-ui, sans-serif; font-size: 0.875rem; color: oklch(0.630 0.008 115); line-height: 1.65; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Trust badge or status pill. Full radius, dark surface.",
+      "html": "<span class=\"ds-badge\"><span class=\"ds-badge-dot\"></span>Trusted in UK Construction</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.875rem; border-radius: 999px; border: 1px solid oklch(0.280 0.008 115); background: oklch(0.225 0.010 115); font-family: 'Geist', system-ui, sans-serif; font-size: 0.7rem; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.630 0.008 115); } .ds-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: oklch(0.770 0.206 151); flex-shrink: 0; box-shadow: 0 0 0 2px oklch(0.770 0.206 151 / 0.25); }"
+    },
+    {
+      "name": "Verification Step — Neutral",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Step in the connected verification list. Neutral (unresolved) state.",
+      "html": "<li class=\"ds-step\"><div class=\"ds-step-icon\" aria-hidden=\"true\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><rect x=\"3\" y=\"2\" width=\"12\" height=\"14\" rx=\"1.5\" stroke=\"currentColor\" stroke-width=\"1.4\"/><path d=\"M6 6h6M6 9h6M6 12h4\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\"/></svg></div><div class=\"ds-step-content\"><p class=\"ds-step-title\">Invoice claims 100 workers attended</p><p class=\"ds-step-desc\">Contractor submits for three trades — 100 workers, £47,200 total.</p></div></li>",
+      "css": ".ds-step { display: grid; grid-template-columns: 40px 1fr; gap: 1.375rem; align-items: flex-start; padding-bottom: 2.75rem; } .ds-step-icon { width: 40px; height: 40px; background: oklch(0.225 0.010 115); border: 1px solid oklch(0.280 0.008 115); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: oklch(0.680 0.006 115); flex-shrink: 0; } .ds-step-title { font-family: 'Geist', system-ui, sans-serif; font-size: 1rem; font-weight: 400; color: oklch(0.920 0.004 110); text-transform: capitalize; line-height: 1.3; margin-bottom: 0.45rem; } .ds-step-desc { font-family: 'Geist', system-ui, sans-serif; font-size: 0.875rem; color: oklch(0.630 0.008 115); line-height: 1.65; }"
+    },
+    {
+      "name": "Verification Step — Danger",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Step in the connected verification list. Danger (unverified/loss) state.",
+      "html": "<li class=\"ds-step ds-step--danger\"><div class=\"ds-step-icon ds-step-icon--danger\" aria-hidden=\"true\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><path d=\"M9 2L1.5 15.5h15L9 2z\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linejoin=\"round\"/><path d=\"M9 8v3.5\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\"/><circle cx=\"9\" cy=\"13.5\" r=\"0.75\" fill=\"currentColor\"/></svg></div><div class=\"ds-step-content\"><p class=\"ds-step-title ds-step-title--danger\">All 100 are approved and paid</p><p class=\"ds-step-desc\">Without a verification step the invoice clears unchallenged.</p></div></li>",
+      "css": ".ds-step--danger .ds-step-icon--danger { border-color: oklch(0.65 0.20 25 / 0.45); color: oklch(0.65 0.20 25); background: oklch(0.20 0.020 25); } .ds-step-title--danger { color: oklch(0.75 0.18 25); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Verification Layer",
+    "overview": "PayRoll Protect is a financial control mechanism, not a consumer application. Every visual decision reads as institutional rigour — the interface is what stands between a contractor's claim and a payment leaving the account. The visual language communicates: this system does not approve things lightly.\n\nThe palette is austere by design. Near-black surfaces (Audit Night) form the operating environment. Montserrat provides architectural, authoritative headings at low weight — the kind of type found on a planning document, not a startup landing page. Geist handles all prose and data with clinical legibility. Lime — the single accent colour — appears only at verified, approved, or actionable moments. It is earned. Seeing lime means something cleared.\n\nInteraction is restrained and professional. Controls recede until needed. There are no animations for decoration. Motion serves comprehension: it reveals verified states, draws attention to discrepancies, and confirms that an action has landed.",
+    "keyCharacteristics": [
+      "Austere dark surfaces — no light mode",
+      "Lime reserved for approval and verification only; never decorative",
+      "Danger red for unverified, disputed, or flagged states",
+      "Low-weight display type (Montserrat 200–450) over dense body copy (Geist 300)",
+      "Flat tonal layering with one structural shadow on floating elements",
+      "Precision spacing — deliberate rhythm between evidence and action"
+    ],
+    "rules": [
+      {
+        "name": "The One Signal Rule",
+        "body": "Lime is the approval signal. It may not appear on decorative elements, backgrounds, section dividers, or hover states not associated with a verified/approved action. On any given screen, lime should occupy ≤15% of the visible surface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Binary Verdict Rule",
+        "body": "Red and lime do not share a visual field at the same hierarchy. When red appears (unverified claim), lime recedes. The visual system enforces a binary outcome — verified or not.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight Separation Rule",
+        "body": "Display and Headline use Montserrat at 200–450. Body and Label use Geist at 300. Never use Montserrat below 18px and never use it for running prose.",
+        "section": "typography"
+      },
+      {
+        "name": "The Negative Tracking Rule",
+        "body": "All Montserrat headings carry negative letter-spacing (-0.025em minimum). Positive tracking on display type is prohibited.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Static surfaces carry no box-shadow. Cards are defined by background color and a 1px border. The structural float shadow is reserved for elements that actually leave the document flow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use lime (oklch(0.770 0.206 151)) only on verified, approved, and actionable states.",
+      "Do use negative letter-spacing on all Montserrat headings (-0.025em minimum).",
+      "Do keep section-opening padding to exactly two tiers: clamp(5rem, 10vw, 8rem) standard, clamp(7rem, 14vw, 10.5rem) hero-scale.",
+      "Do use the tonal stack (audit-night → surface → border) for depth. Three steps only.",
+      "Do give all interactive elements touch-action: manipulation and :active { transform: scale(0.97); transition: 80ms }.",
+      "Do use SVG geometry icons at 18px, 1.4–1.5px stroke-weight, authored consistently."
+    ],
+    "donts": [
+      "Don't use lime decoratively — no lime dividers, backgrounds, section accents, or hover treatments unrelated to approval states.",
+      "Don't apply translateY(-Xpx) on button hover. Position change is reserved for the active/press state only.",
+      "Don't use gradient text or colored border-left on cards, list items, or callouts.",
+      "Don't place an eyebrow/kicker label above a section heading.",
+      "Don't add box-shadow to static card surfaces.",
+      "Don't use Montserrat for body copy or at sizes below 18px.",
+      "Don't combine lime and danger red in the same visual field at the same hierarchy level."
+    ]
+  }
+}
