@@ -296,14 +296,35 @@
       gap: 0; margin-top: 1.25rem;
       border: 1px solid oklch(0.770 0.206 151 / 0.28);
       border-radius: 10px; overflow: hidden;
-      background: oklch(0.185 0.010 115 / 0.55);
-      backdrop-filter: blur(16px) saturate(130%);
-      -webkit-backdrop-filter: blur(16px) saturate(130%);
+      background:
+        linear-gradient(oklch(1 0 0 / 0.04), oklch(1 0 0 / 0) 55%),
+        oklch(0.185 0.010 115 / 0.55);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.07);
+    }
+
+    /* Material falls back to solid where transparency is reduced. */
+    @media (prefers-reduced-transparency: reduce) {
+      .hc-transform {
+        background: oklch(0.180 0.015 25);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
+      .hc-transform.is-after { background: oklch(0.185 0.020 145); }
+      .hero__stats {
+        background: oklch(0.185 0.010 115);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
+      .dash__frame {
+        background: oklch(0.165 0.010 115);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
+      .dash__kpi, .dash__chart-card { background: oklch(0.200 0.010 115); }
     }
     .hero__stat {
       display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 0.875rem 0.5rem;
-      position: relative;
+      justify-content: flex-start; padding: 0.95rem 0.5rem 0.875rem;
+      position: relative; text-align: center;
     }
     .hero__stat + .hero__stat::before {
       content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
@@ -317,7 +338,8 @@
     }
     .hero__stat-lbl {
       font-size: 0.65rem; font-weight: 500; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--dark-muted); margin-top: 0.25rem;
+      text-transform: uppercase; color: var(--dark-muted); margin-top: 0.35rem;
+      line-height: 1.3; text-wrap: balance; max-width: 14ch;
     }
     .hero > .container { width: 100%; position: relative; z-index: 1; }
     #hero-canvas {
@@ -469,15 +491,25 @@
       position: relative; overflow: hidden;
       border-radius: 10px; padding: 1.75rem 1.875rem;
       border: 1px solid oklch(0.58 0.14 25 / 0.36);
-      background: oklch(0.180 0.015 25 / 0.85);
-      backdrop-filter: blur(16px) saturate(130%);
-      -webkit-backdrop-filter: blur(16px) saturate(130%);
-      box-shadow: none;
+      /* Layered material: a light falloff across the surface, a bright top
+         edge where light catches it, and one structural shadow with real
+         offset. The border stays a state signal (red before, lime after),
+         not a second elevation cue. */
+      background:
+        linear-gradient(oklch(1 0 0 / 0.05), oklch(1 0 0 / 0) 42%),
+        oklch(0.180 0.015 25 / 0.82);
+      backdrop-filter: blur(28px) saturate(145%);
+      -webkit-backdrop-filter: blur(28px) saturate(145%);
+      box-shadow:
+        0 18px 48px oklch(0.08 0.008 115 / 0.55),
+        inset 0 1px 0 oklch(1 0 0 / 0.09);
       transition: background 0.55s var(--ease-expo), border-color 0.55s var(--ease-expo), box-shadow 0.55s var(--ease-expo);
       width: 100%; z-index: 1;
     }
     .hc-transform.is-after {
-      background: oklch(0.185 0.020 145 / 0.85);
+      background:
+        linear-gradient(oklch(1 0 0 / 0.05), oklch(1 0 0 / 0) 42%),
+        oklch(0.185 0.020 145 / 0.82);
       border-color: oklch(0.720 0.175 151);
     }
 
@@ -1435,19 +1467,33 @@
 
     /* ─── TITLE CASE (non-para) ─────────────────────────── */
     h1, h2, h3, h4,
-    .nav__links a, .nav__mobile a,
-    .hero__h1, .dash__callout-hl, .comp__callout-hl,
-    .trust__bar-hl, .gap__step-h, .gap__cta-h, .gap__close-fig,
-    .problem__lead, .how__step-h3, .benefit__h3, .bigpic__lbl,
-    .leak__band-h, .comp__panel-head-txt, .comp__step-name,
-    .dash__topbar-title, .trust__pillar-h, .testi-name,
-    .trust__attr-name, .hub__card-title, .ctap__card-title,
-    .faq-item__btn, .gap__callout-txt, .gap__close-tag,
-    .hct-state-label, .hero__stat-lbl { text-transform: capitalize; }
+    .nav__links a,
+    .nav__mobile a,
+    .hero__h1,
+    .dash__callout-hl,
+    .trust__bar-hl,
+    .problem__lead,
+    .how__step-h3,
+    .benefit__h3,
+    .bigpic__lbl,
+    
+    .dash__topbar-title,
+    .trust__pillar-h,
+    .testi-name,
+    .trust__attr-name,
+    .hub__card-title,
+    .ctap__card-title,
+    .faq-item__btn,
+    .gap__callout-txt,
+    .hct-state-label,
+    .hero__stat-lbl { text-transform: capitalize; }
 
     /* ─── SUBHEADING WEIGHT ─────────────────────────────── */
-    .how__step-h3, .benefit__h3, .gap__step-h, .gap__cta-h,
-    .ctap__card-title, .hub__card-title, .problem__lead,
+    .how__step-h3,
+    .benefit__h3,
+    .ctap__card-title,
+    .hub__card-title,
+    .problem__lead,
     .bigpic__lbl { font-weight: 400; }
 
     /* ─── WHAT IS PAYROLL PROTECT ────────────── */
@@ -1463,11 +1509,23 @@
       gap: clamp(2.5rem, 5vw, 4rem);
       text-align: center;
     }
+    .what__hd {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1.125rem;
+    }
+    .what__h2 {
+      font-family: var(--font-d); font-weight: 200;
+      text-transform: capitalize;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--dark-ink); text-wrap: balance;
+    }
+    .what__h2 span { font-weight: 500; }
     .what__claim {
       font-family: var(--font-d);
-      font-size: clamp(1.625rem, 3.6vw, 2.75rem);
+      font-size: clamp(1.25rem, 2.4vw, 1.75rem);
       font-weight: 200;
-      line-height: 1.2;
+      line-height: 1.35;
       letter-spacing: -0.025em;
       max-width: 34ch;
       text-wrap: balance;
@@ -1713,60 +1771,80 @@
       flex-shrink: 0; margin-top: 0.1em;
       color: var(--dark-muted);
     }
-    .bigpic__stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      width: 100%;
-      gap: 1.5rem;
-      margin-bottom: 4rem;
+    /* The working behind the headline figure. Both inputs appear on the
+       page and in Sources, so a sceptical reader can check the maths. */
+    .bigpic__calc {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1.25rem; width: 100%; margin-bottom: 4rem;
     }
-    .bigpic__stat {
-      background: oklch(0.185 0.010 115 / 0.52);
+    .bigpic__calc-context {
+      font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--dark-muted);
+    }
+    .bigpic__calc-context strong { color: var(--dark-ink); font-weight: 600; }
+    .bigpic__calc-rows {
+      display: flex; flex-direction: column;
+      width: 100%; max-width: 30rem;
+      border: 1px solid var(--dark-border);
+      border-radius: 10px; overflow: hidden;
+      background:
+        linear-gradient(oklch(1 0 0 / 0.04), oklch(1 0 0 / 0) 55%),
+        oklch(0.185 0.010 115 / 0.55);
       backdrop-filter: blur(24px) saturate(140%);
       -webkit-backdrop-filter: blur(24px) saturate(140%);
-      border: 1px solid oklch(1 0 0 / 0.09);
-      border-radius: 10px;
-      padding: clamp(1.75rem, 3.2vw, 2.5rem) clamp(1.25rem, 2vw, 1.875rem);
-      display: flex; flex-direction: column;
-      align-items: center; text-align: center; gap: 1rem;
-      transition: border-color 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.07);
     }
-    .bigpic__stat:hover {
-      border-color: oklch(0.770 0.206 151 / 0.25);
-      box-shadow: 0 6px 32px oklch(0.770 0.206 151 / 0.10);
+    .bigpic__calc-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 1.25rem; padding: 0.95rem 1.375rem;
+      text-align: left;
     }
-    .bigpic__stat:last-child {
-      border-color: oklch(0.770 0.206 151 / 0.32);
-      background: oklch(0.770 0.206 151 / 0.07);
-      box-shadow:
-        0 0 0 1px oklch(0.770 0.206 151 / 0.12),
-        0 8px 44px oklch(0.770 0.206 151 / 0.16);
-    }
-    .bigpic__stat:last-child:hover {
-      border-color: oklch(0.770 0.206 151 / 0.52);
-      box-shadow:
-        0 0 0 1px oklch(0.770 0.206 151 / 0.22),
-        0 12px 54px oklch(0.770 0.206 151 / 0.22);
-    }
-    .bigpic__stat-icon {
-      color: var(--lime);
-    }
-    .bigpic__stat-fig {
+    .bigpic__calc-row + .bigpic__calc-row { border-top: 1px solid var(--dark-border); }
+    .bigpic__calc-val {
       font-family: 'Barlow Condensed', var(--font-d);
       font-weight: 700; font-style: italic;
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--dark-ink); line-height: 1;
+      font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+      line-height: 1; letter-spacing: -0.01em;
+      color: var(--dark-ink);
       font-variant-numeric: tabular-nums;
+      position: relative; white-space: nowrap;
     }
-    .bigpic__stat-lbl {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--dark-muted);
-      line-height: 1.35;
+    .bigpic__calc-op {
+      font-family: var(--font-b); font-style: normal; font-weight: 400;
+      font-size: 0.5em; color: var(--dark-muted);
+      margin-right: 0.45em;
     }
-    .bigpic__stat-sub {
-      font-size: 0.7rem; color: oklch(0.50 0.006 115);
-      line-height: 1.3;
+    .bigpic__calc-lbl {
+      font-size: 0.8rem; color: var(--dark-muted);
+      line-height: 1.35; text-align: right;
     }
+    /* The result is the only lime in the block: it is the figure that matters. */
+    .bigpic__calc-row--result {
+      background: oklch(0.770 0.206 151 / 0.07);
+    }
+    .bigpic__calc-row--result .bigpic__calc-val { color: var(--lime); }
+    .bigpic__calc-row--result .bigpic__calc-lbl { color: var(--dark-dim); }
+    .bigpic__calc-scale {
+      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+      color: var(--dark-muted); line-height: 1.6;
+      white-space: nowrap;
+    }
+    /* Too long to hold one line on a phone; let it wrap there. */
+    @media (max-width: 560px) {
+      .bigpic__calc-scale { white-space: normal; max-width: 34ch; }
+    }
+    .bigpic__calc-scale strong { color: var(--dark-ink); font-weight: 600; }
+    @media (max-width: 480px) {
+      .bigpic__calc-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+      .bigpic__calc-lbl { text-align: left; }
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      .bigpic__calc-rows {
+        background: oklch(0.185 0.010 115);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
+    }
+
     .bigpic__sources {
       width: 100%;
       background: oklch(0.165 0.010 115 / 0.48);
@@ -1799,18 +1877,14 @@
       line-height: 1.45;
     }
     @media (max-width: 780px) {
-      .bigpic__stats { grid-template-columns: repeat(2, 1fr); }
       .bigpic__sources-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .bigpic__stats { grid-template-columns: 1fr 1fr; }
     }
 
         /* ─── GAP (PROBLEM VISUAL) ──────────────────────────── */
     .gap {
       background: var(--dark-bg);
       border-top: 1px solid var(--dark-border);
-      padding: clamp(6.5rem, 12vw, 10rem) 0 0;
+      padding: clamp(6.5rem, 12vw, 10rem) 0 clamp(4rem, 8vw, 6rem);
       position: relative; overflow: hidden;
       view-timeline: --gap-vt block;
     }
@@ -1819,123 +1893,132 @@
       letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--lime); margin-bottom: 1.25rem;
     }
-    .gap__h2 {
-      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
-      font-size: clamp(2rem, 4vw, 3.25rem);
-      letter-spacing: -0.025em; line-height: 1.15;
-      color: var(--dark-ink);
-      text-wrap: balance; margin-bottom: 1.5rem;
-    }
-    .gap__sub {
-      font-family: var(--font-b); font-size: clamp(1rem, 1.8vw, 1.15rem);
-      color: var(--dark-muted); line-height: 1.6;
-      max-width: 48ch; text-wrap: pretty;
-      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
-    }
-    .gap__flow {
-      display: grid;
-      grid-template-columns: 1fr 44px 1fr 44px 1fr;
-      align-items: center;
-      margin-top: clamp(3rem, 6vw, 5rem);
-    }
-    .gap__arrow {
-      display: flex; align-items: center; justify-content: center;
-      color: var(--dark-dim);
-    }
-    .gap__step {
-      background: var(--dark-mid); border: 1px solid var(--dark-border);
+    /* --- INVOICE (annotated against site records) --- */
+    .inv {
+      margin: 0;
+      width: 100%;
+      border: 1px solid var(--dark-border);
       border-radius: 10px; overflow: hidden;
-      display: flex; flex-direction: column; align-self: stretch;
+      background:
+        linear-gradient(oklch(1 0 0 / 0.04), oklch(1 0 0 / 0) 40%),
+        oklch(0.185 0.010 115 / 0.60);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      box-shadow:
+        0 24px 64px oklch(0.08 0.008 115 / 0.5),
+        inset 0 1px 0 oklch(1 0 0 / 0.08);
+      text-align: left;
     }
-    .gap__step-head { padding: 1.5rem 1.5rem 0; }
-    .gap__step-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--lime-grad);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-b); font-size: 0.75rem; font-weight: 600;
-      color: var(--btn-ink); margin-bottom: 0.875rem;
+    .inv__head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--dark-border);
     }
-    .gap__step-h {
-      font-family: var(--font-b); font-weight: 400;
-      font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-      letter-spacing: 0;
-      color: var(--dark-ink); line-height: 1.25;
-      margin-bottom: 0;
+    .inv__head-left { display: flex; flex-direction: column; gap: 0.25rem; }
+    .inv__ref {
+      font-family: var(--font-d); font-weight: 600;
+      font-size: 1.05rem; letter-spacing: 0.02em; color: var(--dark-ink);
     }
-    .gap__step-h span { color: var(--lime); }
-    .gap__step-h span.danger  { color: oklch(0.65 0.20 25); }
-    .gap__step-h span.neutral { color: var(--dark-dim); }
-    .gap__step-vis {
-      padding: 1.25rem 1.5rem; flex-grow: 1;
-      display: flex; align-items: center; justify-content: center;
+    .inv__meta { font-size: 0.8rem; color: var(--dark-muted); }
+    .inv__badge {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--dark-dim);
+      border: 1px solid var(--dark-border); border-radius: 999px;
+      padding: 0.3rem 0.7rem; white-space: nowrap;
     }
-    .gap__invoice {
-      background: var(--dark-bg); border: 1px solid var(--dark-border);
-      border-radius: 7px; padding: 1.125rem; width: 100%;
-      position: relative;
+    .inv__table { width: 100%; border-collapse: collapse; }
+    .inv__table th, .inv__table td {
+      padding: 0.95rem 1.5rem; text-align: left;
+      font-size: 0.9rem; font-weight: 400;
+      border-bottom: 1px solid var(--dark-border);
     }
-    .gap__invoice-label {
-      font-family: var(--font-b); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dark-muted); margin-bottom: 0.75rem;
+    .inv__table thead th {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--dark-muted);
+      padding-top: 0.875rem; padding-bottom: 0.875rem;
     }
-    .gap__invoice-rows { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
-    .gap__invoice-row { height: 5px; border-radius: 3px; background: var(--dark-border); }
-    .gap__invoice-row:nth-child(1) { width: 70%; }
-    .gap__invoice-row:nth-child(2) { width: 90%; }
-    .gap__invoice-row:nth-child(3) { width: 55%; }
-    .gap__invoice-row:nth-child(4) { width: 80%; }
-    .gap__invoice-total {
-      border-top: 1px solid var(--dark-border); padding-top: 0.75rem;
-      display: flex; align-items: baseline; justify-content: space-between;
+    .inv__table tbody th { color: var(--dark-ink); font-weight: 400; }
+    .inv__num { text-align: right; font-variant-numeric: tabular-nums; color: var(--dark-ink); }
+    .inv__ev { text-align: right; white-space: nowrap; }
+    .inv__ok, .inv__bad { font-size: 0.8rem; }
+    .inv__ok  { color: var(--dark-muted); }
+    .inv__bad { color: oklch(0.72 0.18 25); font-weight: 600; }
+    /* The one line that cannot be proved carries the weight. */
+    .inv__row--flag { background: oklch(0.55 0.14 25 / 0.07); }
+    .inv__row--flag th, .inv__row--flag td { color: var(--dark-ink); }
+
+    .inv__totals { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .inv__total {
+      display: flex; flex-direction: column; gap: 0.2rem;
+      padding: 1.125rem 1.5rem;
     }
-    .gap__invoice-total-lbl {
-      font-family: var(--font-b); font-size: 0.6rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.08em; color: var(--dark-muted);
+    .inv__total + .inv__total { border-left: 1px solid var(--dark-border); }
+    .inv__total-lbl {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--dark-muted);
     }
-    .gap__invoice-total-val {
-      font-family: var(--font-d);
-      font-size: 1.35rem; font-weight: 600; font-style: italic;
-      color: var(--dark-ink);
+    .inv__total-val {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic;
+      font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1;
+      letter-spacing: -0.01em; color: var(--dark-ink);
+      font-variant-numeric: tabular-nums;
     }
-    .gap__stamp {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotate(-12deg);
-      border: 2.5px solid var(--lime); border-radius: 3px;
-      padding: 0.3rem 0.9rem;
-      font-family: var(--font-d); font-size: 1.3rem; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--lime); white-space: nowrap; pointer-events: none;
+    .inv__total-sub { font-size: 0.75rem; color: var(--dark-muted); }
+    .inv__total--held { background: oklch(0.55 0.14 25 / 0.10); }
+    .inv__total--held .inv__total-val { color: oklch(0.72 0.18 25); }
+
+    @media (max-width: 680px) {
+      .inv__table th, .inv__table td { padding-inline: 1rem; font-size: 0.825rem; }
+      .inv__ev { white-space: normal; }
+      .inv__totals { grid-template-columns: 1fr; }
+      .inv__total + .inv__total {
+        border-left: none; border-top: 1px solid var(--dark-border);
+      }
     }
+    @media (prefers-reduced-transparency: reduce) {
+      .inv { background: oklch(0.185 0.010 115); backdrop-filter: none; -webkit-backdrop-filter: none; }
+    }
+
+    .gap__split {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+      align-items: center;
+    }
+    .gap__copy { text-align: left; }
+    .gap__lead {
+      font-family: var(--font-b);
+      font-size: clamp(1rem, 1.6vw, 1.125rem);
+      color: var(--dark-ink); line-height: 1.6;
+      margin-bottom: 1.125rem; text-wrap: pretty;
+    }
+    @media (max-width: 900px) {
+      .gap__split { grid-template-columns: 1fr; gap: 2.5rem; }
+      .gap__copy { text-align: center; }
+      .gap__lead, .gap__sub { margin-inline: auto; }
+    }
+    .gap__h2 {
+      font-family: var(--font-d); font-weight: 200;
+      font-size: clamp(1.875rem, 3.4vw, 2.75rem);
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--dark-ink); text-wrap: balance;
+      margin-bottom: 1.25rem;
+    }
+    .gap__h2 span { font-weight: 500; }
+    .gap__sub {
+      font-family: var(--font-b); font-size: clamp(0.9rem, 1.4vw, 1rem);
+      color: var(--dark-muted); line-height: 1.65;
+      max-width: 46ch; text-wrap: pretty;
+    }
+    /* Panels stretch to equal height so the three visuals start on the
+       same line; heads carry a shared min-height so unequal copy lengths
+       don't stagger the row beneath them. */
     /* People grid */
-    .gap__people {
-      display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; width: 100%;
-    }
     .gap__person { width: 100%; aspect-ratio: 10/13; fill: var(--lime); }
     .gap__person.is-missing { fill: var(--dark-border); }
-    .gap__people-legend {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      padding: 0 1.5rem 0;
-    }
-    .gap__legend-item { display: flex; align-items: center; gap: 0.45rem; }
-    .gap__legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .gap__legend-dot.ok { background: var(--lime); }
-    .gap__legend-dot.bad { background: oklch(0.65 0.20 25 / 0.85); }
-    .gap__legend-cnt {
-      font-family: var(--font-b); font-size: 0.72rem; font-weight: 600;
-      color: var(--dark-ink);
-    }
-    .gap__legend-lbl {
-      font-family: var(--font-b); font-size: 0.72rem; font-weight: 500;
-      color: var(--dark-muted); text-transform: uppercase; letter-spacing: 0.05em;
-    }
     /* Step tag (bottom) */
-    .gap__step-tag {
-      border-top: 1px solid var(--dark-border); padding: 0.875rem 1.5rem;
-      display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap;
-    }
-    .gap__step-tag-part { display: flex; align-items: center; gap: 0.5rem; }
-    .gap__step-tag-sep { width: 1px; height: 2.25rem; background: var(--dark-border); flex-shrink: 0; }
     .gap__tag-icon {
       width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
@@ -1961,28 +2044,6 @@
     .gap__tag-val em { color: var(--lime); font-style: normal; }
     .gap__tag-val.dim { color: var(--dark-muted); }
     /* CTA stripe */
-    .gap__cta {
-      background: var(--lime-grad);
-      margin-top: clamp(2.5rem, 5vw, 4rem);
-      padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
-    }
-    .gap__cta-inner { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
-    .gap__cta-icon {
-      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
-      background: oklch(0 0 0 / 0.12);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--btn-ink);
-    }
-    .gap__cta-h {
-      font-family: var(--font-b); font-weight: 400;
-      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-      letter-spacing: 0;
-      color: var(--btn-ink); line-height: 1.15; margin-bottom: 0.35rem;
-    }
-    .gap__cta-sub {
-      font-family: var(--font-b); font-size: 0.875rem;
-      color: var(--btn-ink); opacity: 0.8; line-height: 1.5;
-    }
     /* Callout bar */
     .gap__callout {
       background: var(--dark-mid); border-top: 1px solid var(--dark-border);
@@ -2001,69 +2062,7 @@
     }
     .gap__callout-txt strong { color: var(--dark-ink); font-weight: 600; }
     /* Section close: promoted stat */
-    .gap__close {
-      padding: clamp(3.5rem, 7vw, 5.5rem) 0;
-      border-top: 1px solid var(--dark-border);
-      text-align: center;
-    }
-    .gap__close-fig {
-      font-family: var(--font-d); font-weight: 200; font-style: normal;
-      font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2;
-      letter-spacing: -0.02em; color: var(--dark-ink);
-      margin-bottom: 0.75rem;
-      text-wrap: balance;
-    }
-    .gap__close-fig em {
-      font-style: normal; font-weight: 550;
-      color: oklch(0.65 0.20 25);
-    }
-    .gap__close-tag {
-      font-family: var(--font-b); font-size: clamp(0.875rem, 1.3vw, 1rem);
-      color: var(--dark-muted); font-weight: 500; line-height: 1.5;
-    }
     /* Upgraded Invoice visual */
-    .gap__inv {
-      width: 100%; background: var(--dark-bg);
-      border: 1px solid var(--dark-border); border-radius: 10px; overflow: hidden;
-    }
-    .gap__inv-head {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      padding: 1rem 1.125rem 0.875rem;
-      border-bottom: 1px solid var(--dark-border);
-    }
-    .gap__inv-brand {
-      font-family: var(--font-d); font-size: 1rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em; color: var(--dark-ink);
-    }
-    .gap__inv-ref {
-      font-family: var(--font-b); font-size: 0.65rem; font-weight: 500;
-      color: var(--dark-muted); margin-top: 0.2rem;
-    }
-    .gap__inv-date {
-      font-family: var(--font-b); font-size: 0.65rem; color: var(--dark-muted);
-      text-align: right;
-    }
-    .gap__inv-lines { padding: 0.5rem 1.125rem; display: flex; flex-direction: column; }
-    .gap__inv-line {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.4rem 0; border-bottom: 1px solid oklch(0.240 0.008 115 / 0.35);
-    }
-    .gap__inv-line:last-child { border-bottom: none; }
-    .gap__inv-line-desc { font-family: var(--font-b); font-size: 0.7rem; color: var(--dark-dim); }
-    .gap__inv-line-qty { font-family: var(--font-b); font-size: 0.7rem; font-weight: 600; color: var(--dark-ink); }
-    .gap__inv-total {
-      background: var(--dark-deep);
-      border-top: 1px solid var(--dark-border); padding: 0.75rem 1.125rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .gap__inv-total-lbl {
-      font-family: var(--font-b); font-size: 0.6rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.08em; color: var(--dark-muted);
-    }
-    .gap__inv-total-fig {
-      font-family: var(--font-d);
-      font-size: 1.6rem; font-weight: 600; font-style: italic; color: var(--lime);
-    }
     /* Upgraded Payment Screen */
     .gap__pay {
       width: 100%; position: relative;
@@ -2109,17 +2108,6 @@
       font-size: 1.6rem; font-weight: 600; font-style: italic; color: var(--dark-ink);
     }
     /* Enhanced stamp */
-    .gap__stamp {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotate(-12deg);
-      border: 2.5px solid var(--lime); border-radius: 3px;
-      padding: 0.3rem 1rem;
-      font-family: var(--font-d); font-size: 1.5rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--lime); white-space: nowrap; pointer-events: none;
-      text-shadow: 0 0 24px oklch(0.770 0.206 151 / 0.5);
-      box-shadow: 0 0 0 1px oklch(0.770 0.206 151 / 0.25), inset 0 0 16px oklch(0.770 0.206 151 / 0.06);
-    }
     /* Missing worker dashed outline (legacy — kept for safety) */
     .gap__person.is-missing circle,
     .gap__person.is-missing path {
@@ -2127,33 +2115,7 @@
       stroke-width: 0.9; stroke-dasharray: 1.5 0.8;
     }
     /* ─── Stripped card 1: bare data rows ────────────────── */
-    .gap__data { width: 100%; display: flex; flex-direction: column; }
-    .gap__data-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid oklch(1 0 0 / 0.07);
-    }
-    .gap__data-desc { font-family: var(--font-b); font-size: 0.72rem; color: var(--dark-muted); }
-    .gap__data-qty  { font-family: var(--font-b); font-size: 0.72rem; font-weight: 600; color: var(--dark-dim); }
-    .gap__data-total {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding-top: 0.8rem; margin-top: 0.35rem;
-      border-top: 1px solid oklch(1 0 0 / 0.10);
-    }
-    .gap__data-total-lbl {
-      font-family: var(--font-b); font-size: 0.6rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.08em; color: var(--dark-muted);
-    }
-    .gap__data-total-fig {
-      font-family: var(--font-d); font-size: 1.6rem; font-weight: 200; font-style: normal;
-      color: var(--dark-ink);
-    }
     /* ─── Dot grid (card 2) ──────────────────────────────── */
-    .gap__dots {
-      display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; width: 100%;
-    }
-    .gap__dot { width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--lime); }
-    .gap__dot.is-missing { background: oklch(0.65 0.20 25 / 0.85); }
     /* ─── Stripped outcome (card 3) ──────────────────────── */
     .gap__outcome { width: 100%; display: flex; flex-direction: column; gap: 0.875rem; }
     .gap__outcome-stat { display: flex; align-items: baseline; gap: 0.5rem; }
@@ -2230,96 +2192,25 @@
     @supports (animation-timeline: scroll()) {
       @media (prefers-reduced-motion: no-preference) {
         /* Bypass group reveal — each child animates independently */
-        .gap__flow { opacity: 1 !important; transform: none !important; transition: none !important; }
 
-        @keyframes gapCardIn {
-          from { opacity: 0; transform: translateY(22px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes gapArrowIn {
-          from { opacity: 0; transform: scaleX(0.15); }
-          to   { opacity: 1; transform: scaleX(1); }
-        }
-        @keyframes gapRowIn {
-          from { opacity: 0; transform: translateX(-10px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes gapDotsReveal {
-          from { clip-path: inset(0 100% 0 0); }
-          to   { clip-path: inset(0 0% 0 0); }
-        }
 
         /* Step 1: card fades up */
-        .gap__flow > div:nth-child(1) {
-          animation: gapCardIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 0% entry 20%;
-        }
         /* Step 1: rows slide in from left, staggered */
-        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(1) {
-          animation: gapRowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 8% entry 26%;
-        }
-        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(2) {
-          animation: gapRowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 15% entry 33%;
-        }
-        .gap__flow > div:nth-child(1) .gap__data-row:nth-child(3) {
-          animation: gapRowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 22% entry 40%;
-        }
-        .gap__flow > div:nth-child(1) .gap__data-total {
-          animation: gapRowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 29% entry 46%;
-        }
 
         /* Arrow 1 draws in from left */
-        .gap__flow > div:nth-child(2) {
-          transform-origin: left center;
-          animation: gapArrowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 30% entry 46%;
-        }
 
         /* Step 2: card */
-        .gap__flow > div:nth-child(3) {
-          animation: gapCardIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 40% entry 58%;
-        }
         /* Step 2: dot grid reveals left→right */
-        .gap__dots {
-          clip-path: inset(0 100% 0 0);
-          animation: gapDotsReveal linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 47% entry 68%;
-        }
 
         /* Arrow 2 */
-        .gap__flow > div:nth-child(4) {
-          transform-origin: left center;
-          animation: gapArrowIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 57% entry 72%;
-        }
 
         /* Step 3: card */
-        .gap__flow > div:nth-child(5) {
-          animation: gapCardIn linear both;
-          animation-timeline: --gap-vt;
-          animation-range: entry 66% entry 86%;
-        }
       }
     }
 
     @media (max-width: 900px) {
-      .gap__flow { grid-template-columns: 1fr; }
-      .gap__arrow { transform: rotate(90deg); padding: 0.5rem 0; justify-self: center; }
-      .gap__step { align-self: auto; }
+      /* Stacked: nothing to align against, so the shared head height
+         would only add dead space. */
     }
 
     /* ─── LEAK (THREE WAYS) ──────────────────────────────── */
@@ -2336,136 +2227,91 @@
         radial-gradient(ellipse 44% 55% at 86% 44%, oklch(0.55 0.10 185 / 0.18) 0%, transparent 65%),
         radial-gradient(ellipse 55% 38% at 50% 88%, oklch(0.770 0.206 151 / 0.10) 0%, transparent 60%);
     }
-    .leak__inner { position: relative; z-index: 1; }
-    .leak__eyebrow {
-      font-family: var(--font-b); font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--lime); margin-bottom: 1.25rem;
+    /* --- LEAK: copy left, the three leaks right --- */
+    .leak__split {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+      align-items: start;
+      text-align: left;
     }
-    .leak__h2 {
-      font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
-      font-size: clamp(2rem, 4vw, 3.25rem);
-      letter-spacing: -0.025em; line-height: 1.15;
-      color: var(--dark-ink);
-      text-wrap: balance; margin-bottom: 1.5rem;
-    }
-    .leak__h2 span { color: var(--lime); }
-    .leak__sub {
-      font-family: var(--font-b); font-size: clamp(1rem, 1.8vw, 1.15rem);
-      color: var(--dark-muted); line-height: 1.6;
-      max-width: 48ch; text-wrap: pretty;
-      margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
-    }
-    .leak__cards {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: clamp(3rem, 6vw, 5rem);
-    }
-    .leak__card {
-      /* Ghost Workers — danger red */
-      --lc-accent:       oklch(0.68 0.18 35);
-      --lc-dim:          oklch(0.68 0.18 35 / 0.10);
-      --lc-border:       oklch(0.68 0.18 35 / 0.28);
-      --lc-border-hover: oklch(0.68 0.18 35 / 0.52);
-      --lc-glow:         oklch(0.68 0.18 35 / 0.12);
-      background: oklch(0.185 0.010 115 / 0.52);
-      backdrop-filter: blur(22px) saturate(130%);
-      -webkit-backdrop-filter: blur(22px) saturate(130%);
-      border: 1px solid var(--lc-border);
-      border-radius: 10px;
-      padding: clamp(1.75rem, 3.5vw, 2.5rem);
+    .leak__copy { position: sticky; top: 7rem; }
+    .leak__rows {
       display: flex; flex-direction: column;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      border-top: 1px solid var(--dark-border);
     }
-    .leak__card:hover {
-      border-color: var(--lc-border-hover);
-      box-shadow: 0 8px 40px var(--lc-glow);
+    .leak__row {
+      padding: clamp(1.5rem, 3vw, 2rem) 0;
+      border-bottom: 1px solid var(--dark-border);
     }
-    /* Inflated Hours — amber */
-    .leak__card:nth-child(2) {
-      --lc-accent:       oklch(0.70 0.14 62);
-      --lc-dim:          oklch(0.70 0.14 62 / 0.10);
-      --lc-border:       oklch(0.70 0.14 62 / 0.24);
-      --lc-border-hover: oklch(0.70 0.14 62 / 0.48);
-      --lc-glow:         oklch(0.70 0.14 62 / 0.12);
+    .leak__row-head {
+      display: flex; align-items: baseline; gap: 0.75rem;
+      margin-bottom: 0.6rem;
     }
-    /* Proxy Clocking — teal */
-    .leak__card:nth-child(3) {
-      --lc-accent:       oklch(0.56 0.10 188);
-      --lc-dim:          oklch(0.56 0.10 188 / 0.10);
-      --lc-border:       oklch(0.56 0.10 188 / 0.24);
-      --lc-border-hover: oklch(0.56 0.10 188 / 0.48);
-      --lc-glow:         oklch(0.56 0.10 188 / 0.12);
+    .leak__row-idx {
+      font-family: 'Barlow Condensed', var(--font-d);
+      font-weight: 700; font-style: italic; font-size: 1.25rem;
+      line-height: 1; color: var(--dark-border);
+      font-variant-numeric: tabular-nums; flex-shrink: 0;
     }
-    .leak__card-icon {
-      width: 68px; height: 68px; border-radius: 50%; flex-shrink: 0;
-      background: var(--lc-dim);
-      border: 1px solid var(--lc-border);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.5rem; color: var(--lc-accent);
+    .leak__row-h {
+      font-family: var(--font-d); font-weight: 500;
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      letter-spacing: -0.01em; color: var(--dark-ink); line-height: 1.25;
     }
-    .leak__card-h {
-      font-family: var(--font-d); font-weight: 500; text-transform: capitalize;
-      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
-      letter-spacing: -0.01em;
-      color: var(--dark-ink); line-height: 1; margin-bottom: 0.875rem;
+    .leak__row-p {
+      font-size: 0.9rem; color: var(--dark-muted);
+      line-height: 1.6; margin-bottom: 0.875rem;
     }
-    .leak__card-p {
-      font-family: var(--font-b); font-size: 0.875rem;
-      color: var(--dark-muted); line-height: 1.65;
-      flex-grow: 1; margin-bottom: 1.5rem; text-wrap: pretty;
-    }
-    .leak__divider { height: 1px; background: oklch(1 0 0 / 0.07); margin-bottom: 1.25rem; }
-    .leak__ex-label {
-      font-family: var(--font-b); font-size: 0.62rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--dark-dim); margin-bottom: 0.75rem;
-    }
+    /* Inline so the examples cost one line, not three, in a narrow column. */
     .leak__ex-list {
-      list-style: none; padding: 0; margin: 0;
-      display: flex; flex-direction: column; gap: 0.55rem;
+      list-style: none; padding: 0; margin: 0 0 0.875rem;
+      display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem;
     }
     .leak__ex-list li {
-      font-family: var(--font-b); font-size: 0.82rem;
-      color: var(--dark-muted); line-height: 1.4;
-      display: flex; align-items: flex-start; gap: 0.55rem;
+      font-size: 0.8rem; color: var(--dark-dim); line-height: 1.4;
+      position: relative;
     }
-    .leak__ex-ico { color: var(--lime); flex-shrink: 0; margin-top: 0.07em; }
+    .leak__ex-list li + li::before {
+      content: ''; position: absolute; left: -0.45rem; top: 0.45em;
+      width: 2px; height: 2px; border-radius: 50%;
+      background: var(--dark-border);
+    }
+    .leak__row-lbl {
+      display: block;
+      font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--dark-muted);
+      margin-bottom: 0.3rem;
+    }
+    /* Red appears only where the evidence is missing. */
+    .leak__row-caught-p {
+      font-size: 0.85rem; line-height: 1.5;
+      color: oklch(0.72 0.18 25);
+      padding-left: 0.875rem;
+      border-left: 1px solid oklch(0.55 0.14 25 / 0.45);
+    }
+    @media (max-width: 900px) {
+      .leak__split { grid-template-columns: 1fr; gap: 2.5rem; }
+      .leak__copy { position: static; }
+    }
+    .leak__h2 {
+      font-family: var(--font-d); font-weight: 200;
+      font-size: clamp(1.875rem, 3.4vw, 2.75rem);
+      letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--dark-ink); text-wrap: balance;
+      margin-bottom: 1.25rem;
+    }
+    .leak__h2 span { font-weight: 500; }
+    .leak__h2 span { color: var(--lime); }
+    .leak__sub {
+      font-family: var(--font-b); font-size: clamp(0.9rem, 1.4vw, 1rem);
+      color: var(--dark-muted); line-height: 1.65;
+      max-width: 42ch; text-wrap: pretty;
+    }
+    .leak__sub + .leak__sub { margin-top: 0.875rem; }
+    /* Inflated Hours — amber */
+    /* Proxy Clocking — teal */
     /* Bottom band */
-    .leak__band {
-      background: oklch(0.185 0.010 115 / 0.65);
-      backdrop-filter: blur(18px) saturate(120%);
-      -webkit-backdrop-filter: blur(18px) saturate(120%);
-      border-top: 1px solid oklch(1 0 0 / 0.07);
-      margin-top: clamp(3rem, 6vw, 5rem);
-      padding: clamp(2rem, 4vw, 3rem) 0;
-    }
-    .leak__band-inner {
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 2.5rem;
-    }
-    .leak__band-half { display: flex; align-items: flex-start; gap: 1.125rem; }
-    .leak__band-icon {
-      width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
-      background: oklch(0.770 0.206 151 / 0.10);
-      border: 1px solid oklch(0.770 0.206 151 / 0.28);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--lime);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .leak__band-h {
-      font-family: var(--font-b); font-weight: 400;
-      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-      letter-spacing: 0;
-      color: var(--dark-ink); line-height: 1.3; margin-bottom: 0.4rem;
-    }
-    .leak__band-p {
-      font-family: var(--font-b); font-size: 0.84rem;
-      color: var(--dark-muted); line-height: 1.5;
-    }
-    .leak__band-p em { color: var(--lime); font-style: normal; font-weight: 600; }
-    .leak__band-sep { width: 1px; background: var(--dark-border); align-self: stretch; }
     /* Leak icon animations */
     @keyframes leak-ghost-float {
       0%, 100% { transform: translateY(0);    opacity: 0.92; }
@@ -2474,10 +2320,6 @@
     @keyframes leak-ghost-blink {
       0%, 40%, 60%, 100% { transform: scaleY(1); }
       50%                 { transform: scaleY(0.08); }
-    }
-    @keyframes leak-clock-spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
     }
     @keyframes leak-proxy-p1 {
       0%, 15%    { opacity: 1; }
@@ -2500,15 +2342,6 @@
       animation: leak-ghost-blink 4s ease-in-out infinite;
     }
     .leak-ghost-eye + .leak-ghost-eye { animation-delay: 0.07s; }
-    .leak-clock-min {
-      transform-origin: 0 0;
-      animation: leak-clock-spin 1.5s linear infinite;
-    }
-    .leak-clock-hour {
-      transform-origin: 0 0;
-      animation: leak-clock-spin 9s linear infinite;
-      animation-delay: -3s;
-    }
     .leak-proxy-p1 { animation: leak-proxy-p1 3.2s ease-in-out infinite; }
     .leak-proxy-arrow {
       transform-origin: left center; transform-box: fill-box;
@@ -2517,13 +2350,8 @@
     .leak-proxy-p2 { animation: leak-proxy-p2 3.2s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) {
       .leak-ghost-icon, .leak-ghost-eye,
-      .leak-clock-min, .leak-clock-hour,
+       
       .leak-proxy-p1, .leak-proxy-arrow, .leak-proxy-p2 { animation: none; }
-    }
-    @media (max-width: 860px) {
-      .leak__cards { grid-template-columns: 1fr; }
-      .leak__band-inner { grid-template-columns: 1fr; gap: 1.5rem; }
-      .leak__band-sep { display: none; }
     }
 
     /* ─── COMP (VERIFY FIRST) ─────────────────────────────── */
@@ -2531,7 +2359,10 @@
       background: var(--dark-bg);
       border-top: 1px solid var(--dark-border);
       padding: clamp(5.5rem, 10vw, 9.5rem) 0 0;
-      position: relative; overflow: hidden;
+      position: relative;
+      /* clip, not hidden: hidden would make this a scroll container and
+         freeze every view() timeline inside it at zero progress. */
+      overflow: clip;
     }
     /* blob field — gives glass panels something to refract */
     .comp::before {
@@ -2545,11 +2376,235 @@
       text-align: center;
       margin-bottom: clamp(3rem, 6vw, 5rem);
     }
-    .comp__eyebrow {
-      font-family: var(--font-b); font-size: 0.68rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--lime); display: block; margin-bottom: 1.25rem;
+    /* --- PROCESS LINE: one run, five stops --- */
+    .comp__hd { text-align: center; margin-bottom: clamp(3rem, 6vw, 4.5rem); }
+    .comp__sub {
+      font-family: var(--font-b); font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      color: var(--dark-muted); line-height: 1.65;
+      max-width: 54ch; margin-inline: auto; text-wrap: pretty;
     }
+    .flow {
+      --flow-gap: clamp(1rem, 2vw, 1.75rem);
+      view-timeline-name: --flow-run;
+      view-timeline-axis: block;
+      list-style: none; padding: 0; margin: 0;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: var(--flow-gap);
+      position: relative;
+    }
+    /* The run itself: a static track, with verification drawing along it. */
+    /* Dots sit at the centre of their column, so the run starts and ends on
+       the first and last dot and is symmetric about the section's centre
+       line — matching the centred heading, sub and readout above and below.
+       Half a column is (100% - 4 gaps) / 10. */
+    .flow::before,
+    .flow::after {
+      content: ''; position: absolute;
+      top: 5px; height: 1px;
+      left:  calc((100% - 4 * var(--flow-gap)) / 10);
+      right: calc((100% - 4 * var(--flow-gap)) / 10);
+    }
+    .flow::before { background: var(--dark-border); }
+    .flow::after {
+      background: var(--lime);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 1.1s var(--ease-expo);
+    }
+    .flow.is-drawn::after { transform: scaleX(1); }
+    .flow__step {
+      position: relative; padding-top: 1.75rem; text-align: center;
+      /* Above .flow::before/::after. As pseudo-elements of the parent they
+         paint after the step children, so without this the rule draws
+         straight through the dots instead of meeting their edges. */
+      z-index: 1;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.5s var(--ease-expo), transform 0.5s var(--ease-expo);
+    }
+    .flow.is-drawn .flow__step { opacity: 1; transform: none; }
+    /* Each stop lands just after the line passes it. */
+    .flow.is-drawn .flow__step:nth-child(1) { transition-delay: 0.05s; }
+    .flow.is-drawn .flow__step:nth-child(2) { transition-delay: 0.23s; }
+    .flow.is-drawn .flow__step:nth-child(3) { transition-delay: 0.41s; }
+    .flow.is-drawn .flow__step:nth-child(4) { transition-delay: 0.59s; }
+    .flow.is-drawn .flow__step:nth-child(5) { transition-delay: 0.77s; }
+    .flow__dot {
+      position: absolute; top: 0;
+      /* centred by margin, not translate, so transform stays free for scale */
+      left: 50%; margin-left: -5.5px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--dark-bg);
+      border: 1px solid var(--lime);
+    }
+    .flow__dot {
+      transform: scale(0.4);
+      transition: transform 0.4s var(--ease-expo), background-color 0.4s ease;
+    }
+    .flow.is-drawn .flow__dot { transform: scale(1); background: var(--lime); }
+    /* Fallback path: readout settles on the final state with the draw. */
+    .flow.is-drawn .flow__readout-item[data-n="0"] { opacity: 0; }
+    .flow.is-drawn .flow__readout-item[data-n="5"] { opacity: 1; }
+    .flow.is-drawn .flow__readout-dot { background: var(--lime); }
+
+    /* Reduced motion: state without travel. Everything is simply present. */
+    @media (prefers-reduced-motion: reduce) {
+      .flow::after { transform: scaleX(1); transition: none; }
+      .flow__step { opacity: 1; transform: none; transition: none; }
+      .flow__dot  { transform: scale(1); transition: none; }
+      .flow__readout-item[data-n="0"] { opacity: 0; }
+      .flow__readout-item[data-n="5"] { opacity: 1; }
+      .flow__readout-dot { background: var(--lime); }
+    }
+    /* No JS: nothing is gated behind an observer that will never run. */
+    html.no-js .flow::after { transform: scaleX(1); }
+    html.no-js .flow__step { opacity: 1; transform: none; }
+    html.no-js .flow__dot  { transform: scale(1); }
+    html.no-js .flow__readout-item[data-n="0"] { opacity: 0; }
+    html.no-js .flow__readout-item[data-n="5"] { opacity: 1; }
+    .flow__idx {
+      display: block;
+      font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em;
+      color: var(--dark-muted); margin-bottom: 0.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow__h {
+      font-family: var(--font-d); font-weight: 500;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      letter-spacing: -0.01em; color: var(--dark-ink);
+      line-height: 1.3; margin-bottom: 0.5rem;
+    }
+    .flow__p {
+      font-size: 0.85rem; color: var(--dark-muted);
+      line-height: 1.55; text-wrap: pretty;
+    }
+    @media (max-width: 860px) {
+      .flow { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; }
+      /* Stacked: no single run to scrub along, so the rules and the
+         playhead readout both go. Steps and dots still animate in. */
+      .flow::before, .flow::after { display: none; }
+      .flow__readout { display: none; }
+      /* Stacked: dot returns to the left margin and text reads left-aligned. */
+      .flow__step { padding-top: 0; padding-left: 1.75rem; text-align: left; }
+      .flow__dot { top: 0.35em; left: 0; margin-left: 0; }
+    }
+    @media (max-width: 520px) {
+      .flow { grid-template-columns: 1fr; }
+    }
+
+    /* --- Readout: tracks the playhead along the run --- */
+    .flow__readout {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem;
+      margin-top: clamp(2rem, 4vw, 3rem);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--dark-muted);
+    }
+    .flow__readout-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--dark-border); flex-shrink: 0;
+      transition: background-color 0.4s ease;
+    }
+    .flow__readout-stack {
+      position: relative; display: inline-grid;
+      min-width: 22ch; text-align: left;
+    }
+    /* All states occupy one cell; the highest lit one is what you read. */
+    .flow__readout-item {
+      grid-area: 1 / 1;
+      opacity: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow__readout-item[data-n="0"] { opacity: 1; }
+    .flow__readout-item[data-n="5"] { color: var(--lime); }
+
+    /* ======================================================================
+       OVERDRIVE: the run binds to scroll position rather than firing once.
+       Scroll forward and verification advances; scroll back and it retreats.
+       Ranges are stretched across most of the cover phase so the run reads
+       as a slow, deliberate scrub rather than snapping shut on arrival.
+       Each stop fills as the playhead reaches it.
+       Enhancement only -- the .is-drawn baseline above remains the fallback.
+       ====================================================================== */
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+
+        .flow::after {
+          transform: scaleX(0);
+          transition: none;
+          animation: flowRun linear both;
+          animation-timeline: --flow-run;
+          animation-range: cover 6% cover 72%;
+        }
+        .flow.is-drawn::after { transform: scaleX(0); }
+
+        .flow__step {
+          opacity: 0; transform: translateY(10px);
+          transition: none;
+          animation: flowStopIn var(--ease-expo) both;
+          animation-timeline: --flow-run;
+        }
+        .flow.is-drawn .flow__step { opacity: 0; transform: translateY(10px); }
+        .flow__step:nth-child(1) { animation-range: cover 6%  cover 19%; }
+        .flow__step:nth-child(2) { animation-range: cover 19% cover 32%; }
+        .flow__step:nth-child(3) { animation-range: cover 32% cover 46%; }
+        .flow__step:nth-child(4) { animation-range: cover 46% cover 59%; }
+        .flow__step:nth-child(5) { animation-range: cover 59% cover 72%; }
+
+        /* Each dot scales in across its segment, then fills at the end of it
+           — the stop is only complete once the playhead has fully arrived. */
+        .flow__dot {
+          transform: scale(0.4);
+          background: var(--dark-bg);
+          transition: none;
+          animation: flowDotIn var(--ease-expo) both,
+                     flowDotFill steps(1, end) both;
+          animation-timeline: --flow-run, --flow-run;
+        }
+        .flow.is-drawn .flow__dot { transform: scale(0.4); background: var(--dark-bg); }
+        .flow__step:nth-child(1) .flow__dot { animation-range: cover 6%  cover 19%, cover 17% cover 19%; }
+        .flow__step:nth-child(2) .flow__dot { animation-range: cover 19% cover 32%, cover 30% cover 32%; }
+        .flow__step:nth-child(3) .flow__dot { animation-range: cover 32% cover 46%, cover 44% cover 46%; }
+        .flow__step:nth-child(4) .flow__dot { animation-range: cover 46% cover 59%, cover 57% cover 59%; }
+        .flow__step:nth-child(5) .flow__dot { animation-range: cover 59% cover 72%, cover 70% cover 72%; }
+
+        /* One window each, non-overlapping, so exactly one state is ever lit. */
+        .flow__readout-item {
+          opacity: 0;
+          animation: flowReadoutWin steps(1, end) both;
+          animation-timeline: --flow-run;
+        }
+        .flow__readout-item[data-n="0"] { animation-range: cover 0%  cover 19%; }
+        .flow__readout-item[data-n="1"] { animation-range: cover 19% cover 32%; }
+        .flow__readout-item[data-n="2"] { animation-range: cover 32% cover 46%; }
+        .flow__readout-item[data-n="3"] { animation-range: cover 46% cover 59%; }
+        .flow__readout-item[data-n="4"] { animation-range: cover 59% cover 72%; }
+        /* Final state has no close: it stays once reached. */
+        .flow__readout-item[data-n="5"] {
+          animation: flowReadoutOn steps(1, end) both;
+          animation-timeline: --flow-run;
+          animation-range: cover 70% cover 72%;
+        }
+
+        .flow__readout-dot {
+          animation: flowReadoutDot steps(1, end) both;
+          animation-timeline: --flow-run;
+          animation-range: cover 70% cover 72%;
+        }
+      }
+    }
+
+    @keyframes flowRun      { to { transform: scaleX(1); } }
+    @keyframes flowStopIn   { to { opacity: 1; transform: none; } }
+    @keyframes flowDotIn    { to { transform: scale(1); } }
+    @keyframes flowDotFill  { to { background-color: var(--lime); } }
+    @keyframes flowReadoutOn  { to { opacity: 1; } }
+    @keyframes flowReadoutDot { to { background-color: var(--lime); } }
+    /* Lit across its own window, dark outside it. */
+    @keyframes flowReadoutWin {
+      0%   { opacity: 0; }
+      0.1% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     .comp__h2 {
       font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(2rem, 4vw, 3.25rem);
@@ -2561,151 +2616,7 @@
       color: var(--dark-muted); line-height: 1.65;
       max-width: 52ch; margin: 0 auto; text-wrap: pretty;
     }
-    .comp__panels {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
-      align-items: start;
-    }
-    .comp__panel {
-      border-radius: 10px; overflow: hidden;
-      border: 1px solid oklch(1 0 0 / 0.09);
-      display: flex; flex-direction: column;
-    }
-    .comp__panel--before {
-      --comp-accent: oklch(0.58 0.14 25);
-      --comp-accent-dim: oklch(0.58 0.14 25 / 0.14);
-      --comp-head-ink: oklch(0.97 0.004 25);
-      border-color: oklch(0.58 0.14 25 / 0.38);
-    }
-    .comp__panel--after {
-      --comp-accent: var(--lime);
-      --comp-accent-dim: oklch(0.770 0.206 151 / 0.12);
-      --comp-head-ink: var(--btn-ink);
-      border-color: oklch(0.770 0.206 151 / 0.55);
-      box-shadow:
-        0 0 0 1px oklch(0.770 0.206 151 / 0.20),
-        0 8px 56px oklch(0.770 0.206 151 / 0.20),
-        inset 0 1px 0 oklch(0.770 0.206 151 / 0.18);
-    }
-    .comp__panel-head {
-      background: var(--comp-accent);
-      padding: 0.875rem 1.5rem;
-      display: flex; align-items: center; gap: 0.625rem;
-      color: var(--comp-head-ink);
-    }
-    .comp__panel--after .comp__panel-head {
-      background: var(--lime-grad);
-    }
-    .comp__panel-head-txt {
-      font-family: var(--font-b); font-size: 0.95rem; font-weight: 400;
-      letter-spacing: 0;
-      color: var(--comp-head-ink); line-height: 1;
-    }
     /* glass body */
-    .comp__steps {
-      padding: 1.75rem 1.5rem;
-      display: flex; flex-direction: column; gap: 1.5rem;
-      flex-grow: 1;
-      background: oklch(0.185 0.010 115 / 0.55);
-      backdrop-filter: blur(22px) saturate(130%);
-      -webkit-backdrop-filter: blur(22px) saturate(130%);
-      position: relative;
-    }
-    .comp__panel--after .comp__steps {
-      background: oklch(0.770 0.206 151 / 0.07);
-    }
-    .comp__steps::before {
-      content: ''; position: absolute;
-      left: calc(1.5rem + 17px);
-      top: calc(1.75rem + 36px + 4px);
-      bottom: calc(1.75rem + 18px);
-      width: 0;
-      border-left: 2px dashed var(--comp-accent);
-      opacity: 0.35; z-index: 0;
-    }
-    .comp__step { display: flex; gap: 1rem; align-items: flex-start; }
-    .comp__step-icon {
-      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      border: 1.5px solid var(--comp-accent);
-      background: var(--comp-accent-dim);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--comp-accent);
-      position: relative; z-index: 1;
-    }
-    .comp__panel--after .comp__step-icon {
-      background: var(--comp-accent);
-      color: var(--btn-ink);
-      border-color: var(--comp-accent);
-      box-shadow: 0 0 10px oklch(0.770 0.206 151 / 0.35);
-    }
-    .comp__step-content { flex: 1; padding-top: 1px; }
-    .comp__step-name {
-      font-family: var(--font-b); font-size: 1.05rem; font-weight: 400;
-      letter-spacing: 0;
-      color: var(--dark-ink); line-height: 1.2; margin-bottom: 0.3rem;
-      display: block;
-    }
-    .comp__step-status {
-      font-family: var(--font-b); font-size: 0.65rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--comp-accent); display: block; margin-bottom: 0.45rem;
-    }
-    .comp__step-desc {
-      font-family: var(--font-b); font-size: 0.78rem;
-      color: var(--dark-muted); line-height: 1.6; margin: 0;
-    }
-    .comp__panel-foot {
-      background: var(--comp-accent);
-      padding: 1rem 1.5rem;
-      display: flex; align-items: center; gap: 0.75rem;
-      color: var(--comp-head-ink);
-    }
-    .comp__panel--after .comp__panel-foot {
-      background: var(--lime-grad);
-    }
-    .comp__panel-foot-txt {
-      font-family: var(--font-b); font-size: 0.82rem; font-weight: 600;
-      color: var(--comp-head-ink); line-height: 1.45; margin: 0;
-    }
-    .comp__callout {
-      background: oklch(0.185 0.010 115 / 0.65);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-top: 1px solid oklch(1 0 0 / 0.07);
-      margin-top: clamp(3rem, 6vw, 5rem);
-      padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
-      position: relative; z-index: 1;
-    }
-    .comp__callout-inner {
-      display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-      justify-content: center;
-    }
-    .comp__callout-icon {
-      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
-      background: oklch(0.770 0.206 151 / 0.10);
-      border: 1px solid oklch(0.770 0.206 151 / 0.28);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--lime);
-    }
-    .comp__callout-hl {
-      font-family: var(--font-d); font-weight: 500; text-transform: capitalize;
-      font-size: clamp(1.5rem, 2.8vw, 2.25rem);
-      letter-spacing: -0.025em; color: var(--dark-ink);
-      line-height: 1.1; flex-shrink: 0; text-wrap: balance; margin: 0;
-    }
-    .comp__callout-sep {
-      width: 1px; height: 3.5rem; background: oklch(1 0 0 / 0.08); flex-shrink: 0;
-    }
-    .comp__callout-body { flex: 1; min-width: 0; }
-    .comp__callout-txt {
-      font-family: var(--font-b); font-size: 0.875rem;
-      color: var(--dark-muted); line-height: 1.65;
-      max-width: 44ch; text-wrap: pretty; margin: 0;
-    }
-    @media (max-width: 720px) {
-      .comp__panels { grid-template-columns: 1fr; }
-      .comp__callout-sep { display: none; }
-      .comp__callout-inner { gap: 1.25rem; }
-    }
 
     /* ─── DASH (BOARD OVERVIEW) ────────────────────────────── */
     .dash {
@@ -2722,11 +2633,6 @@
     }
     .dash > .container { position: relative; z-index: 1; }
     .dash__hd { text-align: center; margin-bottom: clamp(3rem, 5vw, 4rem); }
-    .dash__eyebrow {
-      font-family: var(--font-b); font-size: 0.68rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--lime); display: block; margin-bottom: 1.25rem;
-    }
     .dash__h2 {
       font-family: var(--font-d); font-weight: 200; text-transform: capitalize;
       font-size: clamp(2rem, 4vw, 3.25rem);
@@ -2744,17 +2650,22 @@
     }
     /* frame */
     .dash__frame {
-      background: oklch(0.165 0.010 115 / 0.70);
-      backdrop-filter: blur(28px) saturate(140%);
-      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      /* Thickest surface on the page: strongest blur, deepest shadow,
+         bright top edge. Inner panels sit lighter so weight reads as
+         hierarchy. Lime ring removed — elevation is the shadow's job. */
+      background:
+        linear-gradient(oklch(1 0 0 / 0.045), oklch(1 0 0 / 0) 32%),
+        oklch(0.165 0.010 115 / 0.70);
+      backdrop-filter: blur(32px) saturate(145%);
+      -webkit-backdrop-filter: blur(32px) saturate(145%);
       border: 1px solid oklch(1 0 0 / 0.10);
       border-radius: 16px; overflow: hidden;
       display: grid;
       grid-template-columns: 180px 1fr;
       grid-template-areas: "sidebar main" "foot foot";
       box-shadow:
-        0 0 0 1px oklch(0.770 0.206 151 / 0.08),
-        0 32px 100px oklch(0 0 0 / 0.55);
+        0 32px 100px oklch(0 0 0 / 0.55),
+        inset 0 1px 0 oklch(1 0 0 / 0.10);
     }
     /* sidebar */
     .dash__sidebar {
@@ -2822,8 +2733,11 @@
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;
     }
     .dash__kpi {
-      background: oklch(0.200 0.010 115 / 0.82);
+      background:
+        linear-gradient(oklch(1 0 0 / 0.03), oklch(1 0 0 / 0) 60%),
+        oklch(0.200 0.010 115 / 0.82);
       border: 1px solid oklch(1 0 0 / 0.09);
+      box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
       border-radius: 7px; padding: 0.8rem 0.8rem 0.7rem;
       position: relative; overflow: hidden;
       display: flex; flex-direction: column; gap: 0.2rem;
@@ -2853,8 +2767,11 @@
       display: grid; grid-template-columns: 5fr 4fr 5fr; gap: 0.5rem;
     }
     .dash__chart-card {
-      background: oklch(0.200 0.010 115 / 0.82);
+      background:
+        linear-gradient(oklch(1 0 0 / 0.03), oklch(1 0 0 / 0) 60%),
+        oklch(0.200 0.010 115 / 0.82);
       border: 1px solid oklch(1 0 0 / 0.09);
+      box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
       border-radius: 7px; padding: 0.8rem;
     }
     .dash__chart-title {
@@ -3370,14 +3287,22 @@
     }
     .testi-nav-btn:hover { border-color: var(--lime); color: var(--lime); background: var(--lime-glow); }
     .testi-nav-btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 50%; }
-    .testi-dots { display: flex; align-items: center; gap: 0.45rem; }
-    .testi-dot {
-      height: 6px; width: 6px; border-radius: 3px; padding: 0; border: none;
-      background: var(--dark-border); cursor: pointer;
-      transition: background 0.3s, width 0.35s var(--ease-expo);
+    /* Dots read 6px but must be tappable. Padding grows the hit area to
+       26px; background-clip keeps the visible mark at its drawn size, and
+       the negative gap preserves the original optical spacing. */
+    .testi-dots {
+      display: flex; align-items: center;
+      gap: calc(0.45rem - 20px);
     }
-    .testi-dot.is-active { background: var(--lime); width: 22px; }
-    .testi-dot:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px; }
+    .testi-dot {
+      height: 6px; width: 6px; border-radius: 3px; border: none;
+      padding: 10px; box-sizing: content-box;
+      background: var(--dark-border); background-clip: content-box;
+      cursor: pointer; touch-action: manipulation;
+      transition: background-color 0.3s, width 0.35s var(--ease-expo);
+    }
+    .testi-dot.is-active { background-color: var(--lime); width: 22px; }
+    .testi-dot:focus-visible { outline: 2px solid var(--lime); outline-offset: -6px; border-radius: 3px; }
     .testi-outer {
       border-radius: 10px; overflow: hidden;
       position: relative; z-index: 1;
@@ -3685,7 +3610,6 @@
     .hl-1 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.22s both; }
     .hl-2 { display: inline-block; animation: heroFadeUp 0.65s var(--ease-expo) 0.34s both; }
     .hero__h1 em   { animation: heroFadeUp 0.65s var(--ease-expo) 0.46s both; }
-    @keyframes heroUnderline { to { transform: scaleX(1); } }
     .hero__sub     { animation: heroFadeUp 0.60s var(--ease-expo) 0.62s both; }
     .hero__actions { animation: heroFadeUp 0.55s var(--ease-expo) 0.60s both; }
     .hero__icon    { animation: heroScaleIn 0.85s var(--ease-expo) 0.32s both; }
@@ -3782,11 +3706,6 @@
     /* ─── BANNER CALLOUTS: MOBILE ───────────────────────────── */
     @media (max-width: 620px) {
       /* gap CTA stripe — stack icon + copy, centre */
-      .gap__cta-inner {
-        flex-direction: column; align-items: center;
-        text-align: center; gap: 0.875rem;
-      }
-      .gap__cta-icon { width: 40px; height: 40px; }
 
       /* gap callout bar — column, centre */
       .gap__callout-inner {
@@ -3814,27 +3733,16 @@
       .roi__callout-cta { align-self: stretch; justify-content: center; min-height: 44px; }
 
       /* comp callout — column, centre */
-      .comp__callout-inner {
-        flex-direction: column; align-items: center;
-        text-align: center; gap: 1rem;
-      }
-      .comp__callout-sep  { display: none; }
-      .comp__callout-body { text-align: center; }
     }
 
     /* ─── GRID RHYTHM: MOBILE ──────────────────────────────── */
     /* Desktop gaps are deliberately generous; on narrow screens that
        width is worth more to the card contents than to the gutter. */
     @media (max-width: 780px) {
-      .bigpic__stats        { gap: 1rem; }
       .bigpic__sources-grid { gap: 1.25rem; }
-      .leak__cards          { gap: 1rem; }
-      .comp__panels         { gap: 1.25rem; }
     }
     @media (max-width: 480px) {
-      .bigpic__stats        { gap: 0.75rem; }
       .bigpic__sources-grid { gap: 1rem; }
-      .bigpic__stat         { padding: 1.5rem 1rem; }
       .bigpic__sources      { padding: 1.25rem 1.25rem; }
     }
 
@@ -4038,7 +3946,7 @@
           animation-duration: auto, auto;
           animation-timing-function: linear, linear;
           animation-fill-mode: both, both;
-          animation-timeline: view(), view();
+          animation-timeline: --flow-run, --flow-run;
           animation-range: entry 0% exit 100%, entry 0% entry 55%;
         }
         /* Lime scan-line sweeps the wipe front */
@@ -4056,7 +3964,7 @@
           animation-duration: auto;
           animation-timing-function: linear;
           animation-fill-mode: both;
-          animation-timeline: view();
+          animation-timeline: --flow-run;
           animation-range: entry 0% entry 55%;
         }
       }
@@ -4192,7 +4100,7 @@
       </a>
       <ul class="nav__links">
         <li><a href="calculator.html">Audit Tool</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#what-it-is">What It Is</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
       </ul>
@@ -4206,7 +4114,7 @@
     <div class="nav__mobile" id="nav-mobile" aria-label="Mobile navigation">
       <ul>
         <li><a href="calculator.html">Audit Tool</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#what-it-is">What It Is</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
         <li><a href="contact.html">Book a Call</a></li>
@@ -4250,7 +4158,7 @@
           </p>
           <div class="hero__actions h-fade h-d4">
             <a href="calculator.html" class="btn-primary">See what you're overpaying</a>
-            <a href="#how-it-works" class="btn-ghost">
+            <a href="#what-it-is" class="btn-ghost">
               See how it works
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M2.5 7H11.5M8 3.5L11.5 7L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -4318,18 +4226,18 @@
 
           <img class="hct-brand-icon" src="assets/pp-icon.webp" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async">
 
-          <div class="hero__stats" role="list" aria-label="Key metrics">
+          <div class="hero__stats" role="list" aria-label="UK construction payroll fraud, industry figures">
             <div class="hero__stat" role="listitem">
-              <span class="hero__stat-val">100%</span>
-              <span class="hero__stat-lbl">Verified</span>
+              <span class="hero__stat-val">£82BN</span>
+              <span class="hero__stat-lbl">UK Construction Payroll</span>
             </div>
             <div class="hero__stat" role="listitem">
-              <span class="hero__stat-val">£0</span>
-              <span class="hero__stat-lbl">Leakage</span>
+              <span class="hero__stat-val">1.7%</span>
+              <span class="hero__stat-lbl">Payroll Fraud Rate</span>
             </div>
             <div class="hero__stat" role="listitem">
-              <span class="hero__stat-val">Live</span>
-              <span class="hero__stat-lbl">Attendance</span>
+              <span class="hero__stat-val">£1.4BN</span>
+              <span class="hero__stat-lbl">Annual Exposure</span>
             </div>
           </div>
 
@@ -4340,13 +4248,16 @@
 
   </div><!-- /stack-wrap 1a -->
 
-<section class="what" id="how-it-works" aria-labelledby="what-h">
+<section class="what" id="what-it-is" aria-labelledby="what-h">
   <div class="container">
     <div class="what__inner">
 
-      <p class="what__claim reveal" id="what-h">
-        PayRoll Protect Is The Verification Layer Between <em>Who Was On Site</em> And <em>What Gets Paid.</em>
-      </p>
+      <div class="what__hd">
+        <h2 class="what__h2 reveal" id="what-h">What PayRoll Protect <span>Does</span>.</h2>
+        <p class="what__claim reveal d1">
+          The verification layer between <em>who was on site</em> and <em>what gets paid.</em>
+        </p>
+      </div>
 
       <div class="what__chain">
 
@@ -4359,7 +4270,7 @@
             </svg>
           </div>
           <span class="what__node-label">Gate Check-In</span>
-          <span class="what__node-sub">Verified on entry</span>
+          <span class="what__node-sub">Worker scans in,<br>identity confirmed</span>
         </div>
 
         <div class="what__connector" aria-hidden="true">
@@ -4375,7 +4286,7 @@
             </svg>
           </div>
           <span class="what__node-label">Attendance Logged</span>
-          <span class="what__node-sub">Live record created</span>
+          <span class="what__node-sub">Timestamped, per<br>worker per day</span>
         </div>
 
         <div class="what__connector" aria-hidden="true">
@@ -4391,7 +4302,7 @@
             </svg>
           </div>
           <span class="what__node-label">Invoice Arrives</span>
-          <span class="what__node-sub">Invoice submitted</span>
+          <span class="what__node-sub">Subcontractor<br>claims hours</span>
         </div>
 
         <div class="what__connector" aria-hidden="true">
@@ -4406,13 +4317,13 @@
               <path d="M9 12l2.5 2.5L16 9.5"/>
             </svg>
           </div>
-          <span class="what__node-label">Verified &amp; Approved</span>
-          <span class="what__node-sub">Matched before<br>payment</span>
+          <span class="what__node-label">Matched Line By Line</span>
+          <span class="what__node-sub">Every claim checked<br>against the record</span>
         </div>
 
       </div>
 
-      <p class="what__sting reveal d2">No verified attendance.<br>No approved payment.</p>
+      <p class="what__sting reveal d2">Nothing reaches payroll without an attendance record behind it.</p>
 
     </div>
   </div>
@@ -4426,8 +4337,6 @@
   <div class="container">
     <div class="bigpic__inner">
 
-      <p class="bigpic__eyebrow reveal">The Bigger Picture</p>
-
       <p class="bigpic__fig reveal">£1.4Bn</p>
 
       <p class="bigpic__fig-note reveal"><strong>£2.6Bn</strong> including Plant + Tool theft</p>
@@ -4436,46 +4345,27 @@
         Estimated Annual Payroll Fraud Exposure Across UK Construction
       </h2>
 
-      <div class="bigpic__stats reveal d2">
-        <div class="bigpic__stat">
-          <svg class="bigpic__stat-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <circle cx="10" cy="9" r="4" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M2 23c0-4 3.6-7 8-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="19" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M13 23c0-3.5 2.7-6 6-6s6 2.5 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <p class="bigpic__stat-fig">2.1M</p>
-          <p class="bigpic__stat-lbl">Construction Workforce</p>
-          <p class="bigpic__stat-sub">United Kingdom, 2025</p>
+      <div class="bigpic__calc reveal d2">
+        <p class="bigpic__calc-context">Across a <strong>2.1M</strong> UK construction workforce</p>
+
+        <div class="bigpic__calc-rows" role="table" aria-label="How the annual exposure figure is calculated">
+          <div class="bigpic__calc-row" role="row">
+            <span class="bigpic__calc-val" role="cell">&pound;82BN</span>
+            <span class="bigpic__calc-lbl" role="cell">Annual construction payroll</span>
+          </div>
+          <div class="bigpic__calc-row" role="row">
+            <span class="bigpic__calc-val" role="cell"><span class="bigpic__calc-op" aria-hidden="true">&times;</span>1.7%</span>
+            <span class="bigpic__calc-lbl" role="cell">UK payroll fraud benchmark</span>
+          </div>
+          <div class="bigpic__calc-row bigpic__calc-row--result" role="row">
+            <span class="bigpic__calc-val" role="cell"><span class="bigpic__calc-op" aria-hidden="true">=</span>&pound;1.4BN</span>
+            <span class="bigpic__calc-lbl" role="cell">Estimated annual exposure</span>
+          </div>
         </div>
-        <div class="bigpic__stat">
-          <svg class="bigpic__stat-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <ellipse cx="14" cy="9" rx="9" ry="4" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M5 9v4c0 2.2 4 4 9 4s9-1.8 9-4V9" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M5 13v4c0 2.2 4 4 9 4s9-1.8 9-4v-4" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          <p class="bigpic__stat-fig">£82BN</p>
-          <p class="bigpic__stat-lbl">Annual Payroll</p>
-          <p class="bigpic__stat-sub">Estimated, 2025</p>
-        </div>
-        <div class="bigpic__stat">
-          <svg class="bigpic__stat-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <path d="M14 14 L14 5 A9 9 0 0 1 21.4 8.5 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          <p class="bigpic__stat-fig">1.7%</p>
-          <p class="bigpic__stat-lbl">Payroll Fraud Benchmark</p>
-          <p class="bigpic__stat-sub">UK Average</p>
-        </div>
-        <div class="bigpic__stat">
-          <svg class="bigpic__stat-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <path d="M4 20L10 13l5 4 9-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M19 7h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p class="bigpic__stat-fig">&#x2248;£1.4BN</p>
-          <p class="bigpic__stat-lbl">Potential Annual Exposure</p>
-          <p class="bigpic__stat-sub">&nbsp;</p>
-        </div>
+
+        <p class="bigpic__calc-scale">
+          On a <strong>&pound;1M</strong> annual payroll, that same rate is <strong>&pound;17,000</strong> a year.
+        </p>
       </div>
 
       <div class="bigpic__sources reveal d3">
@@ -4509,8 +4399,7 @@
   <div class="container">
 
     <div class="dash__hd" id="dash-hd">
-      <span class="dash__eyebrow">Board-Level Visibility</span>
-      <h2 class="dash__h2" id="dash-h2">Real-Time Insight.<br><span>Total Control</span>.</h2>
+      <h2 class="dash__h2" id="dash-h2">Every site's labour spend,<br><span>in one place</span>.</h2>
       <p class="dash__sub">A single source of truth for your labour spend, risk and compliance.</p>
     </div>
 
@@ -4793,27 +4682,27 @@
             <p class="dash__chart-title">Top Sites by Money Protected</p>
             <div class="dash__sites-list">
               <div class="dash__sites-item">
-                <span class="dash__sites-name">Riverside Quarter</span>
+                <span class="dash__sites-name">Site A</span>
                 <div class="dash__sites-bar-wrap"><div class="dash__sites-bar-fill" style="width:100%"></div></div>
                 <span class="dash__sites-val">£62,480</span>
               </div>
               <div class="dash__sites-item">
-                <span class="dash__sites-name">Brookfield Heights</span>
+                <span class="dash__sites-name">Site B</span>
                 <div class="dash__sites-bar-wrap"><div class="dash__sites-bar-fill" style="width:78%"></div></div>
                 <span class="dash__sites-val">£48,730</span>
               </div>
               <div class="dash__sites-item">
-                <span class="dash__sites-name">Newgate Development</span>
+                <span class="dash__sites-name">Site C</span>
                 <div class="dash__sites-bar-wrap"><div class="dash__sites-bar-fill" style="width:66%"></div></div>
                 <span class="dash__sites-val">£41,210</span>
               </div>
               <div class="dash__sites-item">
-                <span class="dash__sites-name">Oakwood Phase 2</span>
+                <span class="dash__sites-name">Site D</span>
                 <div class="dash__sites-bar-wrap"><div class="dash__sites-bar-fill" style="width:60%"></div></div>
                 <span class="dash__sites-val">£37,660</span>
               </div>
               <div class="dash__sites-item">
-                <span class="dash__sites-name">Victoria Wharf</span>
+                <span class="dash__sites-name">Site E</span>
                 <div class="dash__sites-bar-wrap"><div class="dash__sites-bar-fill" style="width:47%"></div></div>
                 <span class="dash__sites-val">£29,320</span>
               </div>
@@ -4921,487 +4810,211 @@
 <!-- GAP / PROBLEM VISUAL -->
 <section class="gap" aria-labelledby="gap-h">
   <div class="container">
-    <h2 class="gap__h2 reveal d1" id="gap-h">Small Gaps.<br><span>Big Losses</span>.</h2>
+    <div class="gap__split">
 
-    <div class="gap__flow reveal d2">
+      <!-- The invoice as a finance team receives it, annotated against site records -->
+      <figure class="inv reveal">
+        <figcaption class="sr-only">Subcontractor invoice INV-0047 reconciled against verified site attendance</figcaption>
 
-      <!-- Step 1 -->
-      <div class="gap__step">
-        <div class="gap__step-head">
-          <div class="gap__step-num" aria-hidden="true">1</div>
-          <p class="gap__step-h">The invoice says<br><span class="neutral">100 workers attended</span></p>
+        <div class="inv__head">
+          <div class="inv__head-left">
+            <span class="inv__ref">INV-0047</span>
+            <span class="inv__meta">Groundworks Ltd &middot; Week 23</span>
+          </div>
+          <span class="inv__badge">Awaiting approval</span>
         </div>
-        <div class="gap__step-vis">
-          <div class="gap__data">
-            <div class="gap__data-row">
-              <span class="gap__data-desc">Groundworks Labour</span>
-              <span class="gap__data-qty">48 workers</span>
-            </div>
-            <div class="gap__data-row">
-              <span class="gap__data-desc">Structural Labour</span>
-              <span class="gap__data-qty">22 workers</span>
-            </div>
-            <div class="gap__data-row">
-              <span class="gap__data-desc">Fit-out Labour</span>
-              <span class="gap__data-qty">30 workers</span>
-            </div>
-            <div class="gap__data-total">
-              <span class="gap__data-total-lbl">Total Labour Claimed</span>
-              <span class="gap__data-total-fig">100 workers</span>
-            </div>
+
+        <table class="inv__table">
+          <thead>
+            <tr>
+              <th scope="col">Trade</th>
+              <th scope="col" class="inv__num">Workers</th>
+              <th scope="col" class="inv__num">Amount</th>
+              <th scope="col" class="inv__ev">Site record</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Groundworks Labour</th>
+              <td class="inv__num">48</td>
+              <td class="inv__num">&pound;22,656</td>
+              <td class="inv__ev"><span class="inv__ok">All 48 matched</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Structural Labour</th>
+              <td class="inv__num">22</td>
+              <td class="inv__num">&pound;10,384</td>
+              <td class="inv__ev"><span class="inv__ok">All 22 matched</span></td>
+            </tr>
+            <tr class="inv__row--flag">
+              <th scope="row">Fit-out Labour</th>
+              <td class="inv__num">30</td>
+              <td class="inv__num">&pound;14,160</td>
+              <td class="inv__ev"><span class="inv__bad">3 with no gate record</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="inv__totals">
+          <div class="inv__total">
+            <span class="inv__total-lbl">Claimed</span>
+            <span class="inv__total-val">&pound;47,200</span>
+            <span class="inv__total-sub">100 workers</span>
+          </div>
+          <div class="inv__total">
+            <span class="inv__total-lbl">Verified</span>
+            <span class="inv__total-val">&pound;45,784</span>
+            <span class="inv__total-sub">97 workers</span>
+          </div>
+          <div class="inv__total inv__total--held">
+            <span class="inv__total-lbl">Withheld</span>
+            <span class="inv__total-val">&pound;1,416</span>
+            <span class="inv__total-sub">3 workers</span>
           </div>
         </div>
-      </div>
+      </figure>
 
-      <!-- Arrow 1→2 -->
-      <div class="gap__arrow" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M4 11h14M13 6l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="gap__step">
-        <div class="gap__step-head">
-          <div class="gap__step-num" aria-hidden="true">2</div>
-          <p class="gap__step-h">Site records can only prove <span>97</span></p>
-        </div>
-        <div class="gap__step-vis" style="flex-direction:column;gap:1rem;align-items:stretch">
-          <div class="gap__dots" role="img" aria-label="97 verified workers and 3 unverified"></div>
-          <div class="gap__people-legend">
-            <div class="gap__legend-item">
-              <div class="gap__legend-dot ok"></div>
-              <span class="gap__legend-cnt">97</span>
-              <span class="gap__legend-lbl">Verified</span>
-            </div>
-            <div class="gap__legend-item">
-              <div class="gap__legend-dot bad"></div>
-              <span class="gap__legend-cnt">3</span>
-              <span class="gap__legend-lbl">Not Verified</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Arrow 2→3 -->
-      <div class="gap__arrow" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M4 11h14M13 6l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="gap__step">
-        <div class="gap__step-head">
-          <div class="gap__step-num" aria-hidden="true">3</div>
-          <p class="gap__step-h">Without verification,<br><span class="danger">all 100 may still be paid</span></p>
-        </div>
-        <div class="gap__step-vis gap3-vis" id="gap3-vis">
-          <div class="gap3-doc" aria-hidden="true">
-            <div class="gap3-row">
-              <span class="gap3-lbl">Invoice Ref</span>
-              <span class="gap3-val">INV-0047</span>
-            </div>
-            <div class="gap3-row">
-              <span class="gap3-lbl">Labour Supply</span>
-              <span class="gap3-val">100 workers</span>
-            </div>
-            <div class="gap3-row gap3-row--total">
-              <span class="gap3-lbl">Total Due</span>
-              <span class="gap3-val gap3-amt">£47,200</span>
-            </div>
-            <div class="gap3-stamp" aria-label="Approved stamp">APPROVED</div>
-          </div>
-        </div>
+      <div class="gap__copy reveal d1">
+        <h2 class="gap__h2" id="gap-h">Don't approve <span>what you can't prove</span>.</h2>
+        <p class="gap__lead">
+          The totals balance. The evidence does not. Three workers on this invoice
+          have no gate record behind them &mdash; and without that record, all 100 get paid.
+        </p>
+        <p class="gap__sub">
+          PayRoll Protect matches every labour claim to verified site attendance,
+          line by line, so you only pay for work that actually happened.
+        </p>
       </div>
 
     </div>
   </div>
-
-  <!-- Section close: promoted stat -->
-  <div class="gap__close">
-    <div class="container">
-      <p class="gap__close-fig">3% discrepancy on a £1M payroll <em>= £<span id="gap-close-stat">30,000</span> gone.</em></p>
-      <p class="gap__close-tag">Don't approve what you can't prove.</p>
-    </div>
-  </div>
-
-  <!-- CTA stripe -->
-  <div class="gap__cta">
-    <div class="container">
-      <div class="gap__cta-inner">
-        <div class="gap__cta-icon" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <path d="M11 2L3 6v5c0 4.75 3.4 9.15 8 10.25C16.6 20.15 20 15.75 20 11V6L11 2z" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M7 11l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <p class="gap__cta-h">PayRoll Protect finds the missing proof before the money leaves.</p>
-          <p class="gap__cta-sub">We match every labour claim to verified site attendance — so you only pay for work that actually happened.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </section>
 
-<!-- LEAK / THREE WAYS MONEY CAN LEAK -->
 <section class="leak" aria-labelledby="leak-h">
   <div class="container">
-    <div class="leak__inner">
-      <p class="leak__eyebrow reveal">Where Payroll Leaks Happen</p>
-      <h2 class="leak__h2 reveal d1" id="leak-h">Three Ways <span>Money Can Leak</span><br>From Construction Payroll</h2>
-      <p class="leak__sub reveal d1">Fraudulent or inaccurate labour claims are more common than most businesses realise.</p>
+    <div class="leak__split">
 
-      <div class="leak__cards reveal d2">
-
-        <!-- Ghost Workers -->
-        <div class="leak__card">
-          <div class="leak__card-icon" aria-hidden="true">
-            <svg class="leak-ghost-icon" width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <path d="M7 31V17C7 10.373 11.477 6 17 6s10 4.373 10 11v14l-2.5-2-2.5 2-2.5-2-2.5 2-2.5-2L7 31z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-              <circle class="leak-ghost-eye" cx="13.5" cy="18.5" r="1.75" fill="currentColor"/>
-              <circle class="leak-ghost-eye" cx="20.5" cy="18.5" r="1.75" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3 class="leak__card-h">Ghost Workers</h3>
-          <p class="leak__card-p">People are listed on the payroll or invoice but cannot be confirmed as actually attending site.</p>
-          <div class="leak__divider"></div>
-          <p class="leak__ex-label">Examples</p>
-          <ul class="leak__ex-list">
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Fake identities
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Workers not on site
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Duplicate workers
-            </li>
-          </ul>
-        </div>
-
-        <!-- Inflated Hours -->
-        <div class="leak__card">
-          <div class="leak__card-icon" aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <circle cx="18" cy="19" r="12" stroke="currentColor" stroke-width="1.5"/>
-              <g transform="translate(18,19)">
-                <g class="leak-clock-hour">
-                  <line x1="0" y1="0" x2="0" y2="-6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                </g>
-                <g class="leak-clock-min">
-                  <line x1="0" y1="0" x2="0" y2="-9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </g>
-                <circle r="1.8" fill="currentColor"/>
-              </g>
-            </svg>
-          </div>
-          <h3 class="leak__card-h">Inflated Hours</h3>
-          <p class="leak__card-p">Invoices claim more hours than were actually worked or recorded on site.</p>
-          <div class="leak__divider"></div>
-          <p class="leak__ex-label">Examples</p>
-          <ul class="leak__ex-list">
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Extended hours
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Overtime inflation
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Incorrect shift times
-            </li>
-          </ul>
-        </div>
-
-        <!-- Proxy Clocking -->
-        <div class="leak__card">
-          <div class="leak__card-icon" aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <g class="leak-proxy-p1">
-                <circle cx="12" cy="9.5" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M4 29c0-4.4 3.6-8 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </g>
-              <g class="leak-proxy-p2">
-                <circle cx="24" cy="9.5" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M16.5 29c0-4.4 3.6-8 7.5-8s7.5 3.6 7.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </g>
-              <g class="leak-proxy-arrow">
-                <path d="M15.5 19h5M18.5 17l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </g>
-            </svg>
-          </div>
-          <h3 class="leak__card-h">Proxy Clocking</h3>
-          <p class="leak__card-p">One worker clocks in or out for another, creating false attendance records.</p>
-          <div class="leak__divider"></div>
-          <p class="leak__ex-label">Examples</p>
-          <ul class="leak__ex-list">
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Buddy clocking
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Shared cards or PINs
-            </li>
-            <li>
-              <svg class="leak__ex-ico" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.1"/><path d="M4.5 7l2 2 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Unsupervised check-ins
-            </li>
-          </ul>
-        </div>
-
+      <div class="leak__copy reveal">
+        <h2 class="leak__h2" id="leak-h">Three ways money leaks <span>out of construction payroll</span>.</h2>
+        <p class="leak__sub">
+          Fraudulent or inaccurate labour claims are more common than most
+          businesses realise.
+        </p>
+        <p class="leak__sub">
+          Each one leaves the same trace: a claim with no attendance record
+          behind it. That is the gap PayRoll Protect closes.
+        </p>
       </div>
+
+      <div class="leak__rows">
+          <article class="leak__row reveal">
+            <div class="leak__row-head">
+              <span class="leak__row-idx" aria-hidden="true">01</span>
+              <h3 class="leak__row-h">Ghost Workers</h3>
+            </div>
+            <p class="leak__row-p">People are listed on the payroll or invoice but cannot be confirmed as actually attending site.</p>
+            <ul class="leak__ex-list">
+                <li>Fake identities</li>
+                <li>Workers not on site</li>
+                <li>Duplicate workers</li>
+            </ul>
+            <p class="leak__row-caught-p"><span class="leak__row-lbl">Caught by</span>No gate scan on the day they were billed for.</p>
+          </article>
+          <article class="leak__row reveal">
+            <div class="leak__row-head">
+              <span class="leak__row-idx" aria-hidden="true">02</span>
+              <h3 class="leak__row-h">Inflated Hours</h3>
+            </div>
+            <p class="leak__row-p">Invoices claim more hours than were actually worked or recorded on site.</p>
+            <ul class="leak__ex-list">
+                <li>Extended hours</li>
+                <li>Overtime inflation</li>
+                <li>Incorrect shift times</li>
+            </ul>
+            <p class="leak__row-caught-p"><span class="leak__row-lbl">Caught by</span>Clock-out time on record contradicts the hours claimed.</p>
+          </article>
+          <article class="leak__row reveal">
+            <div class="leak__row-head">
+              <span class="leak__row-idx" aria-hidden="true">03</span>
+              <h3 class="leak__row-h">Proxy Clocking</h3>
+            </div>
+            <p class="leak__row-p">One worker clocks in or out for another, creating false attendance records.</p>
+            <ul class="leak__ex-list">
+                <li>Buddy clocking</li>
+                <li>Shared cards or PINs</li>
+                <li>Unsupervised check-ins</li>
+            </ul>
+            <p class="leak__row-caught-p"><span class="leak__row-lbl">Caught by</span>Two scans for the same identity at the same moment.</p>
+          </article>
+      </div>
+
     </div>
   </div>
-
-  <!-- Bottom band -->
-  <div class="leak__band">
-    <div class="container">
-      <div class="leak__band-inner">
-
-        <div class="leak__band-half">
-          <div class="leak__band-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <path d="M11 2L3 6v5c0 4.75 3.4 9.15 8 10.25C16.6 20.15 20 15.75 20 11V6L11 2z" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M7 11l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <p class="leak__band-h">PayRoll Protect compares every claim to verified attendance.</p>
-            <p class="leak__band-p">Discrepancies are flagged before payment — <em>not after.</em></p>
-          </div>
-        </div>
-
-        <div class="leak__band-sep" aria-hidden="true"></div>
-
-        <div class="leak__band-half">
-          <div class="leak__band-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <rect x="3" y="2" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M6 7h6M6 10.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-              <circle cx="17" cy="16.5" r="4.5" fill="var(--dark-mid)" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M15 16.5l1.5 1.5 3-3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <p class="leak__band-h">Evidence. Control. Confidence.</p>
-            <p class="leak__band-p">Only pay for verified work.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
 </section>
 
-<!-- COMP: VERIFY FIRST ──────────────────────────────────── -->
 <section class="comp" id="benefits" aria-labelledby="comp-h2">
   <div class="container">
 
-    <div class="comp__hd reveal">
-      <span class="comp__eyebrow">The Difference</span>
-      <h2 class="comp__h2" id="comp-h2">Verify First.<br><span>Pay With Confidence</span>.</h2>
-      <p class="comp__sub">PayRoll Protect adds a critical verification layer between the site and your payroll.</p>
+    <div class="comp__hd">
+      <h2 class="comp__h2" id="comp-h2">Every payment leaves <span>an evidence trail</span>.</h2>
+      <p class="comp__sub">
+        Verification is not a report you run afterwards. It happens at the gate,
+        on the invoice, and at the moment of approval.
+      </p>
     </div>
 
-    <div class="comp__panels">
+    <ol class="flow">
+        <li class="flow__step">
+          <span class="flow__dot" aria-hidden="true"></span>
+          <span class="flow__idx" aria-hidden="true">01</span>
+          <h3 class="flow__h">Worker verified</h3>
+          <p class="flow__p">Identity confirmed on site by face recognition and GPS location.</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__dot" aria-hidden="true"></span>
+          <span class="flow__idx" aria-hidden="true">02</span>
+          <h3 class="flow__h">Hours captured</h3>
+          <p class="flow__p">In and out times recorded automatically, per worker, per day.</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__dot" aria-hidden="true"></span>
+          <span class="flow__idx" aria-hidden="true">03</span>
+          <h3 class="flow__h">Invoice checked</h3>
+          <p class="flow__p">Every claimed line compared against the verified attendance record.</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__dot" aria-hidden="true"></span>
+          <span class="flow__idx" aria-hidden="true">04</span>
+          <h3 class="flow__h">Exceptions raised</h3>
+          <p class="flow__p">Anything without a matching record is flagged before it reaches payroll.</p>
+        </li>
+        <li class="flow__step">
+          <span class="flow__dot" aria-hidden="true"></span>
+          <span class="flow__idx" aria-hidden="true">05</span>
+          <h3 class="flow__h">Payment released</h3>
+          <p class="flow__p">Only verified labour is paid, and every payment carries its evidence.</p>
+        </li>
+    </ol>
 
-      <!-- WITHOUT -->
-      <div class="comp__panel comp__panel--before reveal-left">
-        <div class="comp__panel-head">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style="flex-shrink:0">
-            <path d="M3 3l8 8M11 3L3 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          <span class="comp__panel-head-txt">Without PayRoll Protect</span>
-        </div>
-        <div class="comp__steps">
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M2 17c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Worker</span>
-              <span class="comp__step-status">Claimed</span>
-              <p class="comp__step-desc">Workers are listed on paper or digital timesheets.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="3.5" y="1.5" width="11" height="15" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M6.5 6h5M6.5 9h5M6.5 12h3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Timesheet</span>
-              <span class="comp__step-status">Submitted</span>
-              <p class="comp__step-desc">Hours are recorded without independent verification.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="3.5" y="1.5" width="11" height="15" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M7 12h5M6.5 10c0-2 1.3-3.5 2.8-3.5 1.4 0 2.2.9 2.2 2.3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-                <path d="M6.5 10V8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Invoice</span>
-              <span class="comp__step-status">Received</span>
-              <p class="comp__step-desc">Labour invoice is accepted based on the claim alone.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="1.5" y="5" width="15" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                <circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.1"/>
-                <path d="M4 9h1.5M12.5 9h1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Payment</span>
-              <span class="comp__step-status">Approved</span>
-              <p class="comp__step-desc">Payment is approved and money leaves your business.</p>
-            </div>
-          </div>
-        </div>
-        <div class="comp__panel-foot">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style="flex-shrink:0">
-            <path d="M9 2L1.5 15.5h15L9 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-            <path d="M9 7.5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-            <circle cx="9" cy="13.5" r="0.9" fill="currentColor"/>
-          </svg>
-          <p class="comp__panel-foot-txt">No independent check. No proof. Higher risk.</p>
-        </div>
-      </div>
+    <!-- Tracks the playhead. Stacked states; the highest one lit wins. -->
+    <!-- Decorative instrumentation: it mirrors the step list above, and all
+         six states co-exist in the DOM, so it is hidden from assistive tech. -->
+    <p class="flow__readout" aria-hidden="true">
+      <span class="flow__readout-dot" aria-hidden="true"></span>
+      <span class="flow__readout-stack">
+        <span class="flow__readout-item" data-n="0">Awaiting verification</span>
+        <span class="flow__readout-item" data-n="1">Verifying &middot; 1 of 5 complete</span>
+        <span class="flow__readout-item" data-n="2">Verifying &middot; 2 of 5 complete</span>
+        <span class="flow__readout-item" data-n="3">Verifying &middot; 3 of 5 complete</span>
+        <span class="flow__readout-item" data-n="4">Verifying &middot; 4 of 5 complete</span>
+        <span class="flow__readout-item" data-n="5">Verified &middot; payment released</span>
+      </span>
+    </p>
 
-      <!-- WITH -->
-      <div class="comp__panel comp__panel--after reveal-right d1">
-        <div class="comp__panel-head">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style="flex-shrink:0">
-            <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="comp__panel-head-txt">With PayRoll Protect</span>
-        </div>
-        <div class="comp__steps">
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M4.5 15.5c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                <path d="M1.5 5V2.5h2.5M14 2.5h2.5V5M1.5 13v2.5h2.5M14 15.5h2.5V13" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Worker</span>
-              <span class="comp__step-status">Verified</span>
-              <p class="comp__step-desc">Identity confirmed on site using face recognition and GPS location.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M9 5v4l3 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Hours</span>
-              <span class="comp__step-status">Verified</span>
-              <p class="comp__step-desc">In and out times captured automatically and securely.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="3.5" y="1.5" width="11" height="15" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M6.5 9.5l2 2 3.5-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Invoice</span>
-              <span class="comp__step-status">Checked</span>
-              <p class="comp__step-desc">Invoice compared against verified attendance and hours worked.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M9 1.5L2.5 4.5v4c0 4 2.8 7.5 6.5 8.5 3.7-1 6.5-4.5 6.5-8.5v-4L9 1.5z" stroke="currentColor" stroke-width="1.3"/>
-                <path d="M6.5 9.5l2 2 3.5-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Finance</span>
-              <span class="comp__step-status">Approved</span>
-              <p class="comp__step-desc">Exceptions resolved. Payment cleared with confidence.</p>
-            </div>
-          </div>
-          <div class="comp__step">
-            <div class="comp__step-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="1.5" y="5" width="15" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                <circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.1"/>
-                <path d="M4 9h1.5M12.5 9h1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="comp__step-content">
-              <span class="comp__step-name">Payment</span>
-              <span class="comp__step-status">Released</span>
-              <p class="comp__step-desc">Only verified labour is paid. Every payment, evidenced.</p>
-            </div>
-          </div>
-        </div>
-        <div class="comp__panel-foot">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style="flex-shrink:0">
-            <path d="M9 1.5L2.5 4.5v4c0 4 2.8 7.5 6.5 8.5 3.7-1 6.5-4.5 6.5-8.5v-4L9 1.5z" stroke="currentColor" stroke-width="1.3"/>
-            <path d="M6.5 9.5l2 2 3.5-3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p class="comp__panel-foot-txt">Independent verification. Clear evidence. Lower risk.</p>
-        </div>
-      </div>
-
-    </div><!-- /comp__panels -->
-
-  </div><!-- /container -->
-
-  <div class="comp__callout">
-    <div class="container">
-      <div class="comp__callout-inner reveal">
-        <div class="comp__callout-icon" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L3 6v5c0 5 3.3 9.5 9 11 5.7-1.5 9-6 9-11V6L12 2z" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <p class="comp__callout-hl">Evidence Before Approval.</p>
-        <div class="comp__callout-sep" aria-hidden="true"></div>
-        <div class="comp__callout-body">
-          <p class="comp__callout-txt">PayRoll Protect gives your finance team the proof they need to protect margin, control spend, and stay audit-ready.</p>
-        </div>
-      </div>
-    </div>
   </div>
-
 </section>
-<!-- /COMP -->
 
-<!-- CALCULATOR -->
-  <section class="calc" id="calculator" aria-labelledby="calc-h">
+<section class="calc" id="calculator" aria-labelledby="calc-h">
     <div class="container">
       <div class="calc__inner">
         <h2 class="calc__h2 reveal" id="calc-h">
@@ -5813,7 +5426,7 @@
         <img src="assets/pp-logo-light-transp.webp" alt="PayRoll Protect" height="100" loading="lazy" decoding="async" style="display:block;height:100px;width:auto;">
       </div>
       <ul class="footer__nav">
-        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#what-it-is">What It Is</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#numbers">The Numbers</a></li>
         <li><a href="contact.html">Book a Call</a></li>
@@ -6505,39 +6118,24 @@
     io.observe(card);
   })();
 
-  // ── GAP DOT GRID ────────────────────────────────────────
+  // ── PROCESS LINE: draw on first view ──────────────────
   (function() {
-    var grid = document.querySelector('.gap__dots');
-    if (!grid) return;
-    for (var i = 0; i < 100; i++) {
-      var dot = document.createElement('span');
-      dot.className = 'gap__dot' + (i >= 97 ? ' is-missing' : '');
-      dot.setAttribute('aria-hidden', 'true');
-      grid.appendChild(dot);
+    var flow = document.querySelector('.flow');
+    if (!flow) return;
+    // Reduced motion is handled in CSS; don't gate content behind an observer.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      flow.classList.add('is-drawn');
+      return;
     }
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      flow.classList.add('is-drawn');
+      io.disconnect();
+    }, { threshold: 0.35 });
+    io.observe(flow);
   })();
 
-  // ── GAP CLOSE STAT COUNT-UP ──────────────────────────────
-  (function() {
-    var el = document.getElementById('gap-close-stat');
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var done = false;
-    var io = new IntersectionObserver(function(entries) {
-      if (!entries[0].isIntersecting || done) return;
-      done = true; io.disconnect();
-      var target = 30000, dur = 1100, start = null;
-      function step(ts) {
-        if (!start) start = ts;
-        var p = Math.min((ts - start) / dur, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased).toLocaleString('en-GB');
-        if (p < 1) requestAnimationFrame(step);
-        else el.textContent = target.toLocaleString('en-GB');
-      }
-      requestAnimationFrame(step);
-    }, { threshold: 0.8 });
-    io.observe(el);
-  })();
+
 
   // ── PAGE TRANSITIONS ────────────────────────────────────
   (function(){
