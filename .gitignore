@@ -1,0 +1,22 @@
+# Agent / editor tooling — local only, not part of the site
+.claude/
+.agents/
+.codex/
+skills-lock.json
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Local backups and scratch copies
+*.bak
+*.orig
+*.rej
+index.live.html
+index.session-work.html
+
+# Deliberately TRACKED (do not ignore):
+#   DESIGN.md      — design system authority
+#   PRODUCT.md     — product context
+#   .impeccable/   — critique snapshots and design sidecar

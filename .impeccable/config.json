@@ -1,0 +1,38 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-10-05T13:00:08.581Z",
+        "reason": "user confirmed: user requested Urbanist to Montserrat swap by name and supplied the font files from their Downloads folder (2026-10-05)"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#7ac800",
+        "createdAt": "2026-10-05T13:27:23.518Z",
+        "reason": "devtools console.log %c styling in calculator.html, not rendered UI; verified each value occurs once and only inside the console string"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#6a7a62",
+        "createdAt": "2026-10-05T13:27:23.674Z",
+        "reason": "devtools console.log %c styling in calculator.html, not rendered UI; verified each value occurs once and only inside the console string"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "15px",
+        "createdAt": "2026-10-05T13:27:23.853Z",
+        "reason": "devtools console.log %c styling in calculator.html, not rendered UI; verified each value occurs once and only inside the console string"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "11px",
+        "createdAt": "2026-10-05T13:27:23.976Z",
+        "reason": "devtools console.log %c styling in calculator.html, not rendered UI; verified each value occurs once and only inside the console string"
+      }
+    ]
+  }
+}
