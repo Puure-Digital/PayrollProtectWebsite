@@ -300,13 +300,18 @@
       font-size: 0.875rem; color: var(--muted);
     }
 
-    /* Form rows */
-
+    /* Form rows */
+
 
     /* Submit button */
-    .form-submit-row { margin-top: 1.5rem; }
+    .form-submit-row { margin-top: 1.5rem; }
 
-    /* --- GHL embedded form --- */
+    /* --- GHL embedded form ---
+         min-height lives on the wrapper only, as a placeholder before the
+         embed script's resize message arrives. It must NOT also sit on the
+         iframe itself: that would stop the script's inline height from ever
+         shrinking the iframe to the form's real (shorter) height, leaving
+         the hosted form's own blank page background exposed below it. */
     .ghl-form {
       position: relative; width: 100%;
       min-height: 560px;
@@ -314,18 +319,17 @@
     }
     .ghl-form iframe {
       display: block; width: 100%; height: 100%;
-      min-height: 560px;
       border: none; border-radius: 10px; background: transparent;
     }
     @media (max-width: 560px) {
-      .ghl-form, .ghl-form iframe { min-height: 640px; }
+      .ghl-form { min-height: 640px; }
     }
     .form-privacy {
       margin-top: 0.875rem; font-size: 0.75rem;
       color: var(--muted); text-align: center; line-height: 1.5;
     }
 
-    /* ─── SUCCESS STATE ──────────────────────────────────── */
+    /* ─── SUCCESS STATE ──────────────────────────────────── */
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     .footer {
@@ -537,6 +541,7 @@
             <div class="ghl-form">
               <iframe
                 src="https://api.leadconnectorhq.com/widget/form/50lzTXehMgKX7CgeLy2f"
+                style="width:100%;height:100%;border:none;border-radius:8px"
                 id="inline-50lzTXehMgKX7CgeLy2f"
                 title="Payroll Protect Contact Form"
                 loading="lazy"
